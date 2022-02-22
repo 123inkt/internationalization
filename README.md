@@ -27,8 +27,10 @@ $numberOptions = (new NumberFormatOptions())
     ->setDecimals(2)
     ->setTrimDecimals(true); 
 $service = new NumberFormatService($currencyOptions, $numberOptions);
+```
 
-// format currencies
+Format currencies:
+```php
 $service->currency(1500.5);                                                       
 // output: € 1500,50
 
@@ -37,9 +39,10 @@ $service->currency(new Money('150050', new Currency('EUR')));
 
 $service->currency(1500.5, (new CurrencyFormatOptions())->setGrouping(true));
 // output: € 1.500,50
+```
 
-
-// format numbers
+Format numbers:
+```php
 $service->number(1500.5);                                                        
 // output: 1500,50
 
