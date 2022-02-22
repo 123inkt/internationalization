@@ -1,4 +1,5 @@
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.0-8892BF)](https://php.net/)
+![Run tests](https://github.com/123inkt/internationalization/workflows/Run%20tests/badge.svg)
 
 # Digital Revolution Internationalization
 
