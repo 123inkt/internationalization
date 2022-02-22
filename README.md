@@ -13,6 +13,7 @@ composer require digitalrevolution/intl
 ## Usage
 
 ### NumberFormatService
+Format number and currencies
 ```php
 use DR\Internationalization\Currency\CurrencyFormatOptions;use DR\Internationalization\Number\NumberFormatOptions;use DR\Internationalization\NumberFormatService;use Money\Money;
 
@@ -55,9 +56,39 @@ $service->number(1500.5, (new NumberFormatOptions())->setTrimDecimals(NumberForm
 // output: 1500.5
 ```
 
-## NumberParser
+### NumberParser
+Parse float number from string determining the user's input for thousands and decimals separator.
 ```php
+NumberParser::parseFloat('1050');
+// output: 1050.0
 
+NumberParser::parseFloat('1050.5');
+// output: 1050.5
+
+NumberParser::parseFloat('1050,5');
+// output: 1050.5
+
+NumberParser::parseFloat('1.050,5');
+// output: 1050.5
+
+NumberParser::parseFloat('1,050.5');
+// output: 1050.5
+
+NumberParser::parseFloat('1,000,050.5');
+// output: 1000050.5
+```
+
+### DayOfTheWeekFormatter
+Format the PHP Date day of the week to string
+
+```php
+use DR\Internationalization\Date\DayOfTheWeekFormatter;$formatter = new DayOfTheWeekFormatter('nl_NL');
+
+$formatter->format(DayOfTheWeekFormatter::MONDAY);
+// output: maandag
+
+$formatter->format(DayOfTheWeekFormatter::MONDAY, 'en_US');
+// output: monday
 ```
 
 
