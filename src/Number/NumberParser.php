@@ -11,11 +11,14 @@ use function str_replace;
 use function strpos;
 use function substr_count;
 
+/**
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @SuppressWarnings(PHPMD.NPathComplexity)
+ */
 class NumberParser
 {
     /**
      * Parse a string to a float. Autodetect which thousand/decimal separator is used
-     *
      * @return false|float float for valid float number, or false otherwise
      */
     public static function parseFloat(string $value, ?int $decimals = null): float|bool
