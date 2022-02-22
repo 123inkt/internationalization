@@ -70,7 +70,7 @@ class NumberFormatterSplitter
 
         // strip prefix and suffix, and split on decimal separator
         $numericValue = str_replace([$prefix, $suffix], '', $formattedValue);
-        if ($decSeparator !== '' && strpos($numericValue, $decSeparator) !== false) {
+        if ($decSeparator !== '' && str_contains($numericValue, $decSeparator)) {
             [$integer, $decimals] = explode($decSeparator, $numericValue, 2);
         } else {
             $integer  = $numericValue;

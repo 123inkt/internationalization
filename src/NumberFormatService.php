@@ -46,10 +46,7 @@ class NumberFormatService
         $this->cache           = $cache ?? new NumberFormatterCache();
     }
 
-    /**
-     * @param int|float|Money $value
-     */
-    public function currency($value, ?CurrencyFormatOptions $options = null): string
+    public function currency(int|float|Money $value, ?CurrencyFormatOptions $options = null): string
     {
         if ($value instanceof Money && $options !== null && $options->getCurrencyCode() !== null) {
             throw new InvalidArgumentException('Can\'t specify custom currency code for Money objects');
@@ -63,10 +60,8 @@ class NumberFormatService
     /**
      * Format a currency value and return the value split in it individual parts:
      * - prefix, suffix, symbol, decimal and thousands separator, integer and decimals value.
-     *
-     * @param int|float|Money $value
      */
-    public function currencySplit($value, ?CurrencyFormatOptions $options = null): NumberFormatterSplitterResult
+    public function currencySplit(int|float|Money $value, ?CurrencyFormatOptions $options = null): NumberFormatterSplitterResult
     {
         if ($value instanceof Money && $options !== null && $options->getCurrencyCode() !== null) {
             throw new InvalidArgumentException('Can\'t specify custom currency code for Money objects');
@@ -80,10 +75,7 @@ class NumberFormatService
         return (new NumberFormatterSplitter($formatter, NumberFormatter::CURRENCY))->split($formattedValue, $isPositiveValue);
     }
 
-    /**
-     * @param int|float $value
-     */
-    public function number($value, ?NumberFormatOptions $options = null): string
+    public function number(int|float $value, ?NumberFormatOptions $options = null): string
     {
         if ($value === -0.0) {
             $value = 0;
@@ -97,10 +89,8 @@ class NumberFormatService
     /**
      * Format a numeric value and return the value split in it individual parts:
      * - prefix, suffix, decimal and thousands separator, integer and decimals value.
-     *
-     * @param int|float $value
      */
-    public function numberSplit($value, ?NumberFormatOptions $options = null): NumberFormatterSplitterResult
+    public function numberSplit(int|float $value, ?NumberFormatOptions $options = null): NumberFormatterSplitterResult
     {
         if ($value === -0.0) {
             $value = 0;
@@ -113,10 +103,7 @@ class NumberFormatService
         return (new NumberFormatterSplitter($formatter, NumberFormatter::DECIMAL))->split($formattedValue, $value >= 0);
     }
 
-    /**
-     * @param int|float|Money $value
-     */
-    private function formatCurrencyValue($value, NumberFormatter $formatter): string
+    private function formatCurrencyValue(int|float|Money $value, NumberFormatter $formatter): string
     {
         // format according to Locale and Currency
         if ($value instanceof Money) {

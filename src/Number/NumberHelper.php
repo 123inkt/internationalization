@@ -10,10 +10,8 @@ class NumberHelper
      * cases:
      *    12.30 -  12 => abs(0.3)  => 0.3
      *   -12.30 - -12 => abs(-0.3) => 0.3
-     *
-     * @param int|float $value
      */
-    public static function hasDecimals($value): bool
+    public static function hasDecimals(int|float $value): bool
     {
         if (is_int($value)) {
             return false;

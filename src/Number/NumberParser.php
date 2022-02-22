@@ -18,7 +18,7 @@ class NumberParser
      *
      * @return false|float float for valid float number, or false otherwise
      */
-    public static function parseFloat(string $value, ?int $decimals = null)
+    public static function parseFloat(string $value, ?int $decimals = null): float|bool
     {
         $value = (string)preg_replace("/(\s|\xc2\xa0|\xE2\x80\xAF)+/", '', $value);
 
@@ -28,7 +28,7 @@ class NumberParser
         }
 
         // When we dont have a single separator just parse the value
-        if (strpos($value, ',') === false && strpos($value, '.') === false) {
+        if (str_contains($value, ',') === false && str_contains($value, '.') === false) {
             $result = (float)$value;
             if ($decimals !== null) {
                 $result = round((float)$value, $decimals);

@@ -31,10 +31,7 @@ class NumberFormatOptionsHelper
         $this->currencies             = $currencies;
     }
 
-    /**
-     * @param int|float|Money $value
-     */
-    public function applyCurrencyOptions($value, ?CurrencyFormatOptions $options): CurrencyFormatOptions
+    public function applyCurrencyOptions(float|int|Money $value, ?CurrencyFormatOptions $options): CurrencyFormatOptions
     {
         $decimals = ($options !== null ? $options->getDecimals() : null) ?? $this->defaultNumberOptions->getDecimals();
 
@@ -49,10 +46,7 @@ class NumberFormatOptionsHelper
         return $options;
     }
 
-    /**
-     * @param int|float $value
-     */
-    public function applyNumberOptions($value, ?Options $options): Options
+    public function applyNumberOptions(float|int $value, ?Options $options): Options
     {
         $decimals = ($options !== null ? $options->getDecimals() : null) ?? $this->defaultNumberOptions->getDecimals();
 
@@ -72,10 +66,7 @@ class NumberFormatOptionsHelper
         return $options;
     }
 
-    /**
-     * @param int|float|Money $value
-     */
-    private function currencyHasDecimals($value): bool
+    private function currencyHasDecimals(float|int|Money $value): bool
     {
         if ($value instanceof Money) {
             $subunit = $this->currencies->subunitFor($value->getCurrency()) * 10;
