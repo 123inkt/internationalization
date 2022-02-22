@@ -1,6 +1,6 @@
 {
-    "name": "digitalrevolution/skeleton",
-    "description": "Digital Revolution skeleton package",
+    "name": "digitalrevolution/intl",
+    "description": "Digital Revolution Internationalization library",
     "type": "library",
     "license": "MIT",
     "minimum-stability": "stable",
