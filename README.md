@@ -1,6 +1,6 @@
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.0-8892BF)](https://php.net/)
 
-# Digital revolution Internationalization
+# Digital Revolution Internationalization
 
 Library to format Numbers, Dates, \Money\Money objects and currencies to string according to the locale.
 
