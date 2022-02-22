@@ -15,7 +15,10 @@ composer require digitalrevolution/intl
 ### NumberFormatService
 Format number and currencies
 ```php
-use DR\Internationalization\Currency\CurrencyFormatOptions;use DR\Internationalization\Number\NumberFormatOptions;use DR\Internationalization\NumberFormatService;use Money\Money;
+use DR\Internationalization\Currency\CurrencyFormatOptions;
+use DR\Internationalization\Number\NumberFormatOptions;
+use DR\Internationalization\NumberFormatService;
+use Money\Money;
 
 // set default configuration
 $currencyOptions = (new CurrencyFormatOptions())
