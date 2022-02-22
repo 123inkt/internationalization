@@ -4,17 +4,38 @@
     "type": "library",
     "license": "MIT",
     "minimum-stability": "stable",
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
+        }
+    },
     "require": {
-        "php": ">=7.4"
+        "php": ">=8.0",
+        "ext-intl": "*",
+        "moneyphp/money": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "DR\\Internationalization\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DR\\Internationalization\\Tests\\Unit\\": "tests/Unit/",
+            "DR\\Internationalization\\Tests\\": "tests/"
+        }
     },
     "require-dev": {
+        "digitalrevolution/accessorpair-constraint": "^2.1",
         "roave/security-advisories": "dev-latest",
         "squizlabs/php_codesniffer": "^3.6",
         "phpmd/phpmd": "@stable",
         "phpunit/phpunit": "^9.5",
-        "phpstan/phpstan": "0.12.*",
-        "phpstan/phpstan-phpunit": "0.12.*",
-        "phpstan/phpstan-strict-rules": "0.12.*",
+        "phpstan/phpstan": "^1.4",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "phpstan/phpstan-strict-rules": "^1.0",
         "phpstan/extension-installer": "^1.1"
     },
     "scripts": {
