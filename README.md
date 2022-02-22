@@ -89,7 +89,7 @@ NumberParser::parseFloat('1,000,050.5');
 Format the PHP Date day of the week to string
 
 ```php
-use DR\Internationalization\Date\DayOfTheWeekFormatter;$formatter = new DayOfTheWeekFormatter('nl_NL');
+$formatter = new DayOfTheWeekFormatter('nl_NL');
 
 $formatter->format(DayOfTheWeekFormatter::MONDAY);
 // output: maandag
