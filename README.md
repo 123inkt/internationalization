@@ -95,7 +95,7 @@ $formatter->format(DayOfTheWeekFormatter::MONDAY);
 // output: maandag
 
 $formatter->format(DayOfTheWeekFormatter::MONDAY, 'en_US');
-// output: monday
+// output: Monday
 ```
 
 
