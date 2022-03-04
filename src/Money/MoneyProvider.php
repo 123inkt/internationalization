@@ -19,9 +19,7 @@ class MoneyProvider
     private Currencies          $currencies;
 
     /**
-     * @param non-empty-string                    $currencyCode
-     *
-     * @phpstan-param Currencies<Currency[]>|null $currencies
+     * @param non-empty-string $currencyCode
      */
     public function __construct(string $currencyCode, ?Currencies $currencies = null)
     {
