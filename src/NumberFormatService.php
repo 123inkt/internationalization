@@ -26,9 +26,7 @@ class NumberFormatService
     private NumberFormatterFactory        $numberFactory;
     private NumberFormatterCacheInterface $cache;
     private NumberFormatOptionsHelper     $optionsHelper;
-
-    /** @phpstan-var Currencies<Currency[]> */
-    private Currencies $currencies;
+    private Currencies                    $currencies;
 
     /**
      * @phpstan-param Currencies<Currency[]>|null $currencies

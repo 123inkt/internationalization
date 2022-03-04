@@ -16,11 +16,11 @@ class MoneyProvider
 {
     private Currency            $currency;
     private ?DecimalMoneyParser $parser = null;
-
-    /** @phpstan-var Currencies<Currency[]> */
-    private Currencies $currencies;
+    private Currencies          $currencies;
 
     /**
+     * @param non-empty-string                    $currencyCode
+     *
      * @phpstan-param Currencies<Currency[]>|null $currencies
      */
     public function __construct(string $currencyCode, ?Currencies $currencies = null)
@@ -32,8 +32,10 @@ class MoneyProvider
     /**
      * Method to parse money in decimal or int values to the cents value based on currency.
      * example: 2.34 -> 234, 23 -> 2300
-     * @throws MoneyParseException
-     * @throws ParserException
+     *
+     * @param non-empty-string|null $currencyCode
+     *
+     * @throws MoneyParseException|ParserException
      */
     public function parse(string $amount, ?string $currencyCode = null): Money
     {
@@ -54,7 +56,8 @@ class MoneyProvider
      * Works: 2300 or '3'
      * Does not work: 2.34 or '2.34'
      *
-     * @param string|int $amount
+     * @param numeric-string|int    $amount
+     * @param non-empty-string|null $currencyCode
      *
      * @throws InvalidArgumentException If amount is not integer
      */
