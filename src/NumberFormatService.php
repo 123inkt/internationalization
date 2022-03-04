@@ -15,7 +15,6 @@ use DR\Internationalization\Number\NumberFormatterSplitterResult;
 use InvalidArgumentException;
 use Money\Currencies;
 use Money\Currencies\ISOCurrencies;
-use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money;
 use NumberFormatter;
@@ -26,13 +25,8 @@ class NumberFormatService
     private NumberFormatterFactory        $numberFactory;
     private NumberFormatterCacheInterface $cache;
     private NumberFormatOptionsHelper     $optionsHelper;
+    private Currencies                    $currencies;
 
-    /** @phpstan-var Currencies<Currency[]> */
-    private Currencies $currencies;
-
-    /**
-     * @phpstan-param Currencies<Currency[]>|null $currencies
-     */
     public function __construct(
         CurrencyFormatOptions $currencyFormatOptions,
         NumberFormatOptions $numberFormatOptions,

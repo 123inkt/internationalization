@@ -6,7 +6,6 @@ namespace DR\Internationalization\Number;
 use DR\Internationalization\Currency\CurrencyFormatOptions;
 use DR\Internationalization\Number\NumberFormatOptions as Options;
 use Money\Currencies;
-use Money\Currency;
 use Money\Money;
 
 /**
@@ -18,12 +17,8 @@ class NumberFormatOptionsHelper
 {
     private CurrencyFormatOptions $defaultCurrencyOptions;
     private Options               $defaultNumberOptions;
-    /** @phpstan-var Currencies<Currency[]> */
-    private Currencies $currencies;
+    private Currencies            $currencies;
 
-    /**
-     * @phpstan-param Currencies<Currency[]> $currencies
-     */
     public function __construct(CurrencyFormatOptions $defaultCurrencyOptions, Options $defaultNumberOptions, Currencies $currencies)
     {
         $this->defaultCurrencyOptions = $defaultCurrencyOptions;
