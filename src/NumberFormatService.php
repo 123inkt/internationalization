@@ -77,7 +77,7 @@ class NumberFormatService
 
         $options = $this->optionsHelper->applyNumberOptions($value, $options);
 
-        return $this->getNumberFormatter($options)->format($value);
+        return (string)$this->getNumberFormatter($options)->format($value);
     }
 
     /**
@@ -92,7 +92,7 @@ class NumberFormatService
 
         $options        = $this->optionsHelper->applyNumberOptions($value, $options);
         $formatter      = $this->getNumberFormatter($options);
-        $formattedValue = $formatter->format($value);
+        $formattedValue = (string)$formatter->format($value);
 
         return (new NumberFormatterSplitter($formatter, NumberFormatter::DECIMAL))->split($formattedValue, $value >= 0);
     }
@@ -104,7 +104,7 @@ class NumberFormatService
             return (new IntlMoneyFormatter($formatter, $this->currencies))->format($value);
         }
 
-        return $formatter->format($value);
+        return (string)$formatter->format($value);
     }
 
     private function getCurrencyFormatter(CurrencyFormatOptions $options): NumberFormatter
