@@ -85,6 +85,21 @@ NumberParser::parseFloat('1,000,050.5');
 // output: 1000050.5
 ```
 
+### DateFormatService
+Formats dates and times. 
+Input can be timestamps, strings (compatible with strtotime) and DateTimeInterface objects
+```php
+$dateFormatter = new DateFormatService('nl_NL', date_default_timezone_get());
+$dateFormatter->format(time(), 'eeee dd LLLL Y - HH:mm:ss');
+// example output: zaterdag 02 juni 2040 - 05:57:02
+
+$dateFormatter->format('next saturday', 'eeee dd LLLL Y - HH:mm:ss');
+// example output: zaterdag 02 juni 2040 - 05:57:02
+
+$dateFormatter->format(new DateTime(), 'eeee dd LLLL Y - HH:mm:ss');
+// example output: zaterdag 02 juni 2040 - 05:57:02
+```
+
 ### DayOfTheWeekFormatter
 Format the PHP Date day of the week to string
 
