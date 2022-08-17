@@ -8,6 +8,7 @@ use IntlDateFormatter;
 
 class DateFormatService
 {
+    /** @var array<string, IntlDateFormatter> */
     private array $formatters = [];
 
     public function __construct(private string $locale, private string $timezone)
