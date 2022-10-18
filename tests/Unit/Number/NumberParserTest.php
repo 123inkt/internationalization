@@ -60,6 +60,9 @@ class NumberParserTest extends TestCase
         static::assertSame(1000.35, NumberParser::parseFloat('1,000.345', 2));
         static::assertSame(1000000.35, NumberParser::parseFloat('1,000,000.345', 2));
         static::assertSame(1000000.0, NumberParser::parseFloat('1,000,000', 2));
+
+        // utf8-minus
+        static::assertSame(-10.00, NumberParser::parseFloat('−10,00', 2));
     }
 
     /**

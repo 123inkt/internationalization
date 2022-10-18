@@ -24,6 +24,7 @@ class NumberParser
     public static function parseFloat(string $value, ?int $decimals = null): float|bool
     {
         $value = (string)preg_replace("/(\s|\xc2\xa0|\xE2\x80\xAF)+/", '', $value);
+        $value = str_replace("\xE2\x88\x92", '-', $value);
 
         // empty or strange characters will return false
         if ($value === '' || preg_match('/[^\d.,-]/', $value) === 1) {
