@@ -46,7 +46,7 @@ class MoneyProvider
             throw new MoneyParseException('Amount: ' . $amount . ' and currencyCode: ' . ($currencyCode ?? $this->currency->getCode()));
         }
 
-        return $this->parser->parse((string)$parsedAmount, $currencyCode !== null ? new Currency($currencyCode) : $this->currency);
+        return $this->parser->parse($this->floatToString($parsedAmount), $currencyCode !== null ? new Currency($currencyCode) : $this->currency);
     }
 
     /**
@@ -62,5 +62,20 @@ class MoneyProvider
     public function getMoney($amount, ?string $currencyCode = null): Money
     {
         return new Money($amount, $currencyCode !== null ? new Currency($currencyCode) : $this->currency);
+    }
+
+    /**
+     * Convert float to string without triggering scientific notations
+     */
+    private function floatToString(float $float): string
+    {
+        $string = (string)$float;
+
+        if (preg_match('~\.(\d+)E([+-])?(\d+)~', $string, $matches) === 1) {
+            $decimals = $matches[2] === '-' ? strlen($matches[1]) + (int)$matches[3] : 0;
+            $string   = number_format($float, $decimals, '.', '');
+        }
+
+        return $string;
     }
 }

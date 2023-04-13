@@ -15,6 +15,7 @@ class MoneyProviderTest extends TestCase
     /**
      * @covers ::__construct
      * @covers ::parse
+     * @covers ::floatToString
      * @dataProvider provideFloat
      * @throws MoneyParseException
      */
@@ -162,7 +163,12 @@ class MoneyProviderTest extends TestCase
                 'expected'     => '-10',
                 'price'        => '-00.1',
                 'currencyCode' => 'EUR'
-            ]
+            ],
+            [
+                'expected'     => '0',
+                'price'        => '0.00000000000005684342',
+                'currencyCode' => 'EUR'
+            ],
         ];
     }
 
