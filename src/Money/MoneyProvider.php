@@ -46,7 +46,10 @@ class MoneyProvider
             throw new MoneyParseException('Amount: ' . $amount . ' and currencyCode: ' . ($currencyCode ?? $this->currency->getCode()));
         }
 
-        return $this->parser->parse((string)$parsedAmount, $currencyCode !== null ? new Currency($currencyCode) : $this->currency);
+        // convert float to string without triggering scientific notations
+        $amount = sprintf("%.20f", $parsedAmount);
+
+        return $this->parser->parse($amount, $currencyCode !== null ? new Currency($currencyCode) : $this->currency);
     }
 
     /**

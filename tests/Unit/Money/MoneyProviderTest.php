@@ -162,6 +162,11 @@ class MoneyProviderTest extends TestCase
                 'expected'     => '-10',
                 'price'        => '-00.1',
                 'currencyCode' => 'EUR'
+            ],
+            [
+                'expected'     => '500',
+                'price'        => '5.00000000000005684342',
+                'currencyCode' => 'EUR'
             ]
         ];
     }
