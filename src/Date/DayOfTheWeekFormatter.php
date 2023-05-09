@@ -37,7 +37,6 @@ class DayOfTheWeekFormatter
      */
     public function format(int $isoNumericDay, ?string $locale = null): string
     {
-        // @phpstan-ignore-next-line  reason: https://phpstan.org/r/756b75de-525b-4c99-85ad-a06afecdd309
         if ($isoNumericDay < self::MONDAY || $isoNumericDay > self::SUNDAY) {
             throw new InvalidArgumentException(
                 sprintf("'%d is not a valid ISO-8601 numeric representation of the day of the week.", $isoNumericDay)
