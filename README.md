@@ -113,15 +113,34 @@ $formatter->format(DayOfTheWeekFormatter::MONDAY, 'en_US');
 // output: Monday
 ```
 
+### PhoneNumberFormatService
+Format phoneNumbers
+```php
+use DR\Internationalization\PhoneNumber\PhoneNumberFormatOptions;
+use DR\Internationalization\PhoneNumberFormatService;
+
+// set default configuration
+$phoneNumberOptions = (new PhoneNumberFormatOptions())
+    ->setDefaultCountryCode('NL')
+    ->setFormat(PhoneNumberFormatOptions::FORMAT_INTERNATIONAL_DIAL);
+$service = new PhoneNumberFormatService($phoneNumberOptions);
+
+$service->format("+31612345678");                                                       
+// output: 0031612345678
+
+$service->format("0612345678");                                                       
+// output: 0031612345678
+```
 
 ## Project structure
 
-| Directory | Description                                                                                           |
-|-----------|-------------------------------------------------------------------------------------------------------|
-| Currency  | Format `int`, `float` or `Money` value to locale specific format. Use `NumberFormatService::currency` |
-| Date      | Format ISO-8601 day of the week to user friendly names                                                | 
-| Money     | Create `Money` object from `float`                                                                    |
-| Number    | Format `int` or `float` value to locale specific format. Use `NumberFormatService::number`            |              
+| Directory   | Description                                                                                           |
+|-------------|-------------------------------------------------------------------------------------------------------|
+| Currency    | Format `int`, `float` or `Money` value to locale specific format. Use `NumberFormatService::currency` |
+| Date        | Format ISO-8601 day of the week to user friendly names                                                | 
+| Money       | Create `Money` object from `float`                                                                    |
+| Number      | Format `int` or `float` value to locale specific format. Use `NumberFormatService::number`            |              
+| PhoneNumber | Format phoneNumber value to specified format. Use `PhoneNumberFormatService::format`                  |              
 
 ## Development
 
