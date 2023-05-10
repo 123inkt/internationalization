@@ -11,23 +11,42 @@ use libphonenumber\PhoneNumberFormat;
  */
 class PhoneNumberFormatOptions
 {
+    /**
+     * Formats the NL phoneNumber "101234567" as "+31101234567"
+     */
     public const FORMAT_E164 = PhoneNumberFormat::E164;
+
+    /**
+     * Formats the NL phoneNumber "101234567" as "+31 10 123 4567"
+     */
     public const FORMAT_INTERNATIONAL = PhoneNumberFormat::INTERNATIONAL;
+
+    /**
+     * Formats the NL phoneNumber "101234567" as "010 123 4567"
+     */
     public const FORMAT_NATIONAL = PhoneNumberFormat::NATIONAL;
+
+    /**
+     * Formats the NL phoneNumber "101234567" as "tel:+31-10-123-4567"
+     */
     public const FORMAT_RFC3966 = PhoneNumberFormat::RFC3966;
+
+    /**
+     * Formats the NL phoneNumber "101234567" as "0031101234567"
+     */
     public const FORMAT_INTERNATIONAL_DIAL = 4;
 
-    private ?string $defaultRegion = null;
+    private ?string $defaultCountryCode = null;
     private ?int $format = null;
 
-    public function getDefaultRegion(): ?string
+    public function getDefaultCountryCode(): ?string
     {
-        return $this->defaultRegion;
+        return $this->defaultCountryCode;
     }
 
-    public function setDefaultRegion(?string $defaultRegion): self
+    public function setDefaultCountryCode(?string $defaultCountryCode): self
     {
-        $this->defaultRegion = $defaultRegion;
+        $this->defaultCountryCode = $defaultCountryCode;
 
         return $this;
     }

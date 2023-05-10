@@ -21,7 +21,7 @@ class PhoneNumberFormatServiceTest extends TestCase
      */
     public function testFormatMissingOption(): void
     {
-        $formatter = new PhoneNumberFormatService((new PhoneNumberFormatOptions())->setDefaultRegion("NL"));
+        $formatter = new PhoneNumberFormatService((new PhoneNumberFormatOptions())->setDefaultCountryCode("NL"));
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('PhoneNumberOptions: unable to format phoneNumber without a given format');
@@ -33,7 +33,7 @@ class PhoneNumberFormatServiceTest extends TestCase
      */
     public function testFormatInvalidInput(): void
     {
-        $options   = (new PhoneNumberFormatOptions())->setDefaultRegion("__")->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
+        $options   = (new PhoneNumberFormatOptions())->setDefaultCountryCode("__")->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
         $formatter = new PhoneNumberFormatService($options);
 
         $this->expectException(RuntimeException::class);
@@ -47,7 +47,7 @@ class PhoneNumberFormatServiceTest extends TestCase
      */
     public function testFormat(int $format, string $phoneNumber, string $expectedValue): void
     {
-        $formatter = new PhoneNumberFormatService((new PhoneNumberFormatOptions())->setDefaultRegion("NL")->setFormat($format));
+        $formatter = new PhoneNumberFormatService((new PhoneNumberFormatOptions())->setDefaultCountryCode("NL")->setFormat($format));
         static::assertSame($expectedValue, $formatter->format($phoneNumber));
     }
 
@@ -55,10 +55,10 @@ class PhoneNumberFormatServiceTest extends TestCase
      * @dataProvider internationalDialProvider
      * @covers ::format
      */
-    public function testFormatInternationDial(string $region, string $phoneNumber, string $expectedValue): void
+    public function testFormatInternationDial(string $countryCode, string $phoneNumber, string $expectedValue): void
     {
         $options = (new PhoneNumberFormatOptions())
-            ->setDefaultRegion($region)
+            ->setDefaultCountryCode($countryCode)
             ->setFormat(PhoneNumberFormatOptions::FORMAT_INTERNATIONAL_DIAL);
 
         $formatter = new PhoneNumberFormatService($options);
@@ -70,7 +70,7 @@ class PhoneNumberFormatServiceTest extends TestCase
      */
     public function testFormatDefaultFormat(): void
     {
-        $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultRegion('NL')->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
+        $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultCountryCode('NL')->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
         $formatter = new PhoneNumberFormatService($defaultOptions);
 
         static::assertSame('010 123 4567', $formatter->format("101234567"));
@@ -80,10 +80,10 @@ class PhoneNumberFormatServiceTest extends TestCase
     /**
      * @covers ::format
      */
-    public function testFormatOverwrittenRegion(): void
+    public function testFormatOverwrittenCountryCode(): void
     {
-        $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultRegion('NL')->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
-        $formatOptions  = (new PhoneNumberFormatOptions())->setDefaultRegion('GB');
+        $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultCountryCode('NL')->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
+        $formatOptions  = (new PhoneNumberFormatOptions())->setDefaultCountryCode('GB');
         $formatter      = new PhoneNumberFormatService($defaultOptions);
 
         static::assertSame('0121 234 5678', $formatter->format("1212345678", $formatOptions));

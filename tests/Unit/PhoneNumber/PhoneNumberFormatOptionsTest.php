@@ -16,8 +16,8 @@ class PhoneNumberFormatOptionsTest extends TestCase
     use AccessorPairAsserter;
 
     /**
-     * @covers ::getDefaultRegion
-     * @covers ::setDefaultRegion
+     * @covers ::getDefaultCountryCode
+     * @covers ::setDefaultCountryCode
      * @covers ::getFormat
      * @covers ::setFormat
      */

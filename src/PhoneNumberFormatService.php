@@ -22,8 +22,8 @@ class PhoneNumberFormatService
 
     public function format(string $phoneNumber, PhoneNumberFormatOptions $options = null): string
     {
-        $regionCode = $options?->getDefaultRegion() ?? $this->defaultOptions->getDefaultRegion();
-        $format     = $options?->getFormat() ?? $this->defaultOptions->getFormat();
+        $countryCode = $options?->getDefaultCountryCode() ?? $this->defaultOptions->getDefaultCountryCode();
+        $format      = $options?->getFormat() ?? $this->defaultOptions->getFormat();
         if ($format === null) {
             throw new InvalidArgumentException('PhoneNumberOptions: unable to format phoneNumber without a given format');
         }
@@ -31,14 +31,13 @@ class PhoneNumberFormatService
         $this->phoneNumberUtil ??= PhoneNumberUtil::getInstance();
 
         try {
-            /** @var PhoneNumber $parsedNumber */
-            $parsedNumber = $this->phoneNumberUtil->parse($phoneNumber, $regionCode);
+            $parsedNumber = $this->phoneNumberUtil->parse($phoneNumber, $countryCode);
         } catch (NumberParseException $e) {
             throw new RuntimeException("Unable to parse phoneNumber: " . $phoneNumber, 0, $e);
         }
 
         if ($format === PhoneNumberFormatOptions::FORMAT_INTERNATIONAL_DIAL) {
-            $metaData = $this->phoneNumberUtil->getMetadataForRegion((string)$regionCode);
+            $metaData = $this->phoneNumberUtil->getMetadataForRegion((string)$countryCode);
             $prefix   = $metaData?->getInternationalPrefix() ?? $metaData?->getPreferredInternationalPrefix();
             if (is_numeric($prefix)) {
                 return $prefix . ltrim($this->phoneNumberUtil->format($parsedNumber, PhoneNumberFormatOptions::FORMAT_E164), '+');
