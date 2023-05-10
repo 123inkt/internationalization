@@ -6,9 +6,7 @@ namespace DR\Internationalization;
 use DR\Internationalization\PhoneNumber\PhoneNumberFormatOptions;
 use InvalidArgumentException;
 use libphonenumber\NumberParseException;
-use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberUtil;
-use RuntimeException;
 
 class PhoneNumberFormatService
 {
@@ -33,7 +31,7 @@ class PhoneNumberFormatService
         try {
             $parsedNumber = $this->phoneNumberUtil->parse($phoneNumber, $countryCode);
         } catch (NumberParseException $e) {
-            throw new RuntimeException("Unable to parse phoneNumber: " . $phoneNumber, 0, $e);
+            throw new InvalidArgumentException("Unable to parse phoneNumber: " . $phoneNumber, 0, $e);
         }
 
         if ($format === PhoneNumberFormatOptions::FORMAT_INTERNATIONAL_DIAL) {

@@ -8,7 +8,6 @@ use DR\Internationalization\PhoneNumberFormatService;
 use Generator;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 
 /**
  * @coversDefaultClass \DR\Internationalization\PhoneNumberFormatService
@@ -36,7 +35,7 @@ class PhoneNumberFormatServiceTest extends TestCase
         $options   = (new PhoneNumberFormatOptions())->setDefaultCountryCode("__")->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
         $formatter = new PhoneNumberFormatService($options);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Unable to parse phoneNumber: xxx");
         $formatter->format('xxx');
     }
