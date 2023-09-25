@@ -10,7 +10,7 @@ class PhoneNumber
     /**
      * @param string $countryCode 2 Character ISO country code (NL, BE, FR, ES)
      *
-     * @interal LibPhoneNumber $phoneNumber
+     * @internal Only receive this object from the PhoneNumberParseService::parse function.
      */
     public function __construct(
         private string $internationalDialCode,
@@ -59,6 +59,9 @@ class PhoneNumber
         return $this->numberType;
     }
 
+    /**
+     * @internal
+     */
     public function getPhoneNumber(): LibPhoneNumber
     {
         return $this->phoneNumber;
