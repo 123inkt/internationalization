@@ -5,6 +5,7 @@ namespace DR\Internationalization\Tests\Unit;
 
 use DR\Internationalization\PhoneNumber\PhoneNumberFormatOptions;
 use DR\Internationalization\PhoneNumberFormatService;
+use DR\Internationalization\PhoneNumberParseService;
 use Generator;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -87,6 +88,19 @@ class PhoneNumberFormatServiceTest extends TestCase
 
         static::assertSame('0121 234 5678', $formatter->format("1212345678", $formatOptions));
         static::assertSame('07400 123456', $formatter->format("7400123456", $formatOptions));
+    }
+
+    /**
+     * @covers ::format
+     */
+    public function testFormatFromParsedPhoneNumberObject(): void
+    {
+        $parsedPhoneNumber = (new PhoneNumberParseService("NL"))->parse("0612345678");
+
+        $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultCountryCode('NL')->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
+        $formatter = new PhoneNumberFormatService($defaultOptions);
+
+        static::assertSame('06 12345678', $formatter->format($parsedPhoneNumber));
     }
 
     public function optionFormatProvider(): Generator
