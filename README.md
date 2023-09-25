@@ -132,6 +132,16 @@ $service->format("0612345678");
 // output: 0031612345678
 ```
 
+### PhoneNumberParseService
+
+```php
+use DR\Internationalization\PhoneNumberParseService;
+
+$parseService = new PhoneNumberParseService("NL");
+$parsedPhoneNumber = $parseService->parse("+31612345678");
+```
+
+
 ## Project structure
 
 | Directory   | Description                                                                                           |
