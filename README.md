@@ -1,4 +1,4 @@
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.0-8892BF)](https://php.net/)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.1-8892BF)](https://php.net/)
 ![Run tests](https://github.com/123inkt/internationalization/workflows/Run%20checks/badge.svg)
 
 # Digital Revolution Internationalization
@@ -131,6 +131,16 @@ $service->format("+31612345678");
 $service->format("0612345678");                                                       
 // output: 0031612345678
 ```
+
+### PhoneNumberParseService
+
+```php
+use DR\Internationalization\PhoneNumberParseService;
+
+$parseService = new PhoneNumberParseService("NL");
+$parsedPhoneNumber = $parseService->parse("+31612345678");
+```
+
 
 ## Project structure
 
