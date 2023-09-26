@@ -13,7 +13,8 @@ use libphonenumber\PhoneNumberUtil;
 class PhoneNumberParseService
 {
     private ?PhoneNumberUtil $phoneNumberUtil = null;
-    public function __construct(private string $countryCode)
+
+    public function __construct(private readonly string $countryCode)
     {
     }
 
