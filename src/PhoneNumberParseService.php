@@ -14,16 +14,18 @@ class PhoneNumberParseService
 {
     private ?PhoneNumberUtil $phoneNumberUtil = null;
 
-    public function __construct(private readonly string $countryCode)
+    public function __construct(private readonly string $defaultCountryCode)
     {
     }
 
-    public function parse(string $phoneNumber): PhoneNumber
+    public function parse(string $phoneNumber, ?string $countryCode = null): PhoneNumber
     {
         $this->phoneNumberUtil ??= PhoneNumberUtil::getInstance();
 
+        $countryCode ??= $this->defaultCountryCode;
+
         try {
-            $parsedNumber = $this->phoneNumberUtil->parse($phoneNumber, $this->countryCode, keepRawInput: true);
+            $parsedNumber = $this->phoneNumberUtil->parse($phoneNumber, $countryCode, keepRawInput: true);
         } catch (NumberParseException $e) {
             throw new InvalidArgumentException("Unable to parse phoneNumber: " . $phoneNumber, 0, $e);
         }
@@ -32,7 +34,7 @@ class PhoneNumberParseService
             throw new InvalidArgumentException("Number is invalid: " . $phoneNumber);
         }
 
-        $metaData = $this->phoneNumberUtil->getMetadataForRegion($this->countryCode);
+        $metaData = $this->phoneNumberUtil->getMetadataForRegion($countryCode);
         $prefix   = $metaData?->getInternationalPrefix() ?? $metaData?->getPreferredInternationalPrefix();
 
         if (is_numeric($prefix) === false) {
