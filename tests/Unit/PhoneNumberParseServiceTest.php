@@ -52,10 +52,13 @@ class PhoneNumberParseServiceTest extends TestCase
         string $nationalNumber,
         PhoneNumberTypeEnum $numberType,
         string $countryCodeFromObj,
-        ?string $extension = null
+        ?string $extension = null,
+        ?string $overrideCountryCode = null
     ): void {
         $parseService = new PhoneNumberParseService($countryCode);
-        $result = $parseService->parse($phoneNumber);
+
+        $overrideCountryCode ??= $countryCode;
+        $result = $parseService->parse($phoneNumber, $overrideCountryCode);
 
         static::assertSame($internationalDailCode, $result->getInternationalDialCode());
         static::assertSame($countryDialCode, $result->getCountryDialCode());
@@ -70,6 +73,7 @@ class PhoneNumberParseServiceTest extends TestCase
 
     public function parseProvider(): Generator
     {
+        yield ['BE', '09 34 44 44 32', '00', '33', '934444432', PhoneNumberTypeEnum::VOIP, 'FR', null, 'FR'];
         yield ['XX', '+46522180870', '', '46', '522180870', PhoneNumberTypeEnum::FIXED_LINE, 'SE'];
         yield ['SE', '+46522180870', '00', '46', '522180870', PhoneNumberTypeEnum::FIXED_LINE, 'SE'];
         yield ['SE', '090-230 64 87', '00', '46', '902306487', PhoneNumberTypeEnum::FIXED_LINE, 'SE'];
