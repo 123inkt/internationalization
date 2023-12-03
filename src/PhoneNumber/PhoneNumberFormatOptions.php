@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-
 namespace DR\Internationalization\PhoneNumber;
 
 use libphonenumber\PhoneNumberFormat;
@@ -51,6 +50,9 @@ class PhoneNumberFormatOptions
         return $this;
     }
 
+    /**
+     * @phpstan-return ?Format
+     */
     public function getFormat(): ?int
     {
         return $this->format;

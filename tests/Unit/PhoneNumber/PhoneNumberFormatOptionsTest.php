@@ -22,4 +22,11 @@ class PhoneNumberFormatOptionsTest extends TestCase
         $config->setAssertAccessorPair(true);
         static::assertAccessorPairs(PhoneNumberFormatOptions::class, $config);
     }
+
+    public function testFormat(): void
+    {
+        $options = new PhoneNumberFormatOptions();
+        $options->setFormat(PhoneNumberFormatOptions::FORMAT_INTERNATIONAL_DIAL);
+        static::assertSame(PhoneNumberFormatOptions::FORMAT_INTERNATIONAL_DIAL, $options->getFormat());
+    }
 }
