@@ -6,24 +6,12 @@ namespace DR\Internationalization\Tests\Unit\PhoneNumber;
 use DR\Internationalization\PhoneNumber\PhoneNumber;
 use DR\Internationalization\PhoneNumber\PhoneNumberTypeEnum;
 use libphonenumber\PhoneNumber as LibPhoneNumber;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\PhoneNumber\PhoneNumber
- */
+#[CoversClass(PhoneNumber::class)]
 class PhoneNumberTest extends TestCase
 {
-    /**
-     * @covers ::__construct
-     * @covers ::getInternationalDialCode
-     * @covers ::getCountryDialCode
-     * @covers ::getNationalNumber
-     * @covers ::getExtension
-     * @covers ::getRawInput
-     * @covers ::getCountryCode
-     * @covers ::getNumberType
-     * @covers ::getPhoneNumber
-     */
     public function testGetters()
     {
         $phoneNumberObj = new PhoneNumber('00', '31', '612345678', '+31612345678', 'NL', PhoneNumberTypeEnum::MOBILE, new LibPhoneNumber(), null);

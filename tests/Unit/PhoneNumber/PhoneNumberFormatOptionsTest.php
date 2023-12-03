@@ -6,21 +6,14 @@ namespace DR\Internationalization\Tests\Unit\PhoneNumber;
 use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use DR\Internationalization\PhoneNumber\PhoneNumberFormatOptions;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\PhoneNumber\PhoneNumberFormatOptions
- */
+#[CoversClass(PhoneNumberFormatOptions::class)]
 class PhoneNumberFormatOptionsTest extends TestCase
 {
     use AccessorPairAsserter;
 
-    /**
-     * @covers ::getDefaultCountryCode
-     * @covers ::setDefaultCountryCode
-     * @covers ::getFormat
-     * @covers ::setFormat
-     */
     public function testAccessors(): void
     {
         $config = new ConstraintConfig();

@@ -8,17 +8,13 @@ use DR\Internationalization\PhoneNumberFormatService;
 use DR\Internationalization\PhoneNumberParseService;
 use Generator;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\PhoneNumberFormatService
- * @covers ::__construct
- */
+#[CoversClass(PhoneNumberFormatService::class)]
 class PhoneNumberFormatServiceTest extends TestCase
 {
-    /**
-     * @covers ::format
-     */
     public function testFormatMissingOption(): void
     {
         $formatter = new PhoneNumberFormatService((new PhoneNumberFormatOptions())->setDefaultCountryCode("NL"));
@@ -28,9 +24,6 @@ class PhoneNumberFormatServiceTest extends TestCase
         $formatter->format('0612345678');
     }
 
-    /**
-     * @covers ::format
-     */
     public function testFormatInvalidInput(): void
     {
         $options   = (new PhoneNumberFormatOptions())->setDefaultCountryCode("__")->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
@@ -41,20 +34,14 @@ class PhoneNumberFormatServiceTest extends TestCase
         $formatter->format('xxx');
     }
 
-    /**
-     * @dataProvider optionFormatProvider
-     * @covers ::format
-     */
+    #[DataProvider('optionFormatProvider')]
     public function testFormat(int $format, string $phoneNumber, string $expectedValue): void
     {
         $formatter = new PhoneNumberFormatService((new PhoneNumberFormatOptions())->setDefaultCountryCode("NL")->setFormat($format));
         static::assertSame($expectedValue, $formatter->format($phoneNumber));
     }
 
-    /**
-     * @dataProvider internationalDialProvider
-     * @covers ::format
-     */
+    #[DataProvider('internationalDialProvider')]
     public function testFormatInternationDial(string $countryCode, string $phoneNumber, string $expectedValue): void
     {
         $options = (new PhoneNumberFormatOptions())
@@ -65,21 +52,15 @@ class PhoneNumberFormatServiceTest extends TestCase
         static::assertSame($expectedValue, $formatter->format($phoneNumber));
     }
 
-    /**
-     * @covers ::format
-     */
     public function testFormatDefaultFormat(): void
     {
         $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultCountryCode('NL')->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
-        $formatter = new PhoneNumberFormatService($defaultOptions);
+        $formatter      = new PhoneNumberFormatService($defaultOptions);
 
         static::assertSame('010 123 4567', $formatter->format("101234567"));
         static::assertSame('06 12345678', $formatter->format("0612345678"));
     }
 
-    /**
-     * @covers ::format
-     */
     public function testFormatOverwrittenCountryCode(): void
     {
         $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultCountryCode('NL')->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
@@ -90,15 +71,12 @@ class PhoneNumberFormatServiceTest extends TestCase
         static::assertSame('07400 123456', $formatter->format("7400123456", $formatOptions));
     }
 
-    /**
-     * @covers ::format
-     */
     public function testFormatFromParsedPhoneNumberObject(): void
     {
         $parsedPhoneNumber = (new PhoneNumberParseService("NL"))->parse("0612345678");
 
         $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultCountryCode('NL')->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
-        $formatter = new PhoneNumberFormatService($defaultOptions);
+        $formatter      = new PhoneNumberFormatService($defaultOptions);
 
         static::assertSame('06 12345678', $formatter->format($parsedPhoneNumber));
     }

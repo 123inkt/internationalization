@@ -8,16 +8,14 @@ use DR\Internationalization\Number\NumberFormatterSplitterResult as Result;
 use Generator;
 use InvalidArgumentException;
 use NumberFormatter;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Number\NumberFormatterSplitter
- * @covers ::__construct
- */
+#[CoversClass(NumberFormatterSplitter::class)]
 class NumberFormatterSplitterTest extends TestCase
 {
     /**
-     * @covers ::split
      * @throws InvalidArgumentException
      */
     public function testSplitInvalidFormat(): void
@@ -30,7 +28,6 @@ class NumberFormatterSplitterTest extends TestCase
     }
 
     /**
-     * @covers ::split
      * @throws InvalidArgumentException
      */
     public function testSplitWithoutSymbolInPrefixOrSuffix(): void
@@ -45,10 +42,9 @@ class NumberFormatterSplitterTest extends TestCase
     }
 
     /**
-     * @covers ::split
-     * @dataProvider dataProviderCurrency
      * @throws InvalidArgumentException
      */
+    #[DataProvider('dataProviderCurrency')]
     public function testSplitCurrency(string $locale, string $currencyCode, float $value, Result $result): void
     {
         $formatter = new NumberFormatter($locale . '@currency=' . $currencyCode, NumberFormatter::CURRENCY);
@@ -92,10 +88,9 @@ class NumberFormatterSplitterTest extends TestCase
     }
 
     /**
-     * @covers ::split
-     * @dataProvider dataProviderNumber
      * @throws InvalidArgumentException
      */
+    #[DataProvider('dataProviderNumber')]
     public function testSplitNumber(string $locale, float $value, Result $result): void
     {
         $formatter = new NumberFormatter($locale, NumberFormatter::DECIMAL);

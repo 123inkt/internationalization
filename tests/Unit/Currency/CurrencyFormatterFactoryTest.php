@@ -6,20 +6,15 @@ namespace DR\Internationalization\Tests\Unit\Currency;
 use DR\Internationalization\Currency\CurrencyFormatOptions;
 use DR\Internationalization\Currency\CurrencyFormatterFactory;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Currency\CurrencyFormatterFactory
- * @covers ::__construct
- */
+#[CoversClass(CurrencyFormatterFactory::class)]
 class CurrencyFormatterFactoryTest extends TestCase
 {
     private const MINUS = "\xE2\x88\x92";
     private const NBSP  = "\xC2\xA0";
 
-    /**
-     * @covers ::create
-     */
     public function testCreateLocaleIsRequired(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -27,10 +22,6 @@ class CurrencyFormatterFactoryTest extends TestCase
         (new CurrencyFormatterFactory(new CurrencyFormatOptions()))->create(new CurrencyFormatOptions());
     }
 
-    /**
-     * @covers ::create
-     * @covers ::applyCurrencyFormatOptions
-     */
     public function testCreateWithDefaults(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setLocale('nl_NL');
@@ -50,10 +41,6 @@ class CurrencyFormatterFactoryTest extends TestCase
         static::assertSame('-2.005,56', $formatter->format(-2005.555));
     }
 
-    /**
-     * @covers ::create
-     * @covers ::applyCurrencyFormatOptions
-     */
     public function testCreateDefaultCurrencyWithCustomSettings(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setLocale('nl_NL');
@@ -63,10 +50,6 @@ class CurrencyFormatterFactoryTest extends TestCase
         static::assertSame('-2.005,1235', $formatter->format(-2005.123456));
     }
 
-    /**
-     * @covers ::create
-     * @covers ::applyCurrencyFormatOptions
-     */
     public function testCreateSwedishCurrencyWithSymbol(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setLocale('sv_SE');
@@ -78,10 +61,6 @@ class CurrencyFormatterFactoryTest extends TestCase
         static::assertSame(self::MINUS . '2' . self::NBSP . '005,56' . self::NBSP . 'kr', $formatter->format(-2005.555));
     }
 
-    /**
-     * @covers ::create
-     * @covers ::applyCurrencyFormatOptions
-     */
     public function testCreateSwedishCurrencyWithoutSymbol(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setLocale('sv_SE')->setCurrencyCode('SEK');
@@ -94,10 +73,6 @@ class CurrencyFormatterFactoryTest extends TestCase
         static::assertSame(self::MINUS . '2' . self::NBSP . '005,56', $formatter->format(-2005.555));
     }
 
-    /**
-     * @covers ::create
-     * @covers ::applyCurrencyFormatOptions
-     */
     public function testCreateIrishCurrency(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setLocale('en_IE')->setCurrencyCode('EUR');
@@ -108,10 +83,6 @@ class CurrencyFormatterFactoryTest extends TestCase
         static::assertSame("€" . '2,005.56', $formatter->format(2005.555));
     }
 
-    /**
-     * @covers ::create
-     * @covers ::applyCurrencyFormatOptions
-     */
     public function testCreateForeignCurrencyWithoutSymbolOrGrouping(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setLocale('nl_NL')->setCurrencyCode('SEK');
@@ -125,10 +96,6 @@ class CurrencyFormatterFactoryTest extends TestCase
         static::assertSame('-2005,56', $formatter->format(-2005.555));
     }
 
-    /**
-     * @covers ::create
-     * @covers ::applyCurrencyFormatOptions
-     */
     public function testCreateForeignCurrencyWithSymbol(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setLocale('nl_NL')->setCurrencyCode('SEK');

@@ -5,35 +5,19 @@ namespace DR\Internationalization\Tests\Unit\Number;
 
 use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
 use DR\Internationalization\Number\NumberFormatterSplitterResult;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Number\NumberFormatterSplitterResult
- * @covers ::__construct
- */
+#[CoversClass(NumberFormatterSplitterResult::class)]
 class NumberFormatterSplitterResultTest extends TestCase
 {
     use AccessorPairAsserter;
 
-    /**
-     * @covers ::getValue
-     * @covers ::getSymbol
-     * @covers ::getSymbolPosition
-     * @covers ::getGroupingSeparator
-     * @covers ::getDecimalSeparator
-     * @covers ::getPrefix
-     * @covers ::getSuffix
-     * @covers ::getInteger
-     * @covers ::getDecimals
-     */
     public function testAccessorPairs(): void
     {
         static::assertAccessorPairs(NumberFormatterSplitterResult::class);
     }
 
-    /**
-     * @covers ::getNumberValue
-     */
     public function testGetNumberValueWithDecimals(): void
     {
         $result = new NumberFormatterSplitterResult(
@@ -50,9 +34,6 @@ class NumberFormatterSplitterResultTest extends TestCase
         static::assertSame('1.234,56', $result->getNumberValue());
     }
 
-    /**
-     * @covers ::getNumberValue
-     */
     public function testGetNumberValueWithoutDecimals(): void
     {
         $result = new NumberFormatterSplitterResult(

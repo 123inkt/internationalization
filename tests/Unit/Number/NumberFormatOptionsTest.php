@@ -6,27 +6,14 @@ namespace DR\Internationalization\Tests\Unit\Number;
 use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use DR\Internationalization\Number\NumberFormatOptions;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Number\NumberFormatOptions
- */
+#[CoversClass(NumberFormatOptions::class)]
 class NumberFormatOptionsTest extends TestCase
 {
     use AccessorPairAsserter;
 
-    /**
-     * @covers ::setTrimDecimals
-     * @covers ::setLocale
-     * @covers ::setGrouping
-     * @covers ::setDecimals
-     * @covers ::getTrimDecimals
-     * @covers ::getLocale
-     * @covers ::isGrouping
-     * @covers ::getDecimals
-     * @covers ::setRounding
-     * @covers ::getRounding
-     */
     public function testAccessors(): void
     {
         $config = new ConstraintConfig();
@@ -36,9 +23,6 @@ class NumberFormatOptionsTest extends TestCase
         static::assertAccessorPairs(NumberFormatOptions::class, $config);
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         $options = new NumberFormatOptions();

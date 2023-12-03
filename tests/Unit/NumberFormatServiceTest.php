@@ -13,19 +13,18 @@ use InvalidArgumentException;
 use Money\Currency;
 use Money\Money;
 use NumberFormatter;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\NumberFormatService
- * @covers ::__construct
- */
+#[CoversClass(NumberFormatService::class)]
 class NumberFormatServiceTest extends TestCase
 {
     private const NBSP  = "\xC2\xA0";
     private const NNBSP = "\xE2\x80\xAF";
 
     private CurrencyFormatOptions $currencyFormatOptions;
-    private NumberFormatOptions   $numberFormatOptions;
+    private NumberFormatOptions $numberFormatOptions;
 
     protected function setUp(): void
     {
@@ -33,12 +32,7 @@ class NumberFormatServiceTest extends TestCase
         $this->numberFormatOptions   = new NumberFormatOptions();
     }
 
-    /**
-     * @covers ::currency
-     * @covers ::formatCurrencyValue
-     * @covers ::getCurrencyFormatter
-     * @dataProvider dataProviderRequiredLocales
-     */
+    #[DataProvider('dataProviderRequiredLocales')]
     public function testCurrencyDefaultRequiredLocales(string $currencyCode, string $locale, string $expected): void
     {
         $options   = (new CurrencyFormatOptions())->setCurrencyCode($currencyCode)->setLocale($locale);
@@ -70,12 +64,6 @@ class NumberFormatServiceTest extends TestCase
         yield "es_ES, SEK" => ["SEK", "es_ES", sprintf("1.234,57%sSEK", self::NBSP)];
     }
 
-    /**
-     * @covers ::currency
-     * @covers ::formatCurrencyValue
-     * @covers ::getCurrencyFormatter
-     * @covers ::getNumberFormatter
-     */
     public function testCurrencyWithHideEmptyDecimals(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())
@@ -96,11 +84,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('1.234', $formatter->currency(new Money(123400, new Currency('EUR'))));
     }
 
-    /**
-     * @covers ::currency
-     * @covers ::formatCurrencyValue
-     * @covers ::getCurrencyFormatter
-     */
     public function testCurrencyShouldFormatAccordingToDefaults(): void
     {
         $options   = (new CurrencyFormatOptions())->setCurrencyCode("EUR")->setLocale("es_ES");
@@ -109,11 +92,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('1.234,57' . self::NBSP . '€', $formatter->currency(1234.5678));
     }
 
-    /**
-     * @covers ::currency
-     * @covers ::formatCurrencyValue
-     * @covers ::getCurrencyFormatter
-     */
     public function testCurrencyCacheShouldBeInvoked(): void
     {
         $cache = $this->createMock(NumberFormatterCacheInterface::class);
@@ -125,11 +103,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('€ 1.234,56', $formatter->currency($value));
     }
 
-    /**
-     * @covers ::currency
-     * @covers ::formatCurrencyValue
-     * @covers ::getCurrencyFormatter
-     */
     public function testCurrencyCacheShouldBeInvokedOnlyOnce(): void
     {
         $options = $this->createPartialMock(CurrencyFormatOptions::class, ['getLocale']);
@@ -143,11 +116,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('€ 1.234,56', $formatter->currency($value, $options));
     }
 
-    /**
-     * @covers ::currency
-     * @covers ::formatCurrencyValue
-     * @covers ::getCurrencyFormatter
-     */
     public function testCurrencyWithCustomSettings(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setCurrencyCode("EUR")->setLocale('es_ES');
@@ -158,11 +126,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('1234,57', $result);
     }
 
-    /**
-     * @covers ::currency
-     * @covers ::formatCurrencyValue
-     * @covers ::getCurrencyFormatter
-     */
     public function testCurrencyWithCustomCurrencyCode(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setCurrencyCode("EUR")->setLocale('es_ES');
@@ -173,11 +136,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('1234,57' . self::NBSP . 'PLN', $result);
     }
 
-    /**
-     * @covers ::currency
-     * @covers ::formatCurrencyValue
-     * @covers ::getCurrencyFormatter
-     */
     public function testCurrencyMoneyObjectShouldNotAcceptCustomCurrencyCode(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setCurrencyCode("EUR")->setLocale('es_ES');
@@ -189,11 +147,6 @@ class NumberFormatServiceTest extends TestCase
         $formatter->currency($value, (new CurrencyFormatOptions())->setCurrencyCode('PLN'));
     }
 
-    /**
-     * @covers ::currency
-     * @covers ::formatCurrencyValue
-     * @covers ::getCurrencyFormatter
-     */
     public function testCurrencyFormatMoney(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setCurrencyCode("EUR")->setLocale('es_ES');
@@ -203,11 +156,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('1.234,56' . self::NBSP . 'SEK', $formatter->currency($value));
     }
 
-    /**
-     * @covers ::currency
-     * @covers ::formatCurrencyValue
-     * @covers ::getCurrencyFormatter
-     */
     public function testCurrencyFormatMoneyWithCustomSettings(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setCurrencyCode("EUR")->setLocale('es_ES');
@@ -218,11 +166,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('1234,56', $formatter->currency($value, $options));
     }
 
-    /**
-     * @covers ::currencySplit
-     * @covers ::formatCurrencyValue
-     * @covers ::getCurrencyFormatter
-     */
     public function testCurrencySplit(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setCurrencyCode("EUR")->setLocale('nl_NL');
@@ -234,9 +177,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertEquals($expected, $actual);
     }
 
-    /**
-     * @covers ::currencySplit
-     */
     public function testCurrencySplitMoneyObjectShouldNotAcceptCustomCurrencyCode(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setCurrencyCode("EUR")->setLocale('es_ES');
@@ -248,10 +188,6 @@ class NumberFormatServiceTest extends TestCase
         $formatter->currencySplit($value, (new CurrencyFormatOptions())->setCurrencyCode('PLN'));
     }
 
-    /**
-     * @covers ::number
-     * @covers ::getNumberFormatter
-     */
     public function testNumberWithDefault(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setLocale('es_ES')->setGrouping(true);
@@ -261,10 +197,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('1.234,56', $formatter->number($value));
     }
 
-    /**
-     * @covers ::number
-     * @covers ::getNumberFormatter
-     */
     public function testNumberWithHideEmptyDecimals(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setLocale('nl_NL')
@@ -279,10 +211,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('-1.234', $formatter->number(-1234.0));
     }
 
-    /**
-     * @covers ::number
-     * @covers ::getNumberFormatter
-     */
     public function testNumberCacheShouldBeInvoked(): void
     {
         $cache = $this->createMock(NumberFormatterCacheInterface::class);
@@ -294,10 +222,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('1.234,56', $formatter->number($value));
     }
 
-    /**
-     * @covers ::number
-     * @covers ::getNumberFormatter
-     */
     public function testNumberCacheShouldBeInvokedOnlyOnce(): void
     {
         $options = $this->createPartialMock(NumberFormatOptions::class, ['getLocale']);
@@ -311,10 +235,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('1.234,56', $formatter->number($value, $options));
     }
 
-    /**
-     * @covers ::number
-     * @covers ::getNumberFormatter
-     */
     public function testNumberWithNegativeZero(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setLocale('nl_NL')->setGrouping(true);
@@ -325,10 +245,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('0,00', $formatter->number($value, $options));
     }
 
-    /**
-     * @covers ::number
-     * @covers ::getNumberFormatter
-     */
     public function testNumberCustomSettings(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setLocale('es_ES')->setGrouping(true);
@@ -339,10 +255,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertSame('1234,56000', $formatter->number($value, $options));
     }
 
-    /**
-     * @covers ::numberSplit
-     * @covers ::getNumberFormatter
-     */
     public function testNumberSplit(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setLocale('nl_NL')->setGrouping(true);
@@ -354,10 +266,6 @@ class NumberFormatServiceTest extends TestCase
         static::assertEquals($expected, $actual);
     }
 
-    /**
-     * @covers ::numberSplit
-     * @covers ::getNumberFormatter
-     */
     public function testNumberNegativeZero(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setLocale('nl_NL')->setGrouping(true);
