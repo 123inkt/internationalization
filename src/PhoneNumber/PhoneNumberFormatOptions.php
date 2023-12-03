@@ -36,6 +36,7 @@ class PhoneNumberFormatOptions
     public const FORMAT_INTERNATIONAL_DIAL = 4;
 
     private ?string $defaultCountryCode = null;
+    /** @phpstan-var ?Format */
     private ?int $format = null;
 
     public function getDefaultCountryCode(): ?string
