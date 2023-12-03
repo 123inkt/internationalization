@@ -3,22 +3,17 @@ declare(strict_types=1);
 
 namespace DR\Internationalization\Tests\Unit;
 
-use DR\Internationalization\PhoneNumber\PhoneNumber;
 use DR\Internationalization\PhoneNumber\PhoneNumberTypeEnum;
 use DR\Internationalization\PhoneNumberParseService;
 use Generator;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\PhoneNumberParseService
- * @covers ::__construct
- */
+#[CoversClass(PhoneNumberParseService::class)]
 class PhoneNumberParseServiceTest extends TestCase
 {
-    /**
-     * @covers ::parse
-     */
     public function testWithNotParsableNumber(): void
     {
         $parseService = new PhoneNumberParseService("NL");
@@ -27,9 +22,6 @@ class PhoneNumberParseServiceTest extends TestCase
         $parseService->parse('abcdefg');
     }
 
-    /**
-     * @covers ::parse
-     */
     public function testWithInvalidNumber(): void
     {
         $parseService = new PhoneNumberParseService("NL");
@@ -39,11 +31,7 @@ class PhoneNumberParseServiceTest extends TestCase
         $parseService->parse("12");
     }
 
-    /**
-     * @dataProvider parseProvider
-     * @covers ::parse
-     * @covers ::getNumberType
-     */
+    #[DataProvider('parseProvider')]
     public function testParse(
         string $countryCode,
         string $phoneNumber,
@@ -58,7 +46,7 @@ class PhoneNumberParseServiceTest extends TestCase
         $parseService = new PhoneNumberParseService($countryCode);
 
         $overrideCountryCode ??= $countryCode;
-        $result = $parseService->parse($phoneNumber, $overrideCountryCode);
+        $result              = $parseService->parse($phoneNumber, $overrideCountryCode);
 
         static::assertSame($internationalDailCode, $result->getInternationalDialCode());
         static::assertSame($countryDialCode, $result->getCountryDialCode());
@@ -70,8 +58,7 @@ class PhoneNumberParseServiceTest extends TestCase
         static::assertSame($phoneNumber, $result->getPhoneNumber()->getRawInput());
     }
 
-
-    public function parseProvider(): Generator
+    public static function parseProvider(): Generator
     {
         yield ['BE', '09 34 44 44 32', '00', '33', '934444432', PhoneNumberTypeEnum::VOIP, 'FR', null, 'FR'];
         yield ['XX', '+46522180870', '', '46', '522180870', PhoneNumberTypeEnum::FIXED_LINE, 'SE'];

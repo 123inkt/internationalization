@@ -5,16 +5,12 @@ namespace DR\Internationalization\Tests\Unit\Number;
 
 use DR\Internationalization\Number\NumberFormatterCache;
 use NumberFormatter;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Number\NumberFormatterCache
- */
+#[CoversClass(NumberFormatterCache::class)]
 class NumberFormatterCacheTest extends TestCase
 {
-    /**
-     * @covers ::get
-     */
     public function testGet(): void
     {
         $cache     = new NumberFormatterCache();

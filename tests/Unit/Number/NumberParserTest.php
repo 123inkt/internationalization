@@ -4,17 +4,12 @@ declare(strict_types=1);
 namespace DR\Internationalization\Tests\Unit\Number;
 
 use DR\Internationalization\Number\NumberParser;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Number\NumberParser
- */
+#[CoversClass(NumberParser::class)]
 class NumberParserTest extends TestCase
 {
-    /**
-     * @covers ::parseFloat
-     * @covers ::determineSeparators
-     */
     public function testParseFloatSuccess(): void
     {
         // no separator
@@ -65,10 +60,6 @@ class NumberParserTest extends TestCase
         static::assertSame(-10.00, NumberParser::parseFloat('−10,00', 2));
     }
 
-    /**
-     * @covers ::parseFloat
-     * @covers ::determineSeparators
-     */
     public function testParseFloatFailure(): void
     {
         // invalid value

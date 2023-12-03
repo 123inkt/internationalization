@@ -8,16 +8,14 @@ use DR\Internationalization\Number\NumberFormatterSplitterResult as Result;
 use Generator;
 use InvalidArgumentException;
 use NumberFormatter;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Number\NumberFormatterSplitter
- * @covers ::__construct
- */
+#[CoversClass(NumberFormatterSplitter::class)]
 class NumberFormatterSplitterTest extends TestCase
 {
     /**
-     * @covers ::split
      * @throws InvalidArgumentException
      */
     public function testSplitInvalidFormat(): void
@@ -30,7 +28,6 @@ class NumberFormatterSplitterTest extends TestCase
     }
 
     /**
-     * @covers ::split
      * @throws InvalidArgumentException
      */
     public function testSplitWithoutSymbolInPrefixOrSuffix(): void
@@ -45,10 +42,9 @@ class NumberFormatterSplitterTest extends TestCase
     }
 
     /**
-     * @covers ::split
-     * @dataProvider dataProviderCurrency
      * @throws InvalidArgumentException
      */
+    #[DataProvider('dataProviderCurrency')]
     public function testSplitCurrency(string $locale, string $currencyCode, float $value, Result $result): void
     {
         $formatter = new NumberFormatter($locale . '@currency=' . $currencyCode, NumberFormatter::CURRENCY);
@@ -60,7 +56,7 @@ class NumberFormatterSplitterTest extends TestCase
     /**
      * @return Generator<string, array<string|float|Result>>
      */
-    public function dataProviderCurrency(): Generator
+    public static function dataProviderCurrency(): Generator
     {
         yield "es_ES, SEK" => ['es_ES', 'SEK', 1234.567, new Result('1.234,57 SEK', '', ' SEK', '1.234', '.', '57', ',', 'SEK', 'after')];
         yield "es_ES, -EUR" => ['es_ES', 'EUR', -1234.567, new Result('-1.234,57 €', '-', ' €', '1.234', '.', '57', ',', '€', 'after')];
@@ -92,10 +88,9 @@ class NumberFormatterSplitterTest extends TestCase
     }
 
     /**
-     * @covers ::split
-     * @dataProvider dataProviderNumber
      * @throws InvalidArgumentException
      */
+    #[DataProvider('dataProviderNumber')]
     public function testSplitNumber(string $locale, float $value, Result $result): void
     {
         $formatter = new NumberFormatter($locale, NumberFormatter::DECIMAL);
@@ -107,7 +102,7 @@ class NumberFormatterSplitterTest extends TestCase
     /**
      * @return Generator<string, array<string|float|Result>>
      */
-    public function dataProviderNumber(): Generator
+    public static function dataProviderNumber(): Generator
     {
         yield "es_ES, -" => ['es_ES', -1234.567, new Result('-1.234,567', '-', '', '1.234', '.', '567', ',', null, 'absent')];
         yield "es_ES, +" => ['es_ES', 1234.567, new Result('1.234,567', '', '', '1.234', '.', '567', ',', null, 'absent')];

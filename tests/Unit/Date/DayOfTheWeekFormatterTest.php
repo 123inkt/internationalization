@@ -6,21 +6,21 @@ namespace DR\Internationalization\Tests\Unit\Date;
 use DR\Internationalization\Date\DayOfTheWeekFormatter;
 use Exception;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @phpstan-import-type DayOfTheWeek from DayOfTheWeekFormatter
- * @coversDefaultClass \DR\Internationalization\Date\DayOfTheWeekFormatter
- * @covers ::__construct
  */
+#[CoversClass(DayOfTheWeekFormatter::class)]
 class DayOfTheWeekFormatterTest extends TestCase
 {
     /**
      * @phpstan-param DayOfTheWeek $dayOfWeek
-     * @dataProvider formatDayOfTheWeekDataProvider
-     * @covers ::format
      * @throws Exception
      */
+    #[DataProvider('formatDayOfTheWeekDataProvider')]
     public function testFormat(string $locale, int $dayOfWeek, string $expected): void
     {
         $formatter = new DayOfTheWeekFormatter($locale);
@@ -29,10 +29,9 @@ class DayOfTheWeekFormatterTest extends TestCase
 
     /**
      * @phpstan-param DayOfTheWeek $dayOfWeek
-     * @dataProvider formatDayOfTheWeekInvalidDataProvider
-     * @covers ::format
      * @throws Exception
      */
+    #[DataProvider('formatDayOfTheWeekInvalidDataProvider')]
     public function testFormatInvalid(int $dayOfWeek, string $expectedMessage): void
     {
         $formatter = new DayOfTheWeekFormatter('en_GB');
@@ -42,10 +41,9 @@ class DayOfTheWeekFormatterTest extends TestCase
     }
 
     /**
-     * @dataProvider formatDayOfTheWeekInvalidDataProvider
-     * @covers ::format
      * @throws Exception
      */
+    #[DataProvider('formatDayOfTheWeekInvalidDataProvider')]
     public function testFormatInvalidCustomLocale(): void
     {
         $formatter = new DayOfTheWeekFormatter('en_GB');
@@ -55,7 +53,7 @@ class DayOfTheWeekFormatterTest extends TestCase
     /**
      * @return array<string, array>
      */
-    public function formatDayOfTheWeekDataProvider(): array
+    public static function formatDayOfTheWeekDataProvider(): array
     {
         return [
             'EN-Mon' => ['en_GB', DayOfTheWeekFormatter::MONDAY, 'Monday'],
@@ -103,7 +101,7 @@ class DayOfTheWeekFormatterTest extends TestCase
     /**
      * @return array[]
      */
-    public function formatDayOfTheWeekInvalidDataProvider(): array
+    public static function formatDayOfTheWeekInvalidDataProvider(): array
     {
         return [
             [0, '0 is not a valid ISO-8601 numeric representation of the day of the week.'],

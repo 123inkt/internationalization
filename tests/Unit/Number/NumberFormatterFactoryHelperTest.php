@@ -6,16 +6,12 @@ namespace DR\Internationalization\Tests\Unit\Number;
 use DR\Internationalization\Number\NumberFormatOptions;
 use DR\Internationalization\Number\NumberFormatterFactoryHelper;
 use NumberFormatter;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Number\NumberFormatterFactoryHelper
- */
+#[CoversClass(NumberFormatterFactoryHelper::class)]
 class NumberFormatterFactoryHelperTest extends TestCase
 {
-    /**
-     * @covers ::applyNumberFormatOptions
-     */
     public function testApplyNumberFormatOptionsWithDefault(): void
     {
         $formatter      = new NumberFormatter('nl_NL', NumberFormatter::DECIMAL);
@@ -30,9 +26,6 @@ class NumberFormatterFactoryHelperTest extends TestCase
         static::assertSame(0, $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS));
     }
 
-    /**
-     * @covers ::applyNumberFormatOptions
-     */
     public function testApplyNumberFormatOptionsWithRoundingAndGrouping(): void
     {
         $formatter      = new NumberFormatter('nl_NL', NumberFormatter::DECIMAL);
@@ -47,9 +40,6 @@ class NumberFormatterFactoryHelperTest extends TestCase
         static::assertSame(0, $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS));
     }
 
-    /**
-     * @covers ::applyNumberFormatOptions
-     */
     public function testApplyNumberFormatOptionsWithSpecificDecimals(): void
     {
         $formatter      = new NumberFormatter('nl_NL', NumberFormatter::DECIMAL);
@@ -61,9 +51,6 @@ class NumberFormatterFactoryHelperTest extends TestCase
         static::assertSame(5, $formatter->getAttribute(NumberFormatter::FRACTION_DIGITS));
     }
 
-    /**
-     * @covers ::applyNumberFormatOptions
-     */
     public function testApplyNumberFormatOptionsWithTrimmedDecimals(): void
     {
         $formatter      = new NumberFormatter('nl_NL', NumberFormatter::DECIMAL);

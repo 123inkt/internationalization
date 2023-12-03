@@ -3,21 +3,17 @@ declare(strict_types=1);
 
 namespace DR\Internationalization\Tests\Unit;
 
+use DateTime;
 use DR\Internationalization\DateFormatService;
 use Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\DateFormatService
- * @covers ::__construct
- */
+#[CoversClass(DateFormatService::class)]
 class DateFormatServiceTest extends TestCase
 {
-    /**
-     * @covers ::format
-     * @covers ::getDateFormatter
-     * @dataProvider dataProviderDateFormats
-     */
+    #[DataProvider('dataProviderDateFormats')]
     public function testFormat($locale, $timeZone, $value, $format, $expectedValue): void
     {
         $formatService = new DateFormatService($locale, $timeZone);
@@ -27,11 +23,11 @@ class DateFormatServiceTest extends TestCase
     /**
      * @return Generator<string, array<string>>
      */
-    public function dataProviderDateFormats(): Generator
+    public static function dataProviderDateFormats(): Generator
     {
         yield 'nl_NL, Y-M-d' => ['nl_NL', 'Europe/Amsterdam', 2222222222, 'Y-M-d', '2040-6-2'];
         yield 'nl_NL, string input' => ['nl_NL', 'Europe/Amsterdam', '2022-08-16 + 1 day', 'Y-M-d', '2022-8-17'];
-        yield 'nl_NL, DateTime input' => ['nl_NL', 'Europe/Amsterdam', new \DateTime('2022-08-16 + 1 day'), 'Y-M-d', '2022-8-17'];
+        yield 'nl_NL, DateTime input' => ['nl_NL', 'Europe/Amsterdam', new DateTime('2022-08-16 + 1 day'), 'Y-M-d', '2022-8-17'];
         yield 'nl_NL, long format' => [
             'nl_NL',
             'Europe/Amsterdam',
@@ -56,10 +52,6 @@ class DateFormatServiceTest extends TestCase
         ];
     }
 
-    /**
-     * @covers ::format
-     * @covers ::getDateFormatter
-     */
     public function testFormatDuplicateFormat(): void
     {
         $formatService = new DateFormatService('nl_NL', 'Europe/Amsterdam');

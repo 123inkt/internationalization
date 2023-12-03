@@ -6,27 +6,15 @@ namespace DR\Internationalization\Tests\Unit\Number;
 use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use DR\Internationalization\Number\NumberFormatOptions;
+use NumberFormatter;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Number\NumberFormatOptions
- */
+#[CoversClass(NumberFormatOptions::class)]
 class NumberFormatOptionsTest extends TestCase
 {
     use AccessorPairAsserter;
 
-    /**
-     * @covers ::setTrimDecimals
-     * @covers ::setLocale
-     * @covers ::setGrouping
-     * @covers ::setDecimals
-     * @covers ::getTrimDecimals
-     * @covers ::getLocale
-     * @covers ::isGrouping
-     * @covers ::getDecimals
-     * @covers ::setRounding
-     * @covers ::getRounding
-     */
     public function testAccessors(): void
     {
         $config = new ConstraintConfig();
@@ -36,9 +24,20 @@ class NumberFormatOptionsTest extends TestCase
         static::assertAccessorPairs(NumberFormatOptions::class, $config);
     }
 
-    /**
-     * @covers ::__toString
-     */
+    public function testTrimDecimals(): void
+    {
+        $options = new NumberFormatOptions();
+        $options->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ANY);
+        static::assertSame(NumberFormatOptions::TRIM_DECIMAL_ANY, $options->getTrimDecimals());
+    }
+
+    public function testRounding(): void
+    {
+        $options = new NumberFormatOptions();
+        $options->setRounding(NumberFormatter::ROUND_DOWN);
+        static::assertSame(NumberFormatter::ROUND_DOWN, $options->getRounding());
+    }
+
     public function testToString(): void
     {
         $options = new NumberFormatOptions();

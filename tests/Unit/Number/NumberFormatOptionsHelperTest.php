@@ -9,18 +9,12 @@ use DR\Internationalization\Number\NumberFormatOptionsHelper;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Money;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Number\NumberFormatOptionsHelper
- * @covers ::__construct
- */
+#[CoversClass(NumberFormatOptionsHelper::class)]
 class NumberFormatOptionsHelperTest extends TestCase
 {
-    /**
-     * @covers ::applyCurrencyOptions
-     * @covers ::currencyHasDecimals
-     */
     public function testCurrencyShouldIgnoreIfHideEmptyDecimalsIsOffInDefaultOptions(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_NONE);
@@ -31,10 +25,6 @@ class NumberFormatOptionsHelperTest extends TestCase
         static::assertNull($result->getDecimals());
     }
 
-    /**
-     * @covers ::applyCurrencyOptions
-     * @covers ::currencyHasDecimals
-     */
     public function testCurrencyShouldIgnoreIfHideEmptyDecimalsIsOffInOptions(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
@@ -46,11 +36,6 @@ class NumberFormatOptionsHelperTest extends TestCase
         static::assertNull($result->getDecimals());
     }
 
-    /**
-     * @covers ::applyCurrencyOptions
-     * @covers ::hideDecimals
-     * @covers ::currencyHasDecimals
-     */
     public function testCurrencyShouldIgnoreIfValueHasDecimals(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
@@ -65,11 +50,6 @@ class NumberFormatOptionsHelperTest extends TestCase
         static::assertNull($result->getDecimals());
     }
 
-    /**
-     * @covers ::applyCurrencyOptions
-     * @covers ::hideDecimals
-     * @covers ::currencyHasDecimals
-     */
     public function testCurrencyShouldHideDecimalsWithoutOptions(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
@@ -84,11 +64,6 @@ class NumberFormatOptionsHelperTest extends TestCase
         static::assertSame(0, $result->getDecimals());
     }
 
-    /**
-     * @covers ::applyCurrencyOptions
-     * @covers ::hideDecimals
-     * @covers ::currencyHasDecimals
-     */
     public function testCurrencyShouldHideDecimalsWithOptions(): void
     {
         $defaultOptions = (new CurrencyFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_NONE);
@@ -106,10 +81,6 @@ class NumberFormatOptionsHelperTest extends TestCase
         static::assertSame(0, $result->getDecimals());
     }
 
-    /**
-     * @covers ::applyNumberOptions
-     * @covers ::hideDecimals
-     */
     public function testNumberShouldIgnoreIfNoDecimalsAreSet(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
@@ -120,10 +91,6 @@ class NumberFormatOptionsHelperTest extends TestCase
         static::assertNull($result->getDecimals());
     }
 
-    /**
-     * @covers ::applyNumberOptions
-     * @covers ::hideDecimals
-     */
     public function testNumberShouldIgnoreIfNoDecimalsIsAlreadyZero(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setDecimals(2)->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
@@ -135,10 +102,6 @@ class NumberFormatOptionsHelperTest extends TestCase
         static::assertSame(0, $result->getDecimals());
     }
 
-    /**
-     * @covers ::applyNumberOptions
-     * @covers ::hideDecimals
-     */
     public function testNumberShouldIgnoreIfHideEmptyDecimalsIsOffInDefaultOptions(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setDecimals(4)->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_NONE);
@@ -149,10 +112,6 @@ class NumberFormatOptionsHelperTest extends TestCase
         static::assertSame(4, $result->getDecimals());
     }
 
-    /**
-     * @covers ::applyNumberOptions
-     * @covers ::hideDecimals
-     */
     public function testNumberShouldIgnoreIfHideEmptyDecimalsIsOffInOptions(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setDecimals(4)->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
@@ -164,10 +123,6 @@ class NumberFormatOptionsHelperTest extends TestCase
         static::assertNull($result->getDecimals());
     }
 
-    /**
-     * @covers ::applyNumberOptions
-     * @covers ::hideDecimals
-     */
     public function testNumberShouldIgnoreIfValueHasDecimals(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setDecimals(4)->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
@@ -178,10 +133,6 @@ class NumberFormatOptionsHelperTest extends TestCase
         static::assertSame(4, $result->getDecimals());
     }
 
-    /**
-     * @covers ::applyNumberOptions
-     * @covers ::hideDecimals
-     */
     public function testNumberShouldHideDecimalsWithoutOptions(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setDecimals(4)->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
@@ -192,10 +143,6 @@ class NumberFormatOptionsHelperTest extends TestCase
         static::assertSame(0, $result->getDecimals());
     }
 
-    /**
-     * @covers ::applyNumberOptions
-     * @covers ::hideDecimals
-     */
     public function testNumberShouldHideDecimalsWithOptions(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setDecimals(4)->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_NONE);

@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2']
+        php-versions: ['8.1', '8.2', '8.3']
         composer-flags: ['', '--prefer-lowest']
     steps:
       - uses: actions/checkout@v4
@@ -54,7 +54,7 @@ jobs:
         run: php -dpcov.enabled=1 -dpcov.exclude="~vendor~" vendor/bin/phpunit --testsuite unit --coverage-clover ./.coverage/coverage.xml
 
       - name: Check coverage
-        run: php vendor/bin/phpfci inspect ./.coverage/coverage.xml ./.coverage/phpfci.xml --exit-code-on-failure
+        run: test ! -f ./.coverage/coverage.xml || php vendor/bin/phpfci inspect ./.coverage/coverage.xml --exit-code-on-failure --reportText
 
   quality:
     name: Quality checks

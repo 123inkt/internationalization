@@ -5,20 +5,17 @@ namespace DR\Internationalization\Tests\Unit\Money;
 
 use DR\Internationalization\Money\MoneyParseException;
 use DR\Internationalization\Money\MoneyProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Money\MoneyProvider
- */
+#[CoversClass(MoneyProvider::class)]
 class MoneyProviderTest extends TestCase
 {
     /**
-     * @covers ::__construct
-     * @covers ::parse
-     * @covers ::floatToString
-     * @dataProvider provideFloat
      * @throws MoneyParseException
      */
+    #[DataProvider('provideFloat')]
     public function testParse(string $expected, string $price, string $currencyCode): void
     {
         $provider = new MoneyProvider($currencyCode);
@@ -28,24 +25,20 @@ class MoneyProviderTest extends TestCase
     }
 
     /**
-     * @covers ::getMoney
-     * @dataProvider provideMoney
-     *
      * @param int|string $amount
      */
+    #[DataProvider('provideMoney')]
     public function testGetMoney(string $expected, $amount, string $currencyCode): void
     {
         $provider = new MoneyProvider($currencyCode);
-        $money = $provider->getMoney($amount, $currencyCode);
+        $money    = $provider->getMoney($amount, $currencyCode);
         static::assertSame($expected, $money->getAmount());
     }
 
     /**
-     * @covers ::parse
-     * @dataProvider provideInvalidParse
-     *
      * @throws MoneyParseException
      */
+    #[DataProvider('provideInvalidParse')]
     public function testFailedParse(string $price, string $currencyCode): void
     {
         $this->expectException(MoneyParseException::class);
@@ -57,7 +50,7 @@ class MoneyProviderTest extends TestCase
     /**
      * @return array<array<string, int|string>>
      */
-    public function provideMoney(): array
+    public static function provideMoney(): array
     {
         return [
             [
@@ -86,7 +79,7 @@ class MoneyProviderTest extends TestCase
     /**
      * @return array<array<string, string>>
      */
-    public function provideFloat(): array
+    public static function provideFloat(): array
     {
         return [
             [
@@ -175,7 +168,7 @@ class MoneyProviderTest extends TestCase
     /**
      * @return array<array<string, string>>
      */
-    public function provideInvalidParse(): array
+    public static function provideInvalidParse(): array
     {
         return [
 

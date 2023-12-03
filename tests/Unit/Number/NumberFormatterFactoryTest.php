@@ -7,20 +7,15 @@ use DR\Internationalization\Number\NumberFormatOptions;
 use DR\Internationalization\Number\NumberFormatterFactory;
 use InvalidArgumentException;
 use NumberFormatter;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Number\NumberFormatterFactory
- * @covers ::__construct
- */
+#[CoversClass(NumberFormatterFactory::class)]
 class NumberFormatterFactoryTest extends TestCase
 {
     private const MINUS = "\xE2\x88\x92";
     private const NBSP  = "\xC2\xA0";
 
-    /**
-     * @covers ::create
-     */
     public function testCreateLocaleIsRequired(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -28,9 +23,6 @@ class NumberFormatterFactoryTest extends TestCase
         (new NumberFormatterFactory(new NumberFormatOptions()))->create(new NumberFormatOptions());
     }
 
-    /**
-     * @covers ::create
-     */
     public function testCreate(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setLocale("nl_NL");
