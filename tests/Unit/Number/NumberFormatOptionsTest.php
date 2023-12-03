@@ -6,6 +6,7 @@ namespace DR\Internationalization\Tests\Unit\Number;
 use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use DR\Internationalization\Number\NumberFormatOptions;
+use NumberFormatter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -21,6 +22,20 @@ class NumberFormatOptionsTest extends TestCase
         $config->setAssertConstructor(true);
         $config->setAssertAccessorPair(true);
         static::assertAccessorPairs(NumberFormatOptions::class, $config);
+    }
+
+    public function testTrimDecimals(): void
+    {
+        $options = new NumberFormatOptions();
+        $options->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ANY);
+        static::assertSame(NumberFormatOptions::TRIM_DECIMAL_ANY, $options->getTrimDecimals());
+    }
+
+    public function testRounding(): void
+    {
+        $options = new NumberFormatOptions();
+        $options->setRounding(NumberFormatter::ROUND_DOWN);
+        static::assertSame(NumberFormatter::ROUND_DOWN, $options->getRounding());
     }
 
     public function testToString(): void

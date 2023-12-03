@@ -17,6 +17,7 @@ class PhoneNumberFormatOptionsTest extends TestCase
     public function testAccessors(): void
     {
         $config = new ConstraintConfig();
+        $config->setExcludedMethods(['setFormat', 'getFormat']);
         $config->setAssertPropertyDefaults(true);
         $config->setAssertConstructor(true);
         $config->setAssertAccessorPair(true);
