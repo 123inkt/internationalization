@@ -103,7 +103,7 @@ class PhoneNumberFormatServiceTest extends TestCase
         static::assertSame('06 12345678', $formatter->format($parsedPhoneNumber));
     }
 
-    public function optionFormatProvider(): Generator
+    public static function optionFormatProvider(): Generator
     {
         yield [PhoneNumberFormatOptions::FORMAT_E164, "101234567", "+31101234567"];
         yield [PhoneNumberFormatOptions::FORMAT_E164, "0612345678", "+31612345678"];
@@ -118,7 +118,7 @@ class PhoneNumberFormatServiceTest extends TestCase
         yield [PhoneNumberFormatOptions::FORMAT_RFC3966, "0612345678", "tel:+31-6-12345678"];
     }
 
-    public function internationalDialProvider(): Generator
+    public static function internationalDialProvider(): Generator
     {
         yield ['NL', '612345678', '0031612345678'];
         yield ['NL', '0612345678', '0031612345678'];

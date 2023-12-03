@@ -50,7 +50,7 @@ class NumberFormatServiceTest extends TestCase
     /**
      * @return Generator<string, array<string>>
      */
-    public function dataProviderRequiredLocales(): Generator
+    public static function dataProviderRequiredLocales(): Generator
     {
         yield "nl_NL, EUR" => ["EUR", "nl_NL", sprintf("€%s1.234,57", self::NBSP)];
         yield "nl_NL, USD" => ["USD", "nl_NL", sprintf("US$%s1.234,57", self::NBSP)];

@@ -26,7 +26,7 @@ class NumberHelperTest extends TestCase
     /**
      * @return Generator<string, array<float|bool>>
      */
-    public function dataProviderDecimals(): Generator
+    public static function dataProviderDecimals(): Generator
     {
         // test int
         yield 'int: 5' => [5, false];

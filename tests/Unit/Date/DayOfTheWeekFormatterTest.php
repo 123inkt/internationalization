@@ -55,7 +55,7 @@ class DayOfTheWeekFormatterTest extends TestCase
     /**
      * @return array<string, array>
      */
-    public function formatDayOfTheWeekDataProvider(): array
+    public static function formatDayOfTheWeekDataProvider(): array
     {
         return [
             'EN-Mon' => ['en_GB', DayOfTheWeekFormatter::MONDAY, 'Monday'],
@@ -103,7 +103,7 @@ class DayOfTheWeekFormatterTest extends TestCase
     /**
      * @return array[]
      */
-    public function formatDayOfTheWeekInvalidDataProvider(): array
+    public static function formatDayOfTheWeekInvalidDataProvider(): array
     {
         return [
             [0, '0 is not a valid ISO-8601 numeric representation of the day of the week.'],

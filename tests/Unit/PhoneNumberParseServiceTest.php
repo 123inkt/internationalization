@@ -71,7 +71,7 @@ class PhoneNumberParseServiceTest extends TestCase
     }
 
 
-    public function parseProvider(): Generator
+    public static function parseProvider(): Generator
     {
         yield ['BE', '09 34 44 44 32', '00', '33', '934444432', PhoneNumberTypeEnum::VOIP, 'FR', null, 'FR'];
         yield ['XX', '+46522180870', '', '46', '522180870', PhoneNumberTypeEnum::FIXED_LINE, 'SE'];

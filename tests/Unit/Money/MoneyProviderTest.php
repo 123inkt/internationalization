@@ -57,7 +57,7 @@ class MoneyProviderTest extends TestCase
     /**
      * @return array<array<string, int|string>>
      */
-    public function provideMoney(): array
+    public static function provideMoney(): array
     {
         return [
             [
@@ -86,7 +86,7 @@ class MoneyProviderTest extends TestCase
     /**
      * @return array<array<string, string>>
      */
-    public function provideFloat(): array
+    public static function provideFloat(): array
     {
         return [
             [
@@ -175,7 +175,7 @@ class MoneyProviderTest extends TestCase
     /**
      * @return array<array<string, string>>
      */
-    public function provideInvalidParse(): array
+    public static function provideInvalidParse(): array
     {
         return [
 

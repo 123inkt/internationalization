@@ -27,7 +27,7 @@ class DateFormatServiceTest extends TestCase
     /**
      * @return Generator<string, array<string>>
      */
-    public function dataProviderDateFormats(): Generator
+    public static function dataProviderDateFormats(): Generator
     {
         yield 'nl_NL, Y-M-d' => ['nl_NL', 'Europe/Amsterdam', 2222222222, 'Y-M-d', '2040-6-2'];
         yield 'nl_NL, string input' => ['nl_NL', 'Europe/Amsterdam', '2022-08-16 + 1 day', 'Y-M-d', '2022-8-17'];
