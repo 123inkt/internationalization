@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-
 namespace DR\Internationalization\PhoneNumber;
 
 use libphonenumber\PhoneNumberFormat;
@@ -37,6 +36,7 @@ class PhoneNumberFormatOptions
     public const FORMAT_INTERNATIONAL_DIAL = 4;
 
     private ?string $defaultCountryCode = null;
+    /** @phpstan-var ?Format */
     private ?int $format = null;
 
     public function getDefaultCountryCode(): ?string
@@ -51,6 +51,9 @@ class PhoneNumberFormatOptions
         return $this;
     }
 
+    /**
+     * @phpstan-return ?Format
+     */
     public function getFormat(): ?int
     {
         return $this->format;

@@ -6,21 +6,14 @@ namespace DR\Internationalization\Tests\Unit\Currency;
 use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use DR\Internationalization\Currency\CurrencyFormatOptions;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Currency\CurrencyFormatOptions
- */
+#[CoversClass(CurrencyFormatOptions::class)]
 class CurrencyFormatOptionsTest extends TestCase
 {
     use AccessorPairAsserter;
 
-    /**
-     * @covers ::setSymbol
-     * @covers ::hasSymbol
-     * @covers ::setCurrencyCode
-     * @covers ::getCurrencyCode
-     */
     public function testAccessors(): void
     {
         $config = new ConstraintConfig();
@@ -31,9 +24,6 @@ class CurrencyFormatOptionsTest extends TestCase
         static::assertAccessorPairs(CurrencyFormatOptions::class, $config);
     }
 
-    /**
-     * @covers ::__toString
-     */
     public function testToString(): void
     {
         $options = new CurrencyFormatOptions();

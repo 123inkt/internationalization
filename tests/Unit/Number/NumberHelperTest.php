@@ -5,19 +5,17 @@ namespace DR\Internationalization\Tests\Unit\Number;
 
 use DR\Internationalization\Number\NumberHelper;
 use Generator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \DR\Internationalization\Number\NumberHelper
- */
+#[CoversClass(NumberHelper::class)]
 class NumberHelperTest extends TestCase
 {
     /**
-     * @covers ::hasDecimals
-     * @dataProvider dataProviderDecimals
-     *
      * @param int|float $value
      */
+    #[DataProvider('dataProviderDecimals')]
     public function testHasDecimals($value, bool $hasDecimals): void
     {
         static::assertSame($hasDecimals, NumberHelper::hasDecimals($value));
@@ -26,7 +24,7 @@ class NumberHelperTest extends TestCase
     /**
      * @return Generator<string, array<float|bool>>
      */
-    public function dataProviderDecimals(): Generator
+    public static function dataProviderDecimals(): Generator
     {
         // test int
         yield 'int: 5' => [5, false];
