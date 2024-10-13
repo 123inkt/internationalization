@@ -7,6 +7,9 @@ namespace DR\Internationalization\Time;
 use DateTimeImmutable;
 use DateTimeInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ */
 class Time
 {
     public function __construct(
