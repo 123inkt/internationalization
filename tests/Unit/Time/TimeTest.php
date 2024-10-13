@@ -80,4 +80,11 @@ class TimeTest extends TestCase
         static::assertSame('12:34:00', (string)Time::fromString('12:34'));
         static::assertSame('12:00:00', (string)Time::fromString('12'));
     }
+
+    public function testFromSeconds(): void
+    {
+        static::assertSame('00:00:20', (string)Time::fromSeconds(20));
+        static::assertSame('00:01:20', (string)Time::fromSeconds(80));
+        static::assertSame('01:01:20', (string)Time::fromSeconds(3680));
+    }
 }

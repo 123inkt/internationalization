@@ -83,11 +83,6 @@ class Time
         return sprintf('%02d:%02d:%02d', $this->hour, $this->minute, $this->second);
     }
 
-    /**
-     * @param string $time
-     *
-     * @return self
-     */
     public static function fromString(string $time): self
     {
         $parts = explode(':', $time);
@@ -97,7 +92,7 @@ class Time
 
     public static function fromSeconds(int $seconds): self
     {
-        $hours   = (int)floor($seconds / 3600);
+        $hours   = ((int)floor($seconds / 3600) % 24);
         $minutes = (int)floor(($seconds % 3600) / 60);
         $seconds %= 60;
 
