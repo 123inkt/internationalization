@@ -22,21 +22,42 @@ class Time
         return new self(($this->hour + $hours) % 24, $this->minute, $this->second);
     }
 
+    public function subtractHours(int $hours): self
+    {
+        $hours = ($this->hour - $hours) % 24;
+        $hours = $hours < 0 ? 24 + $hours : $hours;
+
+        return new self($hours, $this->minute, $this->second);
+    }
+
     public function addMinutes(int $minutes): self
     {
-        $hours   = ($this->hour + (int)floor(($this->minute + $minutes) / 60)) % 24;
-        $minutes = ($this->minute + $minutes) % 60;
+        $minutes = ($this->hour * 60 + $this->minute + $minutes) % 1440;
 
-        return new self($hours, $minutes, $this->second);
+        return new self((int)floor($minutes / 60), $minutes % 60, $this->second);
+    }
+
+    public function subtractMinutes(int $minutes): self
+    {
+        $minutes = ($this->hour * 60 + $this->minute - $minutes) % 1440;
+        $minutes = $minutes < 0 ? 1440 + $minutes : $minutes;
+
+        return new self((int)floor($minutes / 60), $minutes % 60, $this->second);
     }
 
     public function addSeconds(int $seconds): self
     {
-        $hours   = ($this->hour + (int)floor(($this->second + $seconds) / 3600)) % 24;
-        $minutes = ($this->minute + (int)floor(($this->second + $seconds) / 60)) % 60;
-        $seconds = ($this->second + $seconds) % 60;
+        $seconds = (($this->hour * 3600 + $this->minute * 60 + $this->second) + $seconds) % 86400;
 
-        return new self($hours, $minutes, $seconds);
+        return self::fromSeconds($seconds);
+    }
+
+    public function subtractSeconds(int $seconds): self
+    {
+        $seconds = (($this->hour * 3600 + $this->minute * 60 + $this->second) - $seconds) % 86400;
+        $seconds = $seconds < 0 ? 86400 + $seconds : $seconds;
+
+        return self::fromSeconds($seconds);
     }
 
     /**
@@ -72,5 +93,14 @@ class Time
         $parts = explode(':', $time);
 
         return new self((int)$parts[0], (int)($parts[1] ?? 0), (int)($parts[2] ?? 0));
+    }
+
+    public static function fromSeconds(int $seconds): self
+    {
+        $hours   = (int)floor($seconds / 3600);
+        $minutes = (int)floor(($seconds % 3600) / 60);
+        $seconds %= 60;
+
+        return new self($hours, $minutes, $seconds);
     }
 }

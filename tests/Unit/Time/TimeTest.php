@@ -18,12 +18,29 @@ class TimeTest extends TestCase
         static::assertSame('01:00:00', (string)(new Time(20, 0, 0))->addHours(5));
     }
 
+    public function testSubtractHours(): void
+    {
+        static::assertSame('23:00:00', (string)(new Time(23, 0, 0))->subtractHours(0));
+        static::assertSame('21:00:00', (string)(new Time(23, 0, 0))->subtractHours(2));
+        static::assertSame('22:00:00', (string)(new Time(3, 0, 0))->subtractHours(5));
+    }
+
     public function testAddMinutes(): void
     {
         static::assertSame('00:00:00', (string)(new Time(0, 0, 0))->addMinutes(0));
         static::assertSame('00:30:00', (string)(new Time(0, 0, 0))->addMinutes(30));
         static::assertSame('01:20:00', (string)(new Time(0, 0, 0))->addMinutes(80));
+        static::assertSame('00:10:00', (string)(new Time(23, 30, 0))->addMinutes(40));
         static::assertSame('00:20:00', (string)(new Time(0, 0, 0))->addMinutes(1460));
+    }
+
+    public function testSubtractMinutes(): void
+    {
+        static::assertSame('00:00:00', (string)(new Time(0, 0, 0))->subtractMinutes(0));
+        static::assertSame('23:30:00', (string)(new Time(0, 0, 0))->subtractMinutes(30));
+        static::assertSame('22:40:00', (string)(new Time(0, 0, 0))->subtractMinutes(80));
+        static::assertSame('23:50:00', (string)(new Time(0, 30, 0))->subtractMinutes(40));
+        static::assertSame('23:40:00', (string)(new Time(0, 0, 0))->subtractMinutes(1460));
     }
 
     public function testAddSeconds(): void
@@ -33,6 +50,15 @@ class TimeTest extends TestCase
         static::assertSame('00:01:20', (string)(new Time(0, 0, 0))->addSeconds(80));
         static::assertSame('01:01:20', (string)(new Time(0, 0, 0))->addSeconds(3680));
         static::assertSame('00:00:30', (string)(new Time(0, 0, 0))->addSeconds(86430));
+    }
+
+    public function testSubtractSeconds(): void
+    {
+        static::assertSame('00:00:00', (string)(new Time(0, 0, 0))->subtractSeconds(0));
+        static::assertSame('00:00:20', (string)(new Time(0, 0, 50))->subtractSeconds(30));
+        static::assertSame('00:00:50', (string)(new Time(0, 1, 30))->subtractSeconds(40));
+        static::assertSame('23:59:20', (string)(new Time(0, 0, 0))->subtractSeconds(40));
+        static::assertSame('23:59:30', (string)(new Time(0, 0, 0))->subtractSeconds(86430));
     }
 
     public function testFormat(): void
