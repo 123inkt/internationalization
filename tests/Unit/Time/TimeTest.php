@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DR\Internationalization\Tests\Unit\Time;
 
+use DateTimeImmutable;
 use DR\Internationalization\Time\Time;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -66,6 +67,12 @@ class TimeTest extends TestCase
         $time = new Time(12, 34, 56);
         static::assertSame('12:34:56', $time->format('H:i:s'));
         static::assertSame('12:34 PM', $time->format('g:i A'));
+    }
+
+    public function testToDateTime(): void
+    {
+        static::assertSame('12:34:56', (new Time(12, 34, 56))->toDateTime()->format('H:i:s'));
+        static::assertSame('12:34:56', (new Time(12, 34, 56))->toDateTime(new DateTimeImmutable())->format('H:i:s'));
     }
 
     public function testToString(): void
