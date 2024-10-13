@@ -141,6 +141,16 @@ $parseService = new PhoneNumberParseService("NL");
 $parsedPhoneNumber = $parseService->parse("+31612345678");
 ```
 
+### Time
+Time object to handle time notation without specific date.
+
+```php
+$time = new Time(12, 30, 0);
+$time->addMinutes(40);
+$time->substractSeconds(30);
+echo $time->format('H:i:s');
+// output: 13:09:30
+```
 
 ## Project structure
 
@@ -150,7 +160,8 @@ $parsedPhoneNumber = $parseService->parse("+31612345678");
 | Date        | Format ISO-8601 day of the week to user friendly names                                                | 
 | Money       | Create `Money` object from `float`                                                                    |
 | Number      | Format `int` or `float` value to locale specific format. Use `NumberFormatService::number`            |              
-| PhoneNumber | Format phoneNumber value to specified format. Use `PhoneNumberFormatService::format`                  |              
+| PhoneNumber | Format phoneNumber value to specified format. Use `PhoneNumberFormatService::format`                  |
+| Time        | Time handling without date                                                                            |
 
 ## Development
 
