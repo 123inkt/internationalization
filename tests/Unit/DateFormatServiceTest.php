@@ -71,6 +71,20 @@ class DateFormatServiceTest extends TestCase
             new DateFormatOptions('Y-M-d'),
             (new DateTimeImmutable('+2 days'))->format('Y-m-d')
         ];
+        yield 'nl_NL, relative 2 days Dutch int' => [
+            'nl_NL', 'Europe/Amsterdam',
+            (new DateTimeImmutable('+2 days'))->getTimestamp(),
+            new RelativeDateFormatOptions(2),
+            new DateFormatOptions('Y-M-d'),
+            'overmorgen'
+        ];
+        yield 'nl_NL, relative 2 days Dutch string' => [
+            'nl_NL', 'Europe/Amsterdam',
+            (new DateTimeImmutable('+2 days'))->format('Y-m-d'),
+            new RelativeDateFormatOptions(2),
+            new DateFormatOptions('Y-M-d'),
+            'overmorgen'
+        ];
     }
 
     /**

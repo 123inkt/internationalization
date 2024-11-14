@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Internationalization;
 
-use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DR\Internationalization\Date\DateFormatOptions;
@@ -55,20 +54,22 @@ class DateFormatService
         $result = $this->relativeFormatterFactory->create($this->locale)->format($this->getParsedDate($value));
         $defaultFormattedDate = $this->getDateFormatter(new DateFormatOptions('yyyy-MM-dd'))->format($this->getParsedDate($value));
 
-        $currentDateTime = (new DateTimeImmutable())->setTime(0,0);
+        $currentDateTime = (new DateTimeImmutable())->setTime(0, 0);
         $resultDateTime = new DateTimeImmutable($defaultFormattedDate);
 
         if ($resultDateTime->diff($currentDateTime)->d > self::MAX_TRANSLATABLE_DAYS_AMOUNT) {
             $result = $this->getDateFormatter($fallback)->format($this->getParsedDate($value));
-        } elseif ($resultDateTime->diff($currentDateTime)->d > $relativeOptions->getRelativeDaysAmount() || $relativeOptions->getRelativeDaysAmount() === 0) {
-            $result = $this->getDateFormatter($fallback)->format($this->getParsedDate($value));
-        } elseif ($defaultFormattedDate === $result) {
-            $result = $this->getDateFormatter($fallback)->format($this->getParsedDate($value));
+            return $this->validateResult($result, $value);
         }
 
-        if ($result === false) {
-            $scalarValue = $value instanceof DateTimeInterface ? $value->getTimestamp() : $value;
-            throw new \RuntimeException(sprintf('Unable to format relative date %s', $scalarValue));
+        if ($relativeOptions->getRelativeDaysAmount() === 0 || $resultDateTime->diff($currentDateTime)->d > $relativeOptions->getRelativeDaysAmount()) {
+            $result = $this->getDateFormatter($fallback)->format($this->getParsedDate($value));
+            return $this->validateResult($result, $value);
+        }
+
+        if ($defaultFormattedDate === $result) {
+            $result = $this->getDateFormatter($fallback)->format($this->getParsedDate($value));
+            return $this->validateResult($result, $value);
         }
 
         return $result;
@@ -82,6 +83,18 @@ class DateFormatService
 
     private function getParsedDate(int|string|DateTimeInterface $date): int|DateTimeInterface
     {
-        return is_string($date) ? (int)strtotime($date) : $date->getTimestamp();
+        return is_string($date) ? (int)strtotime($date) : $date;
+    }
+
+    private function validateResult(bool|string $result, int|string|DateTimeInterface $value): string
+    {
+        // @codeCoverageIgnoreStart
+        if ($result === false) {
+            $scalarValue = $value instanceof DateTimeInterface ? $value->getTimestamp() : $value;
+            throw new \RuntimeException(sprintf('Unable to format relative date %s', $scalarValue));
+        }
+        // @codeCoverageIgnoreEnd
+
+        return $result;
     }
 }
