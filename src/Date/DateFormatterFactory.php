@@ -7,31 +7,15 @@ use IntlDateFormatter;
 
 class DateFormatterFactory
 {
-    private DateFormatOptions $defaultOptions;
-
-    public function __construct(?DateFormatOptions $defaultOptions = null)
+    public function create(DateFormatOptions $options, string $pattern): IntlDateFormatter
     {
-        if ($defaultOptions !== null) {
-            $this->defaultOptions = $defaultOptions;
-        } else {
-            $this->defaultOptions = new DateFormatOptions('yyyy-MM-dd');
-            $this->defaultOptions->setLocale('nl_NL');
-            $this->defaultOptions->setTimezone('Europe/Amsterdam');
-        }
-    }
-
-    public function create(DateFormatOptions $options): IntlDateFormatter
-    {
-        $locale = $options->getLocale() ?? $this->defaultOptions->getLocale();
-        $timezone = $options->getTimezone() ?? $this->defaultOptions->getTimezone();
-
         return new IntlDateFormatter(
-            $locale,
+            $options->getLocale(),
             $options->getDateType(),
             $options->getTimeType(),
-            $timezone,
+            $options->getTimezone(),
             $options->getCalendar(),
-            $options->getPattern()
+            $pattern
         );
     }
 }

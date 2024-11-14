@@ -8,17 +8,15 @@ use IntlDateFormatter;
 
 class DateFormatOptions
 {
-    protected ?string $locale = null;
-    protected ?string $timezone = null;
     protected int $dateType = IntlDateFormatter::FULL;
     protected int $timeType = IntlDateFormatter::FULL;
     protected int $calendar = IntlDateFormatter::GREGORIAN;
 
-    public function __construct(protected string $pattern)
+    public function __construct(protected string $locale, protected string $timezone)
     {
     }
 
-    public function getLocale(): ?string
+    public function getLocale():?string
     {
         return $this->locale;
     }
@@ -34,20 +32,7 @@ class DateFormatOptions
         return $this;
     }
 
-
-    public function getPattern(): string
-    {
-        return $this->pattern;
-    }
-
-    public function setPattern(string $pattern): self
-    {
-        $this->pattern = $pattern;
-
-        return $this;
-    }
-
-    public function getTimezone(): ?string
+    public function getTimezone(): string
     {
         return $this->timezone;
     }
@@ -68,7 +53,6 @@ class DateFormatOptions
         return "date:" . serialize([
                 'locale' => $this->locale,
                 'timezone' => $this->timezone,
-                'pattern' => $this->pattern,
                 'dateType' => $this->dateType,
                 'timeType' => $this->timeType,
                 'calendar' => $this->calendar,
