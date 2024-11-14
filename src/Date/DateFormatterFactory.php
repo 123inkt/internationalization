@@ -18,7 +18,6 @@ class DateFormatterFactory
             $this->defaultOptions->setLocale('nl_NL');
             $this->defaultOptions->setTimezone('Europe/Amsterdam');
         }
-
     }
 
     public function create(DateFormatOptions $options): IntlDateFormatter
