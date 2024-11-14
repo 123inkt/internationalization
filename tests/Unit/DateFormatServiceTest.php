@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace DR\Internationalization\Tests\Unit;
 
 use DateTime;
+use DateTimeImmutable;
+use DR\Internationalization\Date\DateFormatOptions;
+use DR\Internationalization\Date\RelativeDateFormatOptions;
 use DR\Internationalization\DateFormatService;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -18,6 +21,56 @@ class DateFormatServiceTest extends TestCase
     {
         $formatService = new DateFormatService($locale, $timeZone);
         static::assertSame($expectedValue, $formatService->format($value, $format));
+    }
+
+    #[DataProvider('dataProviderRelativeDateFormats')]
+    public function testRelativeFormat($locale, $timeZone, $value, $relativeOptions, $fallbackOptions, $expectedValue): void
+    {
+        $formatService = new DateFormatService($locale, $timeZone);
+        static::assertSame($expectedValue, $formatService->formatRelative($value, $relativeOptions, $fallbackOptions));
+    }
+
+    /**
+     * @return Generator<string, array<string|RelativeDateFormatOptions|DateFormatOptions>>
+     */
+    public static function dataProviderRelativeDateFormats(): Generator
+    {
+
+        yield 'nl_NL, no relative' => [
+            'en_GB', 'UTC',
+            new DateTimeImmutable(),
+            new RelativeDateFormatOptions(0),
+            new DateFormatOptions('Y-M-d'),
+            (new DateTimeImmutable())->format('Y-m-d')
+        ];
+        yield 'nl_NL, relative today' => [
+            'en_GB', 'UTC',
+            new DateTimeImmutable(),
+            new RelativeDateFormatOptions(2),
+            new DateFormatOptions('Y-M-d'),
+            'today'
+        ];
+        yield 'nl_NL, relative 1 day' => [
+            'en_GB', 'UTC',
+            new DateTimeImmutable('+1 day'),
+            new RelativeDateFormatOptions(2),
+            new DateFormatOptions('Y-M-d'),
+            'tomorrow'
+        ];
+        yield 'nl_NL, relative 2 days Dutch' => [
+            'nl_NL', 'Europe/Amsterdam',
+            new DateTimeImmutable('+2 days'),
+            new RelativeDateFormatOptions(2),
+            new DateFormatOptions('Y-M-d'),
+            'overmorgen'
+        ];
+        yield 'nl_NL, relative day but capped by options' => [
+            'nl_NL', 'UTC',
+            new DateTimeImmutable('+2 days'),
+            new RelativeDateFormatOptions(1),
+            new DateFormatOptions('Y-M-d'),
+            (new DateTimeImmutable('+2 days'))->format('Y-m-d')
+        ];
     }
 
     /**
