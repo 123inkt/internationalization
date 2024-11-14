@@ -27,8 +27,7 @@ class DateFormatService
         ?DateFormatterCacheInterface       $cache = null,
         ?DateFormatterFactory              $dateFactory = null,
         ?RelativeDateFormatterFactory      $relativeFormatterFactory = null
-    )
-    {
+    ) {
         $this->cache = $cache ?? new DateFormatterCache();
         $this->dateFactory = $dateFactory ?? new DateFormatterFactory();
         $this->relativeFormatterFactory = $relativeFormatterFactory ?? new RelativeDateFormatterFactory();
@@ -51,29 +50,27 @@ class DateFormatService
         string                       $pattern,
         RelativeDateFormatOptions    $relativeOptions,
         DateFormatOptions            $fallbackOptions
-    ): string
-    {
+    ): string {
         $defaultOptions = new DateFormatOptions($this->options->getLocale(), $this->options->getTimezone());
         $defaultFormattedDate = $this->getDateFormatter($defaultOptions, $pattern)->format($this->getParsedDate($value));
 
-        $result = $this->relativeFormatterFactory->create($this->options->getLocale())->format($this->getParsedDate($value));
+        $actualFormattedDate = $this->relativeFormatterFactory->create($this->options->getLocale())->format($this->getParsedDate($value));
         $resultDateTime = new DateTimeImmutable($this->validateResult($defaultFormattedDate, $value, $pattern));
 
-        if ($this->shouldFallbackDate($resultDateTime, $relativeOptions, $defaultFormattedDate, $result)) {
+        if ($this->shouldFallback($resultDateTime, $relativeOptions, $defaultFormattedDate, $actualFormattedDate)) {
             $result = $this->getDateFormatter($fallbackOptions, $pattern)->format($this->getParsedDate($value));
             return $this->validateResult($result, $value, $pattern);
         }
 
-        return $this->validateResult($result, $value, $pattern);
+        return $this->validateResult($actualFormattedDate, $value, $pattern);
     }
 
-    private function shouldFallbackDate(
+    private function shouldFallback(
         DateTimeImmutable         $dateTime,
         RelativeDateFormatOptions $relativeOptions,
-        string                    $defaultFormattedDate,
-        string                    $actualFormattedDate
-    ): bool
-    {
+        string|false              $defaultFormattedDate,
+        string|false              $actualFormattedDate
+    ): bool {
         $currentDateTime = (new DateTimeImmutable())->setTime(0, 0);
 
         return $dateTime->diff($currentDateTime)->d > self::MAX_TRANSLATABLE_DAYS_AMOUNT
@@ -96,7 +93,7 @@ class DateFormatService
     private function validateResult(bool|string|null $result, int|string|DateTimeInterface $value, string $pattern): string
     {
         // @codeCoverageIgnoreStart
-        if ($result === false) {
+        if (is_bool($result) || $result === null) {
             $scalarValue = $value instanceof DateTimeInterface ? $value->getTimestamp() : $value;
             throw new RuntimeException(sprintf('Unable to format date `%s` to format `%s`', $scalarValue, $pattern));
         }

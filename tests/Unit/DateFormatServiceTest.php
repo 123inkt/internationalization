@@ -122,7 +122,7 @@ class DateFormatServiceTest extends TestCase
 
     public function testFormatDuplicateFormat(): void
     {
-        $formatService = new DateFormatService('nl_NL', 'Europe/Amsterdam');
+        $formatService = new DateFormatService(new DateFormatOptions('nl_NL', 'Europe/Amsterdam'));
         static::assertSame('zaterdag 02 juni 2040 - 05:57:02', $formatService->format(2222222222, 'eeee dd LLLL Y - HH:mm:ss'));
         static::assertSame('zaterdag 02 juni 2040 - 05:57:02', $formatService->format(2222222222, 'eeee dd LLLL Y - HH:mm:ss'));
     }

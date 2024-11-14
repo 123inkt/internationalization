@@ -16,7 +16,7 @@ class DateFormatOptions
     {
     }
 
-    public function getLocale():?string
+    public function getLocale(): string
     {
         return $this->locale;
     }
