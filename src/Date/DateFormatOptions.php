@@ -6,10 +6,19 @@ namespace DR\Internationalization\Date;
 
 use IntlDateFormatter;
 
+/**
+ * @phpstan-type CalendarType IntlDateFormatter::GREGORIAN|IntlDateFormatter::TRADITIONAL
+ * @phpstan-import-type DateFormatType from DateFormatTypes
+ */
 class DateFormatOptions
 {
+    /** @phpstan-var DateFormatType $dateType */
     protected int $dateType = IntlDateFormatter::FULL;
+
+    /** @phpstan-var DateFormatType $timeType */
     protected int $timeType = IntlDateFormatter::FULL;
+
+    /** @phpstan-var CalendarType $calendar */
     protected int $calendar = IntlDateFormatter::GREGORIAN;
 
     public function __construct(protected string $locale, protected string $timezone)
@@ -48,6 +57,60 @@ class DateFormatOptions
         return $this;
     }
 
+    /**
+     * @phpstan-return DateFormatType
+     */
+    public function getDateType(): int
+    {
+        return $this->dateType;
+    }
+
+    /**
+     * @phpstan-param DateFormatType $dateType
+     */
+    public function setDateType(int $dateType): DateFormatOptions
+    {
+        $this->dateType = $dateType;
+
+        return $this;
+    }
+
+    /**
+     * @phpstan-return DateFormatType
+     */
+    public function getTimeType(): int
+    {
+        return $this->timeType;
+    }
+
+    /**
+     * @phpstan-param DateFormatType $timeType
+     */
+    public function setTimeType(int $timeType): DateFormatOptions
+    {
+        $this->timeType = $timeType;
+
+        return $this;
+    }
+
+    /**
+     * @phpstan-return CalendarType
+     */
+    public function getCalendar(): int
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * @phpstan-param CalendarType $calendar
+     */
+    public function setCalendar(int $calendar): DateFormatOptions
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
     public function __toString(): string
     {
         return "date:" . serialize([
@@ -57,41 +120,5 @@ class DateFormatOptions
                 'timeType' => $this->timeType,
                 'calendar' => $this->calendar,
             ]);
-    }
-
-    public function setDateType(int $dateType): DateFormatOptions
-    {
-        $this->dateType = $dateType;
-
-        return $this;
-    }
-
-    public function getDateType(): int
-    {
-        return $this->dateType;
-    }
-
-    public function setTimeType(int $timeType): DateFormatOptions
-    {
-        $this->timeType = $timeType;
-
-        return $this;
-    }
-
-    public function getTimeType(): int
-    {
-        return $this->timeType;
-    }
-
-    public function setCalendar(int $calendar): DateFormatOptions
-    {
-        $this->calendar = $calendar;
-
-        return $this;
-    }
-
-    public function getCalendar(): int
-    {
-        return $this->calendar;
     }
 }

@@ -9,6 +9,7 @@ use DR\Internationalization\Date\DateFormatOptions;
 use DR\Internationalization\Date\DateFormatterCache;
 use DR\Internationalization\Date\DateFormatterCacheInterface;
 use DR\Internationalization\Date\DateFormatterFactory;
+use DR\Internationalization\Date\RelativeDateFallbackService;
 use DR\Internationalization\Date\RelativeDateFormatOptions;
 use DR\Internationalization\Date\RelativeDateFormatterFactory;
 use IntlDateFormatter;
@@ -16,21 +17,22 @@ use RuntimeException;
 
 class DateFormatService
 {
-    private const MAX_TRANSLATABLE_DAYS_AMOUNT = 4;
-
     private DateFormatterCacheInterface $cache;
     private DateFormatterFactory $dateFactory;
     private RelativeDateFormatterFactory $relativeFormatterFactory;
+    private RelativeDateFallbackService $fallbackHandler;
 
     public function __construct(
         private readonly DateFormatOptions $options,
         ?DateFormatterCacheInterface       $cache = null,
         ?DateFormatterFactory              $dateFactory = null,
-        ?RelativeDateFormatterFactory      $relativeFormatterFactory = null
+        ?RelativeDateFormatterFactory      $relativeFormatterFactory = null,
+        ?RelativeDateFallbackService $fallbackHandler = null
     ) {
         $this->cache = $cache ?? new DateFormatterCache();
         $this->dateFactory = $dateFactory ?? new DateFormatterFactory();
         $this->relativeFormatterFactory = $relativeFormatterFactory ?? new RelativeDateFormatterFactory();
+        $this->fallbackHandler = $fallbackHandler ?? new RelativeDateFallbackService();
     }
 
     /**
@@ -57,26 +59,12 @@ class DateFormatService
         $actualFormattedDate = $this->relativeFormatterFactory->create($this->options->getLocale())->format($this->getParsedDate($value));
         $resultDateTime = new DateTimeImmutable($this->validateResult($defaultFormattedDate, $value, $pattern));
 
-        if ($this->shouldFallback($resultDateTime, $relativeOptions, $defaultFormattedDate, $actualFormattedDate)) {
+        if ($this->fallbackHandler->shouldFallback($resultDateTime, $relativeOptions, $defaultFormattedDate, $actualFormattedDate)) {
             $result = $this->getDateFormatter($fallbackOptions, $pattern)->format($this->getParsedDate($value));
             return $this->validateResult($result, $value, $pattern);
         }
 
         return $this->validateResult($actualFormattedDate, $value, $pattern);
-    }
-
-    private function shouldFallback(
-        DateTimeImmutable         $dateTime,
-        RelativeDateFormatOptions $relativeOptions,
-        string|false              $defaultFormattedDate,
-        string|false              $actualFormattedDate
-    ): bool {
-        $currentDateTime = (new DateTimeImmutable())->setTime(0, 0);
-
-        return $dateTime->diff($currentDateTime)->d > self::MAX_TRANSLATABLE_DAYS_AMOUNT
-            || $relativeOptions->getRelativeDaysAmount() === 0
-            || $dateTime->diff($currentDateTime)->d > $relativeOptions->getRelativeDaysAmount()
-            || $defaultFormattedDate === $actualFormattedDate;
     }
 
     private function getDateFormatter(DateFormatOptions $options, string $pattern): IntlDateFormatter
