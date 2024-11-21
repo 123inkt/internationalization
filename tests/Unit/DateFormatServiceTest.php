@@ -37,21 +37,21 @@ class DateFormatServiceTest extends TestCase
     {
         $fallbackOption = new DateFormatOptions('en_GB', 'UTC');
 
-        yield 'nl_NL, no relative' => [
+        yield 'en_GB, no relative' => [
             'en_GB', 'UTC',
             new DateTimeImmutable(),
             new RelativeDateFormatOptions(0),
             $fallbackOption,
             (new DateTimeImmutable())->format('Y-m-d')
         ];
-        yield 'nl_NL, relative today' => [
+        yield 'en_GB, relative today' => [
             'en_GB', 'UTC',
             new DateTimeImmutable(),
             new RelativeDateFormatOptions(2),
             $fallbackOption,
             'today'
         ];
-        yield 'nl_NL, relative 1 day' => [
+        yield 'en_GB, relative 1 day' => [
             'en_GB', 'UTC',
             new DateTimeImmutable('+1 day'),
             new RelativeDateFormatOptions(2),
@@ -64,6 +64,13 @@ class DateFormatServiceTest extends TestCase
             new RelativeDateFormatOptions(2),
             $fallbackOption,
             'overmorgen'
+        ];
+        yield 'en_GB, relative 2 days English' => [
+            'en_GB', 'Europe/Amsterdam',
+            new DateTimeImmutable('+2 days'),
+            new RelativeDateFormatOptions(2),
+            $fallbackOption,
+            (new DateTimeImmutable('+2 days'))->format('Y-m-d')
         ];
         yield 'nl_NL, relative day but capped by options' => [
             'nl_NL', 'UTC',

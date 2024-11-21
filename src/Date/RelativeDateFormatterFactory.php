@@ -7,11 +7,22 @@ use IntlDateFormatter;
 
 class RelativeDateFormatterFactory
 {
-    public function create(string $locale): IntlDateFormatter
+    public function createRelativeFull(string $locale): IntlDateFormatter
     {
         return new IntlDateFormatter(
             $locale,
             IntlDateFormatter::RELATIVE_FULL,
+            IntlDateFormatter::NONE,
+            'UTC',
+            IntlDateFormatter::GREGORIAN,
+        );
+    }
+
+    public function createFull(string $locale): IntlDateFormatter
+    {
+        return new IntlDateFormatter(
+            $locale,
+            IntlDateFormatter::FULL,
             IntlDateFormatter::NONE,
             'UTC',
             IntlDateFormatter::GREGORIAN

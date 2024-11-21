@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace DR\Internationalization\Date;
 
 use IntlDateFormatter;
+use IntlTimeZone;
 
 /**
  * @phpstan-type CalendarType IntlDateFormatter::GREGORIAN|IntlDateFormatter::TRADITIONAL
- * @phpstan-import-type DateFormatType from DateFormatTypes
+ * @phpstan-type DateFormatType IntlTimeZone::*
  */
 class DateFormatOptions
 {
@@ -31,7 +32,7 @@ class DateFormatOptions
     }
 
     /**
-     * Set the preferred locale for the formatting. Expects an ietf code (nl_NL, nl_BE, en_GB, etc...). Defaults to system configuration.
+     * Set the preferred locale for the formatting. Expects an POSIX code (nl_NL, nl_BE, en_GB, etc...). Defaults to system configuration.
      * @return static
      */
     public function setLocale(string $locale): self

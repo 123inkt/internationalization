@@ -13,20 +13,15 @@ class DateFormatOptionsTest extends TestCase
 {
     public function test(): void
     {
-        $options = new DateFormatOptions('NL', 'Europe/Amsterdam');
+        $options = new DateFormatOptions('nl_NL', 'Europe/Amsterdam');
         $options->setDateType(1);
         $options->setTimeType(2);
         $options->setCalendar(1);
-        $options->setLocale('en');
+        $options->setLocale('en_GB');
         $options->setTimezone('Europe/Amsterdam');
 
-        $serializedData = serialize([
-            'locale' => $options->getLocale(),
-            'timezone' => $options->getTimezone(),
-            'dateType' => $options->getDateType(),
-            'timeType' => $options->getTimeType(),
-            'calendar' => $options->getCalendar(),
-        ]);
+        $serializedData = 'a:5:{s:6:"locale";s:5:"en_GB";s:8:"timezone";s:16:' .
+        '"Europe/Amsterdam";s:8:"dateType";i:1;s:8:"timeType";i:2;s:8:"calendar";i:1;}';
 
         static::assertSame("date:" . $serializedData, (string)$options);
     }

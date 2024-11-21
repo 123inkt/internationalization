@@ -15,12 +15,12 @@ class DateFormatterFactoryTest extends TestCase
 {
     public function testDefault(): void
     {
-        $emptyOptions = new DateFormatOptions('NL', 'Europe/Stockholm');
+        $emptyOptions = new DateFormatOptions('nl_BE', 'Europe/Stockholm');
 
         $factory = new DateFormatterFactory();
         $result = $factory->create($emptyOptions, 'Y-m-d');
 
-        static::assertSame('nl', $result->getLocale());
+        static::assertSame('nl_BE', $result->getLocale());
         static::assertNotFalse($result->getTimeZone());
         static::assertSame('Europe/Stockholm', $result->getTimeZone()->getID());
         static::assertSame(IntlDateFormatter::FULL, $result->getTimeType());

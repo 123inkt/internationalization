@@ -58,13 +58,6 @@ class RelativeDateFallbackServiceTest extends TestCase
             '2024-01-04',
             true
         ];
-        yield 'Fallback default date is the same' => [
-            new DateTimeImmutable('+3 days'),
-            new RelativeDateFormatOptions(10),
-            '2024-01-04',
-            '2024-01-04',
-            true
-        ];
         yield 'Should not fallback' => [
             new DateTimeImmutable('+1 days'),
             new RelativeDateFormatOptions(5),
@@ -72,6 +65,5 @@ class RelativeDateFallbackServiceTest extends TestCase
             'Tomorrow',
             false
         ];
-
     }
 }

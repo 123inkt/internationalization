@@ -3,34 +3,26 @@ declare(strict_types=1);
 
 namespace DR\Internationalization;
 
-use DateTimeImmutable;
 use DateTimeInterface;
+use DR\Internationalization\Date\DateFormatHelper;
 use DR\Internationalization\Date\DateFormatOptions;
-use DR\Internationalization\Date\DateFormatterCache;
-use DR\Internationalization\Date\DateFormatterCacheInterface;
-use DR\Internationalization\Date\DateFormatterFactory;
 use DR\Internationalization\Date\RelativeDateFallbackService;
 use DR\Internationalization\Date\RelativeDateFormatOptions;
 use DR\Internationalization\Date\RelativeDateFormatterFactory;
-use IntlDateFormatter;
-use RuntimeException;
 
 class DateFormatService
 {
-    private DateFormatterCacheInterface $cache;
-    private DateFormatterFactory $dateFactory;
+    private DateFormatHelper $dateFormatHelper;
     private RelativeDateFormatterFactory $relativeFormatterFactory;
     private RelativeDateFallbackService $fallbackHandler;
 
     public function __construct(
         private readonly DateFormatOptions $options,
-        ?DateFormatterCacheInterface       $cache = null,
-        ?DateFormatterFactory              $dateFactory = null,
+        ?DateFormatHelper                  $formatHelper = null,
         ?RelativeDateFormatterFactory      $relativeFormatterFactory = null,
-        ?RelativeDateFallbackService $fallbackHandler = null
+        ?RelativeDateFallbackService       $fallbackHandler = null
     ) {
-        $this->cache = $cache ?? new DateFormatterCache();
-        $this->dateFactory = $dateFactory ?? new DateFormatterFactory();
+        $this->dateFormatHelper = $formatHelper ?? new DateFormatHelper();
         $this->relativeFormatterFactory = $relativeFormatterFactory ?? new RelativeDateFormatterFactory();
         $this->fallbackHandler = $fallbackHandler ?? new RelativeDateFallbackService();
     }
@@ -42,9 +34,9 @@ class DateFormatService
     public function format(int|string|DateTimeInterface $value, string $pattern, ?DateFormatOptions $options = null): string
     {
         $options = $options ?? $this->options;
-        $result = $this->getDateFormatter($options, $pattern)->format(is_string($value) ? (int)strtotime($value) : $value);
+        $result = $this->dateFormatHelper->getDateFormatter($options, $pattern)->format(is_string($value) ? (int)strtotime($value) : $value);
 
-        return $this->validateResult($result, $value, $pattern);
+        return $this->dateFormatHelper->validateResult($result, $value, $pattern);
     }
 
     public function formatRelative(
@@ -53,40 +45,21 @@ class DateFormatService
         RelativeDateFormatOptions    $relativeOptions,
         DateFormatOptions            $fallbackOptions
     ): string {
-        $defaultOptions = new DateFormatOptions($this->options->getLocale(), $this->options->getTimezone());
-        $defaultFormattedDate = $this->getDateFormatter($defaultOptions, $pattern)->format($this->getParsedDate($value));
+        $parsedValue = $this->dateFormatHelper->getParsedDate($value);
 
-        $actualFormattedDate = $this->relativeFormatterFactory->create($this->options->getLocale())->format($this->getParsedDate($value));
-        $resultDateTime = new DateTimeImmutable($this->validateResult($defaultFormattedDate, $value, $pattern));
-
-        if ($this->fallbackHandler->shouldFallback($resultDateTime, $relativeOptions, $defaultFormattedDate, $actualFormattedDate)) {
-            $result = $this->getDateFormatter($fallbackOptions, $pattern)->format($this->getParsedDate($value));
-            return $this->validateResult($result, $value, $pattern);
+        if ($this->fallbackHandler->shouldFallback($parsedValue, $relativeOptions)) {
+            $result = $this->dateFormatHelper->getDateFormatter($fallbackOptions, $pattern)->format($parsedValue);
+            return $this->dateFormatHelper->validateResult($result, $value, $pattern);
         }
 
-        return $this->validateResult($actualFormattedDate, $value, $pattern);
-    }
+        $relativeFullDate = $this->relativeFormatterFactory->createRelativeFull($this->options->getLocale())->format($parsedValue);
+        $fullDate = $this->relativeFormatterFactory->createFull($this->options->getLocale())->format($parsedValue);
 
-    private function getDateFormatter(DateFormatOptions $options, string $pattern): IntlDateFormatter
-    {
-        // get or create from cache
-        return $this->cache->get((string)$options, fn() => $this->dateFactory->create($options, $pattern));
-    }
-
-    private function getParsedDate(int|string|DateTimeInterface $date): int|DateTimeInterface
-    {
-        return is_string($date) ? (int)strtotime($date) : $date;
-    }
-
-    private function validateResult(bool|string|null $result, int|string|DateTimeInterface $value, string $pattern): string
-    {
-        // @codeCoverageIgnoreStart
-        if (is_bool($result) || $result === null) {
-            $scalarValue = $value instanceof DateTimeInterface ? $value->getTimestamp() : $value;
-            throw new RuntimeException(sprintf('Unable to format date `%s` to format `%s`', $scalarValue, $pattern));
+        if ($relativeFullDate === $fullDate) {
+            $result = $this->dateFormatHelper->getDateFormatter($fallbackOptions, $pattern)->format($parsedValue);
+            return $this->dateFormatHelper->validateResult($result, $value, $pattern);
         }
-        // @codeCoverageIgnoreEnd
 
-        return $result;
+        return $this->dateFormatHelper->validateResult($relativeFullDate, $value, $pattern);
     }
 }

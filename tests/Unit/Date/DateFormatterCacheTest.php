@@ -17,10 +17,10 @@ class DateFormatterCacheTest extends TestCase
         $cache = new DateFormatterCache();
         $formatter = new IntlDateFormatter("en");
 
-        // should set and invoke callback
+        // Should set and invoke callback.
         static::assertSame($formatter, $cache->get("foobar", static fn() => $formatter));
 
-        // should get formatter from cache
+        // Should get formatter from cache.
         static::assertSame($formatter, $cache->get("foobar", static fn() => new IntlDateFormatter("en")));
     }
 }
