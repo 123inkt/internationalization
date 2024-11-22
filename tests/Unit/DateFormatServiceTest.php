@@ -5,6 +5,7 @@ namespace DR\Internationalization\Tests\Unit;
 
 use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
 use DR\Internationalization\Date\DateFormatOptions;
 use DR\Internationalization\Date\RelativeDateFormatOptions;
 use DR\Internationalization\DateFormatService;
@@ -24,73 +25,65 @@ class DateFormatServiceTest extends TestCase
     }
 
     #[DataProvider('dataProviderRelativeDateFormats')]
-    public function testRelativeFormat($locale, $timeZone, $value, $relativeOptions, $fallbackOptions, $expectedValue): void
+    public function testRelativeFormat($locale, $timeZone, $value, $relativeOptions, $expectedValue): void
     {
         $formatService = new DateFormatService(new DateFormatOptions($locale, $timeZone));
-        static::assertSame($expectedValue, $formatService->formatRelative($value, 'Y-M-d', $relativeOptions, $fallbackOptions));
+        static::assertSame($expectedValue, $formatService->formatRelative($value, 'Y-M-d', $relativeOptions));
     }
 
     /**
-     * @return Generator<string, array<string|RelativeDateFormatOptions|DateFormatOptions>>
+     * @return Generator<string, array<string|RelativeDateFormatOptions|DateTimeInterface>>
      */
     public static function dataProviderRelativeDateFormats(): Generator
     {
-        $fallbackOption = new DateFormatOptions('en_GB', 'UTC');
+
 
         yield 'en_GB, no relative' => [
             'en_GB', 'UTC',
             new DateTimeImmutable(),
             new RelativeDateFormatOptions(0),
-            $fallbackOption,
             (new DateTimeImmutable())->format('Y-m-d')
         ];
         yield 'en_GB, relative today' => [
             'en_GB', 'UTC',
             new DateTimeImmutable(),
             new RelativeDateFormatOptions(2),
-            $fallbackOption,
             'today'
         ];
         yield 'en_GB, relative 1 day' => [
             'en_GB', 'UTC',
             new DateTimeImmutable('+1 day'),
             new RelativeDateFormatOptions(2),
-            $fallbackOption,
             'tomorrow'
         ];
         yield 'nl_NL, relative 2 days Dutch' => [
             'nl_NL', 'Europe/Amsterdam',
             new DateTimeImmutable('+2 days'),
             new RelativeDateFormatOptions(2),
-            $fallbackOption,
             'overmorgen'
         ];
         yield 'en_GB, relative 2 days English' => [
             'en_GB', 'Europe/Amsterdam',
             new DateTimeImmutable('+2 days'),
             new RelativeDateFormatOptions(2),
-            $fallbackOption,
             (new DateTimeImmutable('+2 days'))->format('Y-m-d')
         ];
         yield 'nl_NL, relative day but capped by options' => [
             'nl_NL', 'UTC',
             new DateTimeImmutable('+2 days'),
             new RelativeDateFormatOptions(1),
-            $fallbackOption,
             (new DateTimeImmutable('+2 days'))->format('Y-m-d')
         ];
         yield 'nl_NL, relative 2 days Dutch int' => [
             'nl_NL', 'Europe/Amsterdam',
             (new DateTimeImmutable('+2 days'))->getTimestamp(),
             new RelativeDateFormatOptions(2),
-            $fallbackOption,
             'overmorgen'
         ];
         yield 'nl_NL, relative 2 days Dutch string' => [
             'nl_NL', 'Europe/Amsterdam',
             (new DateTimeImmutable('+2 days'))->format('Y-m-d'),
             new RelativeDateFormatOptions(2),
-            $fallbackOption,
             'overmorgen'
         ];
     }
