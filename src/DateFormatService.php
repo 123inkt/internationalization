@@ -46,7 +46,7 @@ class DateFormatService
         $options ??= $this->options;
         $fallbackResult = $this->fallbackHandler->getFallbackResult($options->getLocale(), $parsedValue, $relativeOptions);
 
-        if ($fallbackResult->shouldFallback()) {
+        if ($fallbackResult->isFallback()) {
             $result = $this->dateFormatHelper->getDateFormatter($options, $pattern)->format($parsedValue);
             return $this->dateFormatHelper->validateResult($result, $value, $pattern);
         }

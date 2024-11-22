@@ -21,8 +21,13 @@ class DateFormatOptionsTest extends TestCase
         $options->setTimezone('Europe/Amsterdam');
 
         $serializedData = 'a:5:{s:6:"locale";s:5:"en_GB";s:8:"timezone";s:16:' .
-        '"Europe/Amsterdam";s:8:"dateType";i:1;s:8:"timeType";i:2;s:8:"calendar";i:1;}';
+            '"Europe/Amsterdam";s:8:"dateType";i:1;s:8:"timeType";i:2;s:8:"calendar";i:1;}';
 
+        static::assertSame(1, $options->getDateType());
+        static::assertSame(2, $options->getTimeType());
+        static::assertSame(1, $options->getCalendar());
+        static::assertSame('en_GB', $options->getLocale());
+        static::assertSame('Europe/Amsterdam', $options->getTimezone());
         static::assertSame("date:" . $serializedData, (string)$options);
     }
 }

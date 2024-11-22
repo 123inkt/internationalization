@@ -52,7 +52,7 @@ class RelativeDateFallbackServiceTest extends TestCase
 
         $result = $this->service->getFallbackResult('en_GB', $datetime, $relativeOptions);
 
-        static::assertSame($expectedResult->shouldFallback(), $result->shouldFallback());
+        static::assertSame($expectedResult->isFallback(), $result->isFallback());
         static::assertSame($expectedResult->getDate(), $result->getDate());
     }
 
@@ -87,10 +87,10 @@ class RelativeDateFallbackServiceTest extends TestCase
         ];
         yield 'Fallback date same' => [
             new DateTimeImmutable('+3 days'),
-            new RelativeDateFormatOptions(2),
+            new RelativeDateFormatOptions(5),
             '2024-01-01',
             '2024-01-01',
-            0,
+            1,
             new RelativeDateFallbackResult(true)
         ];
         yield 'Should not fallback' => [

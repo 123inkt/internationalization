@@ -52,4 +52,31 @@ class DateFormatHelperTest extends TestCase
 
         static::assertSame($expectedResult->getTimestamp(), $result->getTimestamp());
     }
+
+    public function testGetParsedDateString(): void
+    {
+        $result = $this->helper->getParsedDate('2024-01-01');
+
+        static::assertSame('2024-01-01', $result->format('Y-m-d'));
+    }
+
+    public function testGetParsedDateDateTime(): void
+    {
+        $datetime = new DateTimeImmutable('2024-01-01');
+        $result = $this->helper->getParsedDate($datetime);
+
+        static::assertSame('2024-01-01', $result->format('Y-m-d'));
+    }
+
+    public function testValidateResultException(): void
+    {
+        $this->expectExceptionMessage('Unable to format date `badDate` to format `Y-m-d`');
+        $this->helper->validateResult(false, 'badDate', 'Y-m-d');
+    }
+
+    public function testValidateResultSuccess(): void
+    {
+        $result = $this->helper->validateResult('2024-01-01', 'badDate', 'Y-m-d');
+        static::assertSame('2024-01-01', $result);
+    }
 }

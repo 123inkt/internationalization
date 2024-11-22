@@ -10,7 +10,7 @@ class RelativeDateFallbackResult
     {
     }
 
-    public function shouldFallback(): bool
+    public function isFallback(): bool
     {
         return $this->fallback;
     }

@@ -41,12 +41,10 @@ class DateFormatHelper
 
     public function validateResult(bool|string|null $result, int|string|DateTimeInterface $value, string $pattern): string
     {
-        // @codeCoverageIgnoreStart
         if (is_bool($result) || $result === null) {
             $scalarValue = $value instanceof DateTimeInterface ? $value->getTimestamp() : $value;
             throw new RuntimeException(sprintf('Unable to format date `%s` to format `%s`', $scalarValue, $pattern));
         }
-        // @codeCoverageIgnoreEnd
 
         return $result;
     }
