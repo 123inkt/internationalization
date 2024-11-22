@@ -20,7 +20,7 @@ class DateFormatService
         ?RelativeDateFallbackService       $fallbackHandler = null
     ) {
         $this->dateFormatHelper = $formatHelper ?? new DateFormatHelper();
-        $this->fallbackHandler = $fallbackHandler ?? new RelativeDateFallbackService($this->options->getLocale());
+        $this->fallbackHandler = $fallbackHandler ?? new RelativeDateFallbackService();
     }
 
     /**
@@ -39,13 +39,15 @@ class DateFormatService
     public function formatRelative(
         int|string|DateTimeInterface $value,
         string                       $pattern,
-        RelativeDateFormatOptions    $relativeOptions
+        RelativeDateFormatOptions    $relativeOptions,
+        ?DateFormatOptions           $options = null
     ): string {
         $parsedValue = $this->dateFormatHelper->getParsedDate($value);
-        $fallbackResult = $this->fallbackHandler->getFallbackResult($parsedValue, $relativeOptions);
+        $options ??= $this->options;
+        $fallbackResult = $this->fallbackHandler->getFallbackResult($options->getLocale(), $parsedValue, $relativeOptions);
 
         if ($fallbackResult->shouldFallback()) {
-            $result = $this->dateFormatHelper->getDateFormatter($this->options, $pattern)->format($parsedValue);
+            $result = $this->dateFormatHelper->getDateFormatter($options, $pattern)->format($parsedValue);
             return $this->dateFormatHelper->validateResult($result, $value, $pattern);
         }
 

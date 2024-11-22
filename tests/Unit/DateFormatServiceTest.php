@@ -25,10 +25,10 @@ class DateFormatServiceTest extends TestCase
     }
 
     #[DataProvider('dataProviderRelativeDateFormats')]
-    public function testRelativeFormat($locale, $timeZone, $value, $relativeOptions, $expectedValue): void
+    public function testRelativeFormat($locale, $timeZone, $value, $relativeOptions, $expectedValue, $overwriteOptions = null): void
     {
         $formatService = new DateFormatService(new DateFormatOptions($locale, $timeZone));
-        static::assertSame($expectedValue, $formatService->formatRelative($value, 'Y-M-d', $relativeOptions));
+        static::assertSame($expectedValue, $formatService->formatRelative($value, 'Y-M-d', $relativeOptions, $overwriteOptions));
     }
 
     /**
@@ -36,8 +36,6 @@ class DateFormatServiceTest extends TestCase
      */
     public static function dataProviderRelativeDateFormats(): Generator
     {
-
-
         yield 'en_GB, no relative' => [
             'en_GB', 'UTC',
             new DateTimeImmutable(),
@@ -85,6 +83,13 @@ class DateFormatServiceTest extends TestCase
             (new DateTimeImmutable('+2 days'))->format('Y-m-d'),
             new RelativeDateFormatOptions(2),
             'overmorgen'
+        ];
+        yield 'Overwriting options' => [
+            'en_GB', 'Europe/Amsterdam',
+            (new DateTimeImmutable('+1 days'))->format('Y-m-d'),
+            new RelativeDateFormatOptions(2),
+            'morgen',
+            new DateFormatOptions('nl_NL', 'Europe/Amsterdam'),
         ];
     }
 

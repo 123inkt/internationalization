@@ -27,7 +27,7 @@ class RelativeDateFallbackServiceTest extends TestCase
         parent::setUp();
 
         $this->dateFormatterFactory = $this->createMock(RelativeDateFormatterFactory::class);
-        $this->service = new RelativeDateFallbackService('en_GB', $this->dateFormatterFactory);
+        $this->service = new RelativeDateFallbackService($this->dateFormatterFactory);
     }
 
     #[DataProvider('dataProviderFallback')]
@@ -50,7 +50,7 @@ class RelativeDateFallbackServiceTest extends TestCase
             ->with('en_GB')
             ->willReturn($fullDateFormatter);
 
-        $result = $this->service->getFallbackResult($datetime, $relativeOptions);
+        $result = $this->service->getFallbackResult('en_GB', $datetime, $relativeOptions);
 
         static::assertSame($expectedResult->shouldFallback(), $result->shouldFallback());
         static::assertSame($expectedResult->getDate(), $result->getDate());
@@ -89,7 +89,7 @@ class RelativeDateFallbackServiceTest extends TestCase
             new DateTimeImmutable('+3 days'),
             new RelativeDateFormatOptions(2),
             '2024-01-01',
-            '2024-01-04',
+            '2024-01-01',
             0,
             new RelativeDateFallbackResult(true)
         ];

@@ -12,13 +12,16 @@ class RelativeDateFallbackService
     private const MAX_TRANSLATABLE_DAYS_AMOUNT = 4;
     private RelativeDateFormatterFactory $relativeFormatterFactory;
 
-    public function __construct(private readonly string $locale, ?RelativeDateFormatterFactory $relativeFormatterFactory = null)
+    public function __construct(?RelativeDateFormatterFactory $relativeFormatterFactory = null)
     {
         $this->relativeFormatterFactory = $relativeFormatterFactory ?? new RelativeDateFormatterFactory();
     }
 
-    public function getFallbackResult(DateTimeInterface $dateTime, RelativeDateFormatOptions $relativeOptions): RelativeDateFallbackResult
-    {
+    public function getFallbackResult(
+        string $locale,
+        DateTimeInterface $dateTime,
+        RelativeDateFormatOptions $relativeOptions
+    ): RelativeDateFallbackResult {
         $currentDateTime = (new DateTimeImmutable())->setTime(0, 0);
 
         if ($dateTime->diff($currentDateTime)->d > self::MAX_TRANSLATABLE_DAYS_AMOUNT
@@ -29,13 +32,13 @@ class RelativeDateFallbackService
             return new RelativeDateFallbackResult(true);
         }
 
-        $relativeFullDate = $this->relativeFormatterFactory->createRelativeFull($this->locale)->format($dateTime);
-        $fullDate = $this->relativeFormatterFactory->createFull($this->locale)->format($dateTime);
+        $relativeDate = $this->relativeFormatterFactory->createRelativeFull($locale)->format($dateTime);
+        $fullDate = $this->relativeFormatterFactory->createFull($locale)->format($dateTime);
 
-        if ($relativeFullDate === $fullDate) {
+        if ($relativeDate === $fullDate) {
             return new RelativeDateFallbackResult(true);
         }
 
-        return new RelativeDateFallbackResult(false, $relativeFullDate);
+        return new RelativeDateFallbackResult(false, $relativeDate);
     }
 }
