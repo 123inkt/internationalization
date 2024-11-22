@@ -89,7 +89,9 @@ NumberParser::parseFloat('1,000,050.5');
 Formats dates and times. 
 Input can be timestamps, strings (compatible with strtotime) and DateTimeInterface objects
 ```php
-$dateFormatter = new DateFormatService('nl_NL', date_default_timezone_get());
+$dateFormatOptions = new DateFormatOptions('nl_NL', date_default_timezone_get())
+$dateFormatter = new DateFormatService($dateFormatOptions);
+
 $dateFormatter->format(time(), 'eeee dd LLLL Y - HH:mm:ss');
 // example output: zaterdag 02 juni 2040 - 05:57:02
 
@@ -99,6 +101,29 @@ $dateFormatter->format('next saturday', 'eeee dd LLLL Y - HH:mm:ss');
 $dateFormatter->format(new DateTime(), 'eeee dd LLLL Y - HH:mm:ss');
 // example output: zaterdag 02 juni 2040 - 05:57:02
 ```
+
+It is also possible to format dates and times to relative dates, such as 'today' and 'tomorrow'
+The RelativeDateFormatOptions decides how many days ahead it will try to convert a date to a relative date.
+
+```php
+$dateFormatOptions = new DateFormatOptions('nl_NL', date_default_timezone_get())
+$dateFormatter = new DateFormatService($dateFormatOptions);
+
+$dateFormatter->formatRelative(time(), 'Y-m-d', new RelativeDateFormatOptions(1));
+// example output: Vandaag
+
+$dateFormatter->formatRelative(new DateTime('+1 day'), 'Y-m-d', new RelativeDateFormatOptions(1);
+// example output: Morgen
+
+$dateFormatter->formatRelative(new DateTime('+2 days'), 'Y-m-d', new RelativeDateFormatOptions(2));
+// example output: Overmorgen
+
+// This will not convert the date to a relative date, as the options limit it one day ahead. Instead, it formats the date to the given pattern.
+$dateFormatter->formatRelative(new DateTime('+2 days'), 'Y-m-d', new RelativeDateFormatOptions(1));
+// example output: 2024-01-03
+```
+
+
 
 ### DayOfTheWeekFormatter
 Format the PHP Date day of the week to string
