@@ -91,6 +91,19 @@ class DateFormatServiceTest extends TestCase
             'morgen',
             new DateFormatOptions('nl_NL', 'Europe/Amsterdam'),
         ];
+        yield 'Use default relative options' => [
+            'en_GB', 'Europe/Amsterdam',
+            (new DateTimeImmutable('+1 days'))->format('Y-m-d'),
+            null,
+            '2024-11-26',
+            new DateFormatOptions('nl_NL', 'Europe/Amsterdam'),
+        ];
+        yield 'nl_NL, relative 2 days before Dutch string' => [
+            'nl_NL', 'Europe/Amsterdam',
+            (new DateTimeImmutable('-2 days'))->format('Y-m-d'),
+            new RelativeDateFormatOptions(2),
+            'eergisteren'
+        ];
     }
 
     /**

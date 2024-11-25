@@ -6,7 +6,7 @@ namespace DR\Internationalization\Date;
 
 class RelativeDateFallbackResult
 {
-    public function __construct(private readonly bool $fallback, private readonly string|bool $date = '')
+    public function __construct(private readonly bool $fallback, private readonly string $date = '')
     {
     }
 
@@ -15,7 +15,7 @@ class RelativeDateFallbackResult
         return $this->fallback;
     }
 
-    public function getDate(): string|bool
+    public function getDate(): string
     {
         return $this->date;
     }

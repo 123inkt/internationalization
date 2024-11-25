@@ -6,6 +6,7 @@ namespace DR\Internationalization\Date;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use RuntimeException;
 
 class RelativeDateFallbackService
 {
@@ -18,8 +19,8 @@ class RelativeDateFallbackService
     }
 
     public function getFallbackResult(
-        string $locale,
-        DateTimeInterface $dateTime,
+        string                    $locale,
+        DateTimeInterface         $dateTime,
         RelativeDateFormatOptions $relativeOptions
     ): RelativeDateFallbackResult {
         $currentDateTime = (new DateTimeImmutable())->setTime(0, 0);
@@ -32,8 +33,21 @@ class RelativeDateFallbackService
             return new RelativeDateFallbackResult(true);
         }
 
-        $relativeDate = $this->relativeFormatterFactory->createRelativeFull($locale)->format($dateTime);
-        $fullDate = $this->relativeFormatterFactory->createFull($locale)->format($dateTime);
+        $relativeDateFormatter = $this->relativeFormatterFactory->createRelativeFull($locale);
+        $fullDateFormatter = $this->relativeFormatterFactory->createFull($locale);
+
+        $relativeDate = $relativeDateFormatter->format($dateTime);
+        $fullDate = $fullDateFormatter->format($dateTime);
+
+        if ($relativeDate === false) {
+            throw new RuntimeException(
+                sprintf(
+                    'An error occurred while trying to parse the relative date. Error code: %s, %s',
+                    $relativeDateFormatter->getErrorCode(),
+                    $relativeDateFormatter->getErrorMessage()
+                )
+            );
+        }
 
         if ($relativeDate === $fullDate) {
             return new RelativeDateFallbackResult(true);

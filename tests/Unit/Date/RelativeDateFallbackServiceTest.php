@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 #[CoversClass(RelativeDateFallbackService::class)]
 class RelativeDateFallbackServiceTest extends TestCase
@@ -54,6 +55,33 @@ class RelativeDateFallbackServiceTest extends TestCase
 
         static::assertSame($expectedResult->isFallback(), $result->isFallback());
         static::assertSame($expectedResult->getDate(), $result->getDate());
+    }
+
+    public function testThrowException(): void
+    {
+        $relativeFormatter = $this->createMock(IntlDateFormatter::class);
+        $fullDateFormatter = $this->createMock(IntlDateFormatter::class);
+        $relativeFormatter->expects(self::once())->method('format')->willReturn(false);
+        $fullDateFormatter->expects(self::once())->method('format')->willReturn(false);
+
+        $relativeFormatter->expects(self::once())->method('getErrorCode')->willReturn(101);
+        $relativeFormatter->expects(self::once())->method('getErrorMessage')->willReturn('Error!');
+
+        $this->dateFormatterFactory
+            ->expects(self::exactly(1))
+            ->method('createRelativeFull')
+            ->with('en_GB')
+            ->willReturn($relativeFormatter);
+
+        $this->dateFormatterFactory
+            ->expects(self::exactly(1))
+            ->method('createFull')
+            ->with('en_GB')
+            ->willReturn($fullDateFormatter);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('An error occurred while trying to parse the relative date. Error code: 101, Error!');
+        $this->service->getFallbackResult('en_GB', new DateTimeImmutable('+2 days'), new RelativeDateFormatOptions(10));
     }
 
     /**

@@ -118,6 +118,9 @@ $dateFormatter->formatRelative(new DateTime('+1 day'), 'Y-m-d', new RelativeDate
 $dateFormatter->formatRelative(new DateTime('+2 days'), 'Y-m-d', new RelativeDateFormatOptions(2));
 // example output: Overmorgen
 
+$dateFormatter->formatRelative(new DateTime('-2 days'), 'Y-m-d', new RelativeDateFormatOptions(2));
+// example output: Eergisteren
+
 // This will not convert the date to a relative date, as the options limit it one day ahead. Instead, it formats the date to the given pattern.
 $dateFormatter->formatRelative(new DateTime('+2 days'), 'Y-m-d', new RelativeDateFormatOptions(1));
 // example output: 2024-01-03
