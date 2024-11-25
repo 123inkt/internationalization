@@ -33,7 +33,7 @@ class DateFormatHelper
         }
 
         if (is_int($date)) {
-            return new DateTimeImmutable('@' . $date);
+            return (new DateTimeImmutable())->setTimestamp($date);
         }
 
         return $date;
