@@ -4,6 +4,10 @@ declare(strict_types=1);
 namespace DR\Internationalization\Tests\Unit;
 
 use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
+use DR\Internationalization\Date\DateFormatOptions;
+use DR\Internationalization\Date\RelativeDateFormatOptions;
 use DR\Internationalization\DateFormatService;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -16,8 +20,90 @@ class DateFormatServiceTest extends TestCase
     #[DataProvider('dataProviderDateFormats')]
     public function testFormat($locale, $timeZone, $value, $format, $expectedValue): void
     {
-        $formatService = new DateFormatService($locale, $timeZone);
+        $formatService = new DateFormatService(new DateFormatOptions($locale, $timeZone));
         static::assertSame($expectedValue, $formatService->format($value, $format));
+    }
+
+    #[DataProvider('dataProviderRelativeDateFormats')]
+    public function testRelativeFormat($locale, $timeZone, $value, $relativeOptions, $expectedValue, $overwriteOptions = null): void
+    {
+        $formatService = new DateFormatService(new DateFormatOptions($locale, $timeZone));
+        static::assertSame($expectedValue, $formatService->formatRelative($value, 'Y-M-d', $relativeOptions, $overwriteOptions));
+    }
+
+    /**
+     * @return Generator<string, array<string|RelativeDateFormatOptions|DateTimeInterface>>
+     */
+    public static function dataProviderRelativeDateFormats(): Generator
+    {
+        yield 'en_GB, no relative' => [
+            'en_GB', 'UTC',
+            new DateTimeImmutable(),
+            new RelativeDateFormatOptions(0),
+            (new DateTimeImmutable())->format('Y-m-d')
+        ];
+        yield 'en_GB, relative today' => [
+            'en_GB', 'UTC',
+            new DateTimeImmutable(),
+            new RelativeDateFormatOptions(2),
+            'today'
+        ];
+        yield 'en_GB, relative 1 day' => [
+            'en_GB', 'UTC',
+            new DateTimeImmutable('+1 day'),
+            new RelativeDateFormatOptions(2),
+            'tomorrow'
+        ];
+        yield 'nl_NL, relative 2 days Dutch' => [
+            'nl_NL', 'Europe/Amsterdam',
+            new DateTimeImmutable('+2 days'),
+            new RelativeDateFormatOptions(2),
+            'overmorgen'
+        ];
+        yield 'en_GB, relative 2 days English' => [
+            'en_GB', 'Europe/Amsterdam',
+            new DateTimeImmutable('+2 days'),
+            new RelativeDateFormatOptions(2),
+            (new DateTimeImmutable('+2 days'))->format('Y-m-d')
+        ];
+        yield 'nl_NL, relative day but capped by options' => [
+            'nl_NL', 'UTC',
+            new DateTimeImmutable('+2 days'),
+            new RelativeDateFormatOptions(1),
+            (new DateTimeImmutable('+2 days'))->format('Y-m-d')
+        ];
+        yield 'nl_NL, relative 2 days Dutch int' => [
+            'nl_NL', 'Europe/Amsterdam',
+            (new DateTimeImmutable('+2 days'))->getTimestamp(),
+            new RelativeDateFormatOptions(2),
+            'overmorgen'
+        ];
+        yield 'nl_NL, relative 2 days Dutch string' => [
+            'nl_NL', 'Europe/Amsterdam',
+            (new DateTimeImmutable('+2 days'))->format('Y-m-d'),
+            new RelativeDateFormatOptions(2),
+            'overmorgen'
+        ];
+        yield 'Overwriting options' => [
+            'en_GB', 'Europe/Amsterdam',
+            (new DateTimeImmutable('+1 days'))->format('Y-m-d'),
+            new RelativeDateFormatOptions(2),
+            'morgen',
+            new DateFormatOptions('nl_NL', 'Europe/Amsterdam'),
+        ];
+        yield 'Use default relative options' => [
+            'en_GB', 'Europe/Amsterdam',
+            (new DateTimeImmutable('+1 days'))->format('Y-m-d'),
+            null,
+            '2024-11-26',
+            new DateFormatOptions('nl_NL', 'Europe/Amsterdam'),
+        ];
+        yield 'nl_NL, relative 2 days before Dutch string' => [
+            'nl_NL', 'Europe/Amsterdam',
+            (new DateTimeImmutable('-2 days'))->format('Y-m-d'),
+            new RelativeDateFormatOptions(2),
+            'eergisteren'
+        ];
     }
 
     /**
@@ -54,7 +140,7 @@ class DateFormatServiceTest extends TestCase
 
     public function testFormatDuplicateFormat(): void
     {
-        $formatService = new DateFormatService('nl_NL', 'Europe/Amsterdam');
+        $formatService = new DateFormatService(new DateFormatOptions('nl_NL', 'Europe/Amsterdam'));
         static::assertSame('zaterdag 02 juni 2040 - 05:57:02', $formatService->format(2222222222, 'eeee dd LLLL Y - HH:mm:ss'));
         static::assertSame('zaterdag 02 juni 2040 - 05:57:02', $formatService->format(2222222222, 'eeee dd LLLL Y - HH:mm:ss'));
     }
