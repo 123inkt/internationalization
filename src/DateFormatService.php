@@ -14,14 +14,28 @@ class DateFormatService
     private DateFormatHelper $dateFormatHelper;
     private RelativeDateFallbackService $fallbackHandler;
     private RelativeDateFormatOptions $relativeDateFormatOptions;
+    private DateFormatOptions $options;
+
 
     public function __construct(
-        private readonly DateFormatOptions $options,
-        ?DateFormatHelper                  $formatHelper = null,
-        ?RelativeDateFallbackService       $fallbackHandler = null,
-        ?RelativeDateFormatOptions           $relativeDateFormatOptions = null
+        DateFormatOptions|string     $options,
+        DateFormatHelper|string|null $formatHelper = null,
+        ?RelativeDateFallbackService $fallbackHandler = null,
+        ?RelativeDateFormatOptions   $relativeDateFormatOptions = null
     ) {
-        $this->dateFormatHelper = $formatHelper ?? new DateFormatHelper();
+        if (is_string($options) && is_string($formatHelper)) {
+            $this->options = new DateFormatOptions($options, $formatHelper);
+        }
+        if ($options instanceof DateFormatOptions) {
+            $this->options = $options;
+        }
+        if ($formatHelper instanceof DateFormatHelper) {
+            $this->dateFormatHelper = $formatHelper;
+        }
+        if ($formatHelper === null || is_string($formatHelper)) {
+            $this->dateFormatHelper = new DateFormatHelper();
+        }
+
         $this->fallbackHandler = $fallbackHandler ?? new RelativeDateFallbackService();
         $this->relativeDateFormatOptions = $relativeDateFormatOptions ?? new RelativeDateFormatOptions(null);
     }
@@ -42,7 +56,7 @@ class DateFormatService
     public function formatRelative(
         int|string|DateTimeInterface $value,
         string                       $pattern,
-        ?RelativeDateFormatOptions    $relativeOptions = null,
+        ?RelativeDateFormatOptions   $relativeOptions = null,
         ?DateFormatOptions           $options = null
     ): string {
         $parsedValue = $this->dateFormatHelper->getParsedDate($value);
