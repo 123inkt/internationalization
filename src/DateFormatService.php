@@ -29,9 +29,6 @@ class DateFormatService
         if ($options instanceof DateFormatOptions) {
             $this->options = $options;
         }
-        if ($formatHelper instanceof DateFormatHelper) {
-            $this->dateFormatHelper = $formatHelper;
-        }
         if ($formatHelper === null || is_string($formatHelper)) {
             $this->dateFormatHelper = new DateFormatHelper();
         }
