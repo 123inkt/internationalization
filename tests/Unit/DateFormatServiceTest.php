@@ -28,7 +28,7 @@ class DateFormatServiceTest extends TestCase
     public function testRelativeFormat($locale, $timeZone, $value, $relativeOptions, $expectedValue, $overwriteOptions = null): void
     {
         $formatService = new DateFormatService(new DateFormatOptions($locale, $timeZone));
-        static::assertSame($expectedValue, $formatService->formatRelative($value, 'Y-M-d', $relativeOptions, $overwriteOptions));
+        static::assertSame($expectedValue, $formatService->formatRelative($value, 'YYYY-MM-dd', $relativeOptions, $overwriteOptions));
     }
 
     #[DataProvider('dataProviderDateFormats')]
