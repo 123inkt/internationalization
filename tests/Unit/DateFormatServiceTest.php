@@ -31,6 +31,13 @@ class DateFormatServiceTest extends TestCase
         static::assertSame($expectedValue, $formatService->formatRelative($value, 'Y-M-d', $relativeOptions, $overwriteOptions));
     }
 
+    #[DataProvider('dataProviderDateFormats')]
+    public function testFormatOldConstructor($locale, $timeZone, $value, $format, $expectedValue): void
+    {
+        $formatService = new DateFormatService($locale, $timeZone);
+        static::assertSame($expectedValue, $formatService->format($value, $format));
+    }
+
     /**
      * @return Generator<string, array<string|RelativeDateFormatOptions|DateTimeInterface>>
      */
@@ -95,7 +102,7 @@ class DateFormatServiceTest extends TestCase
             'en_GB', 'Europe/Amsterdam',
             (new DateTimeImmutable('+1 days'))->format('Y-m-d'),
             null,
-            '2024-11-26',
+            (new DateTimeImmutable('+1 days'))->format('Y-m-d'),
             new DateFormatOptions('nl_NL', 'Europe/Amsterdam'),
         ];
         yield 'nl_NL, relative 2 days before Dutch string' => [
