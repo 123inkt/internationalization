@@ -5,6 +5,9 @@ namespace DR\Internationalization\Date;
 
 use IntlDateFormatter;
 
+/**
+ * @internal
+ */
 class DateFormatterFactory
 {
     public function create(DateFormatOptions $options, string $pattern): IntlDateFormatter

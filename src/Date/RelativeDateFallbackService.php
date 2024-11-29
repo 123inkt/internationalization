@@ -8,6 +8,9 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use RuntimeException;
 
+/**
+ * @internal
+ */
 class RelativeDateFallbackService
 {
     private const MAX_TRANSLATABLE_DAYS_AMOUNT = 4;

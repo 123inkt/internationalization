@@ -5,6 +5,9 @@ namespace DR\Internationalization\Date;
 
 use IntlDateFormatter;
 
+/**
+ * @internal
+ */
 class RelativeDateFormatterFactory
 {
     public function createRelativeFull(DateFormatOptions $options): IntlDateFormatter
