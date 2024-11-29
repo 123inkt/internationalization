@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DR\Internationalization\Tests\Unit\Date;
 
 use DateTimeImmutable;
+use DR\Internationalization\Date\DateFormatOptions;
 use DR\Internationalization\Date\RelativeDateFallbackResult;
 use DR\Internationalization\Date\RelativeDateFallbackService;
 use DR\Internationalization\Date\RelativeDateFormatOptions;
@@ -34,6 +35,7 @@ class RelativeDateFallbackServiceTest extends TestCase
     #[DataProvider('dataProviderFallback')]
     public function testFallback($datetime, $relativeOptions, $relativeFullDate, $fullDate, $amountFactoryCalls, $expectedResult): void
     {
+        $options = new DateFormatOptions('en_GB', 'Europe/Amsterdam');
         $relativeFormatter = $this->createMock(IntlDateFormatter::class);
         $fullDateFormatter = $this->createMock(IntlDateFormatter::class);
         $relativeFormatter->expects(self::exactly($amountFactoryCalls))->method('format')->willReturn($relativeFullDate);
@@ -42,16 +44,16 @@ class RelativeDateFallbackServiceTest extends TestCase
         $this->dateFormatterFactory
             ->expects(self::exactly($amountFactoryCalls))
             ->method('createRelativeFull')
-            ->with('en_GB')
+            ->with($options)
             ->willReturn($relativeFormatter);
 
         $this->dateFormatterFactory
             ->expects(self::exactly($amountFactoryCalls))
             ->method('createFull')
-            ->with('en_GB')
+            ->with($options)
             ->willReturn($fullDateFormatter);
 
-        $result = $this->service->getFallbackResult('en_GB', $datetime, $relativeOptions);
+        $result = $this->service->getFallbackResult($options, $datetime, $relativeOptions);
 
         static::assertSame($expectedResult->isFallback(), $result->isFallback());
         static::assertSame($expectedResult->getDate(), $result->getDate());
@@ -59,6 +61,7 @@ class RelativeDateFallbackServiceTest extends TestCase
 
     public function testThrowException(): void
     {
+        $options = new DateFormatOptions('en_GB', 'Europe/Amsterdam');
         $relativeFormatter = $this->createMock(IntlDateFormatter::class);
         $fullDateFormatter = $this->createMock(IntlDateFormatter::class);
         $relativeFormatter->expects(self::once())->method('format')->willReturn(false);
@@ -70,18 +73,18 @@ class RelativeDateFallbackServiceTest extends TestCase
         $this->dateFormatterFactory
             ->expects(self::exactly(1))
             ->method('createRelativeFull')
-            ->with('en_GB')
+            ->with($options)
             ->willReturn($relativeFormatter);
 
         $this->dateFormatterFactory
             ->expects(self::exactly(1))
             ->method('createFull')
-            ->with('en_GB')
+            ->with($options)
             ->willReturn($fullDateFormatter);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('An error occurred while trying to parse the relative date. Error code: 101, Error!');
-        $this->service->getFallbackResult('en_GB', new DateTimeImmutable('+2 days'), new RelativeDateFormatOptions(10));
+        $this->service->getFallbackResult($options, new DateTimeImmutable('+2 days'), new RelativeDateFormatOptions(10));
     }
 
     /**

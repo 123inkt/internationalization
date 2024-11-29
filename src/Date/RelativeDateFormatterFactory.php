@@ -5,26 +5,29 @@ namespace DR\Internationalization\Date;
 
 use IntlDateFormatter;
 
+/**
+ * @internal
+ */
 class RelativeDateFormatterFactory
 {
-    public function createRelativeFull(string $locale): IntlDateFormatter
+    public function createRelativeFull(DateFormatOptions $options): IntlDateFormatter
     {
         return new IntlDateFormatter(
-            $locale,
+            $options->getLocale(),
             IntlDateFormatter::RELATIVE_FULL,
             IntlDateFormatter::NONE,
-            'UTC',
+            $options->getTimezone(),
             IntlDateFormatter::GREGORIAN,
         );
     }
 
-    public function createFull(string $locale): IntlDateFormatter
+    public function createFull(DateFormatOptions $options): IntlDateFormatter
     {
         return new IntlDateFormatter(
-            $locale,
+            $options->getLocale(),
             IntlDateFormatter::FULL,
             IntlDateFormatter::NONE,
-            'UTC',
+            $options->getTimezone(),
             IntlDateFormatter::GREGORIAN
         );
     }

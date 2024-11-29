@@ -9,6 +9,9 @@ use DateTimeInterface;
 use IntlDateFormatter;
 use RuntimeException;
 
+/**
+ * @internal
+ */
 class DateFormatHelper
 {
     private DateFormatterCacheInterface $cache;

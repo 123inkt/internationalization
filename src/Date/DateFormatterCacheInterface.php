@@ -6,6 +6,9 @@ namespace DR\Internationalization\Date;
 
 use IntlDateFormatter;
 
+/**
+ * @internal
+ */
 interface DateFormatterCacheInterface
 {
     /**
