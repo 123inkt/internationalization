@@ -19,7 +19,7 @@ class RelativeDateFallbackService
     }
 
     public function getFallbackResult(
-        string                    $locale,
+        DateFormatOptions         $dateFormatOptions,
         DateTimeInterface         $dateTime,
         RelativeDateFormatOptions $relativeOptions
     ): RelativeDateFallbackResult {
@@ -33,8 +33,8 @@ class RelativeDateFallbackService
             return new RelativeDateFallbackResult(true);
         }
 
-        $relativeDateFormatter = $this->relativeFormatterFactory->createRelativeFull($locale);
-        $fullDateFormatter = $this->relativeFormatterFactory->createFull($locale);
+        $relativeDateFormatter = $this->relativeFormatterFactory->createRelativeFull($dateFormatOptions);
+        $fullDateFormatter = $this->relativeFormatterFactory->createFull($dateFormatOptions);
 
         $relativeDate = $relativeDateFormatter->format($dateTime);
         $fullDate = $fullDateFormatter->format($dateTime);
