@@ -11,10 +11,6 @@ use function str_replace;
 use function strpos;
 use function substr_count;
 
-/**
- * @SuppressWarnings(PHPMD.CyclomaticComplexity)
- * @SuppressWarnings(PHPMD.NPathComplexity)
- */
 class NumberParser
 {
     /**
