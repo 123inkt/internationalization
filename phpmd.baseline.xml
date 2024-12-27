@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<phpmd-baseline>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Number/NumberParser.php" method="parseFloat"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="src/Number/NumberParser.php" method="parseFloat"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Number/NumberParser.php" method="determineSeparators"/>
+</phpmd-baseline>
