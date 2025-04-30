@@ -64,7 +64,7 @@ class NumberFormatOptionsHelper
     private function currencyHasDecimals(float|int|Money $value): bool
     {
         if ($value instanceof Money) {
-            $subunit = $this->currencies->subunitFor($value->getCurrency()) * 10;
+            $subunit = 10 ** $this->currencies->subunitFor($value->getCurrency());
 
             return $value->getAmount() % $subunit !== 0;
         }
