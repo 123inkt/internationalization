@@ -81,6 +81,22 @@ class NumberFormatOptionsHelperTest extends TestCase
         static::assertSame(0, $result->getDecimals());
     }
 
+    public function testMoneyWhichIsDividableByCurrencySubUnitTimesTenShouldNotBeRounded(): void
+    {
+        $defaultOptions = (new CurrencyFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_NONE);
+        $options        = (new CurrencyFormatOptions())->setDecimals(2)
+            ->setGrouping(true)
+            ->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
+
+        $helper = new NumberFormatOptionsHelper($defaultOptions, new NumberFormatOptions(), new ISOCurrencies());
+        // 0.20 euro should not be rounded to 0 decimals.
+        $result = $helper->applyCurrencyOptions(new Money(20, new Currency('EUR')), $options);
+
+        static::assertSame($result, $options);
+        static::assertTrue($result->isGrouping());
+        static::assertSame(2, $result->getDecimals());
+    }
+
     public function testNumberShouldIgnoreIfNoDecimalsAreSet(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
