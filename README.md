@@ -87,7 +87,9 @@ NumberParser::parseFloat('1,000,050.5');
 
 ### DateFormatService
 Formats dates and times. 
-Input can be timestamps, strings (compatible with strtotime) and DateTimeInterface objects
+Input can be timestamps, strings (compatible with strtotime) and DateTimeInterface objects.
+
+Use the following for format: https://unicode-org.github.io/icu/userguide/format_parse/datetime/#date-field-symbol-table
 ```php
 $dateFormatOptions = new DateFormatOptions('nl_NL', date_default_timezone_get())
 $dateFormatter = new DateFormatService($dateFormatOptions);
