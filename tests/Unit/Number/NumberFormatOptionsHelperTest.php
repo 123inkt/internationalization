@@ -97,6 +97,19 @@ class NumberFormatOptionsHelperTest extends TestCase
         static::assertSame(2, $result->getDecimals());
     }
 
+    public function testMoneyWithACurrencyThatHasZeroSubunitsShouldHaveZeroDecimals(): void
+    {
+        $defaultOptions = (new CurrencyFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_NONE);
+        $options        = (new CurrencyFormatOptions())->setDecimals(2)->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
+
+        $helper = new NumberFormatOptionsHelper($defaultOptions, new NumberFormatOptions(), new ISOCurrencies());
+        // XXX ISO currency has 0 subunits
+        $result = $helper->applyCurrencyOptions(new Money(20, new Currency('XXX')), $options);
+
+        static::assertNotSame($result, $options);
+        static::assertSame(0, $result->getDecimals());
+    }
+
     public function testNumberShouldIgnoreIfNoDecimalsAreSet(): void
     {
         $defaultOptions = (new NumberFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
