@@ -14,7 +14,7 @@
     "require": {
         "php": ">=8.1",
         "ext-intl": "*",
-        "giggsey/libphonenumber-for-php-lite": "^8.13.11",
+        "giggsey/libphonenumber-for-php-lite": "^8.13.11 || ^9.0.0",
         "moneyphp/money": "^3.3 || ^4.0"
     },
     "autoload": {
