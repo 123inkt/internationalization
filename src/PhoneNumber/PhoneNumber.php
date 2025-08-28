@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Internationalization\PhoneNumber;
 
 use libphonenumber\PhoneNumber as LibPhoneNumber;
+use libphonenumber\PhoneNumberType;
 
 class PhoneNumber
 {
@@ -18,7 +19,7 @@ class PhoneNumber
         private readonly string $nationalNumber,
         private readonly string $rawInput,
         private readonly string $countryCode,
-        private readonly PhoneNumberTypeEnum $numberType,
+        private readonly PhoneNumberType $numberType,
         private readonly LibPhoneNumber $phoneNumber,
         private readonly ?string $extension = null
     ) {
@@ -90,7 +91,7 @@ class PhoneNumber
      * Phone numbers can be of a specific type. This functions returns the type of the number in the form of a enum.
      * Examples:    FIXED_LINE, MOBILE, VOIP, STANDARD_RATE
      */
-    public function getNumberType(): PhoneNumberTypeEnum
+    public function getNumberType(): PhoneNumberType
     {
         return $this->numberType;
     }

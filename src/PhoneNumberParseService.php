@@ -4,10 +4,8 @@ declare(strict_types=1);
 namespace DR\Internationalization;
 
 use DR\Internationalization\PhoneNumber\PhoneNumber;
-use DR\Internationalization\PhoneNumber\PhoneNumberTypeEnum;
 use InvalidArgumentException;
 use libphonenumber\NumberParseException;
-use libphonenumber\PhoneNumberType;
 use libphonenumber\PhoneNumberUtil;
 
 class PhoneNumberParseService
@@ -48,16 +46,9 @@ class PhoneNumberParseService
             (string)$parsedNumber->getNationalNumber(),
             (string)$parsedNumber->getRawInput(),
             (string)$this->phoneNumberUtil->getRegionCodeForNumber($parsedNumber),
-            $this->getNumberType($this->phoneNumberUtil->getNumberType($parsedNumber)),
+            $this->phoneNumberUtil->getNumberType($parsedNumber),
             $parsedNumber,
             $parsedNumber->getExtension()
         );
-    }
-
-    private function getNumberType(int $numberType): PhoneNumberTypeEnum
-    {
-        $numberType = PhoneNumberType::values()[$numberType];
-
-        return PhoneNumberTypeEnum::tryFrom($numberType) ?? PhoneNumberTypeEnum::UNKNOWN;
     }
 }

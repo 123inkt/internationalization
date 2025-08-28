@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace DR\Internationalization\Tests\Unit;
 
-use DR\Internationalization\PhoneNumber\PhoneNumberTypeEnum;
 use DR\Internationalization\PhoneNumberParseService;
 use Generator;
 use InvalidArgumentException;
+use libphonenumber\PhoneNumberType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +38,7 @@ class PhoneNumberParseServiceTest extends TestCase
         string $internationalDailCode,
         string $countryDialCode,
         string $nationalNumber,
-        PhoneNumberTypeEnum $numberType,
+        PhoneNumberType $numberType,
         string $countryCodeFromObj,
         ?string $extension = null,
         ?string $overrideCountryCode = null
@@ -60,18 +60,18 @@ class PhoneNumberParseServiceTest extends TestCase
 
     public static function parseProvider(): Generator
     {
-        yield ['BE', '09 34 44 44 32', '00', '33', '934444432', PhoneNumberTypeEnum::VOIP, 'FR', null, 'FR'];
-        yield ['XX', '+46522180870', '', '46', '522180870', PhoneNumberTypeEnum::FIXED_LINE, 'SE'];
-        yield ['SE', '+46522180870', '00', '46', '522180870', PhoneNumberTypeEnum::FIXED_LINE, 'SE'];
-        yield ['SE', '090-230 64 87', '00', '46', '902306487', PhoneNumberTypeEnum::FIXED_LINE, 'SE'];
+        yield ['BE', '09 34 44 44 32', '00', '33', '934444432', PhoneNumberType::VOIP, 'FR', null, 'FR'];
+        yield ['XX', '+46522180870', '', '46', '522180870', PhoneNumberType::FIXED_LINE, 'SE'];
+        yield ['SE', '+46522180870', '00', '46', '522180870', PhoneNumberType::FIXED_LINE, 'SE'];
+        yield ['SE', '090-230 64 87', '00', '46', '902306487', PhoneNumberType::FIXED_LINE, 'SE'];
 
-        yield ['US', '202-555-0107', '011', '1', '2025550107', PhoneNumberTypeEnum::FIXED_LINE_OR_MOBILE, 'US'];
-        yield ['US', '+1-202-555-0142', '011', '1', '2025550142', PhoneNumberTypeEnum::FIXED_LINE_OR_MOBILE, 'US'];
+        yield ['US', '202-555-0107', '011', '1', '2025550107', PhoneNumberType::FIXED_LINE_OR_MOBILE, 'US'];
+        yield ['US', '+1-202-555-0142', '011', '1', '2025550142', PhoneNumberType::FIXED_LINE_OR_MOBILE, 'US'];
 
-        yield ['NL', '612345678', '00', '31', '612345678', PhoneNumberTypeEnum::MOBILE, 'NL'];
-        yield ['NL', '+31612345678', '00', '31', '612345678', PhoneNumberTypeEnum::MOBILE, 'NL'];
-        yield ['NL', '0294-787123', '00', '31', '294787123', PhoneNumberTypeEnum::FIXED_LINE, 'NL'];
+        yield ['NL', '612345678', '00', '31', '612345678', PhoneNumberType::MOBILE, 'NL'];
+        yield ['NL', '+31612345678', '00', '31', '612345678', PhoneNumberType::MOBILE, 'NL'];
+        yield ['NL', '0294-787123', '00', '31', '294787123', PhoneNumberType::FIXED_LINE, 'NL'];
 
-        yield ['FR', '01 50 12 08 32', '00', '33', '150120832', PhoneNumberTypeEnum::FIXED_LINE, 'FR'];
+        yield ['FR', '01 50 12 08 32', '00', '33', '150120832', PhoneNumberType::FIXED_LINE, 'FR'];
     }
 }
