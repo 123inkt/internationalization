@@ -146,13 +146,14 @@ $formatter->format(DayOfTheWeekFormatter::MONDAY, 'en_US');
 ### PhoneNumberFormatService
 Format phoneNumbers
 ```php
+use DR\Internationalization\PhoneNumber\PhoneNumberFormatEnum;
 use DR\Internationalization\PhoneNumber\PhoneNumberFormatOptions;
 use DR\Internationalization\PhoneNumberFormatService;
 
 // set default configuration
 $phoneNumberOptions = (new PhoneNumberFormatOptions())
     ->setDefaultCountryCode('NL')
-    ->setFormat(PhoneNumberFormatOptions::FORMAT_INTERNATIONAL_DIAL);
+    ->setFormat(PhoneNumberFormatEnum::INTERNATIONAL_DIAL);
 $service = new PhoneNumberFormatService($phoneNumberOptions);
 
 $service->format("+31612345678");                                                       

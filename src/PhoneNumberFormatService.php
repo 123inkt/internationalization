@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Internationalization;
 
 use DR\Internationalization\PhoneNumber\PhoneNumber;
+use DR\Internationalization\PhoneNumber\PhoneNumberFormatEnum;
 use DR\Internationalization\PhoneNumber\PhoneNumberFormatOptions;
 use InvalidArgumentException;
 use libphonenumber\NumberParseException;
@@ -20,7 +21,7 @@ class PhoneNumberFormatService
         $this->defaultOptions = $phoneNumberOptions;
     }
 
-    public function format(string|PhoneNumber $phoneNumber, PhoneNumberFormatOptions $options = null): string
+    public function format(string|PhoneNumber $phoneNumber, ?PhoneNumberFormatOptions $options = null): string
     {
         $countryCode = $options?->getDefaultCountryCode() ?? $this->defaultOptions->getDefaultCountryCode();
         $format      = $options?->getFormat() ?? $this->defaultOptions->getFormat();
@@ -40,7 +41,7 @@ class PhoneNumberFormatService
             }
         }
 
-        if ($format === PhoneNumberFormatOptions::FORMAT_INTERNATIONAL_DIAL) {
+        if ($format === PhoneNumberFormatEnum::INTERNATIONAL_DIAL) {
             $metaData = $this->phoneNumberUtil->getMetadataForRegion((string)$countryCode);
             $prefix   = $metaData?->getInternationalPrefix() ?? $metaData?->getPreferredInternationalPrefix();
             if (is_numeric($prefix)) {
@@ -50,6 +51,6 @@ class PhoneNumberFormatService
             return $this->phoneNumberUtil->format($parsedNumber, PhoneNumberFormat::E164);
         }
 
-        return $this->phoneNumberUtil->format($parsedNumber, PhoneNumberFormat::tryFrom($format));
+        return $this->phoneNumberUtil->format($parsedNumber, PhoneNumberFormat::tryFrom($format->value));
     }
 }

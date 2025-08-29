@@ -5,6 +5,7 @@ namespace DR\Internationalization\Tests\Unit\PhoneNumber;
 
 use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
+use DR\Internationalization\PhoneNumber\PhoneNumberFormatEnum;
 use DR\Internationalization\PhoneNumber\PhoneNumberFormatOptions;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -27,7 +28,7 @@ class PhoneNumberFormatOptionsTest extends TestCase
     public function testFormat(): void
     {
         $options = new PhoneNumberFormatOptions();
-        $options->setFormat(PhoneNumberFormatOptions::FORMAT_INTERNATIONAL_DIAL);
-        static::assertSame(PhoneNumberFormatOptions::FORMAT_INTERNATIONAL_DIAL, $options->getFormat());
+        $options->setFormat(PhoneNumberFormatEnum::INTERNATIONAL_DIAL);
+        static::assertSame(PhoneNumberFormatEnum::INTERNATIONAL_DIAL, $options->getFormat());
     }
 }

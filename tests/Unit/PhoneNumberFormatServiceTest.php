@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Internationalization\Tests\Unit;
 
+use DR\Internationalization\PhoneNumber\PhoneNumberFormatEnum;
 use DR\Internationalization\PhoneNumber\PhoneNumberFormatOptions;
 use DR\Internationalization\PhoneNumberFormatService;
 use DR\Internationalization\PhoneNumberParseService;
@@ -26,7 +27,7 @@ class PhoneNumberFormatServiceTest extends TestCase
 
     public function testFormatInvalidInput(): void
     {
-        $options   = (new PhoneNumberFormatOptions())->setDefaultCountryCode("__")->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
+        $options   = (new PhoneNumberFormatOptions())->setDefaultCountryCode("__")->setFormat(PhoneNumberFormatEnum::NATIONAL);
         $formatter = new PhoneNumberFormatService($options);
 
         $this->expectException(InvalidArgumentException::class);
@@ -46,7 +47,7 @@ class PhoneNumberFormatServiceTest extends TestCase
     {
         $options = (new PhoneNumberFormatOptions())
             ->setDefaultCountryCode($countryCode)
-            ->setFormat(PhoneNumberFormatOptions::FORMAT_INTERNATIONAL_DIAL);
+            ->setFormat(PhoneNumberFormatEnum::INTERNATIONAL_DIAL);
 
         $formatter = new PhoneNumberFormatService($options);
         static::assertSame($expectedValue, $formatter->format($phoneNumber));
@@ -54,7 +55,7 @@ class PhoneNumberFormatServiceTest extends TestCase
 
     public function testFormatDefaultFormat(): void
     {
-        $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultCountryCode('NL')->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
+        $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultCountryCode('NL')->setFormat(PhoneNumberFormatEnum::NATIONAL);
         $formatter      = new PhoneNumberFormatService($defaultOptions);
 
         static::assertSame('010 123 4567', $formatter->format("101234567"));
@@ -63,7 +64,7 @@ class PhoneNumberFormatServiceTest extends TestCase
 
     public function testFormatOverwrittenCountryCode(): void
     {
-        $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultCountryCode('NL')->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
+        $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultCountryCode('NL')->setFormat(PhoneNumberFormatEnum::NATIONAL);
         $formatOptions  = (new PhoneNumberFormatOptions())->setDefaultCountryCode('GB');
         $formatter      = new PhoneNumberFormatService($defaultOptions);
 
@@ -75,7 +76,7 @@ class PhoneNumberFormatServiceTest extends TestCase
     {
         $parsedPhoneNumber = (new PhoneNumberParseService("NL"))->parse("0612345678");
 
-        $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultCountryCode('NL')->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
+        $defaultOptions = (new PhoneNumberFormatOptions())->setDefaultCountryCode('NL')->setFormat(PhoneNumberFormatEnum::NATIONAL);
         $formatter      = new PhoneNumberFormatService($defaultOptions);
 
         static::assertSame('06 12345678', $formatter->format($parsedPhoneNumber));
@@ -83,17 +84,17 @@ class PhoneNumberFormatServiceTest extends TestCase
 
     public static function optionFormatProvider(): Generator
     {
-        yield [PhoneNumberFormatOptions::FORMAT_E164, "101234567", "+31101234567"];
-        yield [PhoneNumberFormatOptions::FORMAT_E164, "0612345678", "+31612345678"];
+        yield [PhoneNumberFormatEnum::E164, "101234567", "+31101234567"];
+        yield [PhoneNumberFormatEnum::E164, "0612345678", "+31612345678"];
 
-        yield [PhoneNumberFormatOptions::FORMAT_INTERNATIONAL, "101234567", "+31 10 123 4567"];
-        yield [PhoneNumberFormatOptions::FORMAT_INTERNATIONAL, "0612345678", "+31 6 12345678"];
+        yield [PhoneNumberFormatEnum::INTERNATIONAL, "101234567", "+31 10 123 4567"];
+        yield [PhoneNumberFormatEnum::INTERNATIONAL, "0612345678", "+31 6 12345678"];
 
-        yield [PhoneNumberFormatOptions::FORMAT_NATIONAL, "101234567", "010 123 4567"];
-        yield [PhoneNumberFormatOptions::FORMAT_NATIONAL, "0612345678", "06 12345678"];
+        yield [PhoneNumberFormatEnum::NATIONAL, "101234567", "010 123 4567"];
+        yield [PhoneNumberFormatEnum::NATIONAL, "0612345678", "06 12345678"];
 
-        yield [PhoneNumberFormatOptions::FORMAT_RFC3966, "101234567", "tel:+31-10-123-4567"];
-        yield [PhoneNumberFormatOptions::FORMAT_RFC3966, "0612345678", "tel:+31-6-12345678"];
+        yield [PhoneNumberFormatEnum::RFC3966, "101234567", "tel:+31-10-123-4567"];
+        yield [PhoneNumberFormatEnum::RFC3966, "0612345678", "tel:+31-6-12345678"];
     }
 
     public static function internationalDialProvider(): Generator
