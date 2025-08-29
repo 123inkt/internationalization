@@ -17,7 +17,7 @@ class NumberFormatterFactoryHelper
     ): NumberFormatter {
         $grouping     = $options->isGrouping() ?? $defaultOptions->isGrouping();
         $decimals     = $options->getDecimals() ?? $defaultOptions->getDecimals();
-        $trimDecimals = $options->getTrimDecimals() ?? $defaultOptions->getTrimDecimals() ?? NumberFormatOptions::TRIM_DECIMAL_ANY;
+        $trimDecimals = $options->getTrimDecimals() ?? $defaultOptions->getTrimDecimals() ?? NumberFormatTrimDecimalsEnum::ANY;
         $rounding     = $options->getRounding() ?? $defaultOptions->getRounding() ?? NumberFormatter::ROUND_HALFUP;
 
         // setup decimal round mode
@@ -30,7 +30,7 @@ class NumberFormatterFactoryHelper
 
         // setup decimal behaviour
         if ($decimals !== null) {
-            if ($trimDecimals === NumberFormatOptions::TRIM_DECIMAL_ANY) {
+            if ($trimDecimals === NumberFormatTrimDecimalsEnum::ANY) {
                 $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
             } else {
                 $formatter->setAttribute(NumberFormatter::FRACTION_DIGITS, $decimals);

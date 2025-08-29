@@ -7,6 +7,7 @@ use DR\Internationalization\Currency\CurrencyFormatOptions;
 use DR\Internationalization\Number\NumberFormatOptions;
 use DR\Internationalization\Number\NumberFormatterCacheInterface;
 use DR\Internationalization\Number\NumberFormatterSplitterResult as Result;
+use DR\Internationalization\Number\NumberFormatTrimDecimalsEnum;
 use DR\Internationalization\NumberFormatService;
 use Generator;
 use InvalidArgumentException;
@@ -70,7 +71,7 @@ class NumberFormatServiceTest extends TestCase
             ->setLocale('nl_NL')
             ->setSymbol(false)
             ->setCurrencyCode('EUR')
-            ->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
+            ->setTrimDecimals(NumberFormatTrimDecimalsEnum::ALL_OR_NOTHING);
         $formatter      = new NumberFormatService($defaultOptions, $this->numberFormatOptions);
 
         static::assertSame('1.234,57', $formatter->currency(1234.567));
@@ -201,7 +202,7 @@ class NumberFormatServiceTest extends TestCase
     {
         $defaultOptions = (new NumberFormatOptions())->setLocale('nl_NL')
             ->setDecimals(2)
-            ->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING);
+            ->setTrimDecimals(NumberFormatTrimDecimalsEnum::ALL_OR_NOTHING);
         $formatter      = new NumberFormatService($this->currencyFormatOptions, $defaultOptions);
 
         static::assertSame('1.234,57', $formatter->number(1234.567));
@@ -241,7 +242,7 @@ class NumberFormatServiceTest extends TestCase
         $formatter      = new NumberFormatService($this->currencyFormatOptions, $defaultOptions);
         $value          = -0.0;
 
-        $options = (new NumberFormatOptions())->setDecimals(2)->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_NONE);
+        $options = (new NumberFormatOptions())->setDecimals(2)->setTrimDecimals(NumberFormatTrimDecimalsEnum::NONE);
         static::assertSame('0,00', $formatter->number($value, $options));
     }
 
@@ -251,7 +252,7 @@ class NumberFormatServiceTest extends TestCase
         $formatter      = new NumberFormatService($this->currencyFormatOptions, $defaultOptions);
         $value          = 1234.56;
 
-        $options = (new NumberFormatOptions())->setDecimals(5)->setGrouping(false)->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_NONE);
+        $options = (new NumberFormatOptions())->setDecimals(5)->setGrouping(false)->setTrimDecimals(NumberFormatTrimDecimalsEnum::NONE);
         static::assertSame('1234,56000', $formatter->number($value, $options));
     }
 
@@ -274,7 +275,7 @@ class NumberFormatServiceTest extends TestCase
 
         $expected = new Result('0,00', '', '', '0', '.', '00', ',', null, 'absent');
 
-        $options = (new NumberFormatOptions())->setDecimals(2)->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_NONE);
+        $options = (new NumberFormatOptions())->setDecimals(2)->setTrimDecimals(NumberFormatTrimDecimalsEnum::NONE);
         $actual  = $formatter->numberSplit($value, $options);
         static::assertEquals($expected, $actual);
     }

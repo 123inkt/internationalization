@@ -5,6 +5,7 @@ namespace DR\Internationalization\Tests\Unit\Number;
 
 use DR\Internationalization\Number\NumberFormatOptions;
 use DR\Internationalization\Number\NumberFormatterFactoryHelper;
+use DR\Internationalization\Number\NumberFormatTrimDecimalsEnum;
 use NumberFormatter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -44,7 +45,7 @@ class NumberFormatterFactoryHelperTest extends TestCase
     {
         $formatter      = new NumberFormatter('nl_NL', NumberFormatter::DECIMAL);
         $defaultOptions = new NumberFormatOptions();
-        $options        = (new NumberFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_NONE)->setDecimals(5);
+        $options        = (new NumberFormatOptions())->setTrimDecimals(NumberFormatTrimDecimalsEnum::NONE)->setDecimals(5);
 
         NumberFormatterFactoryHelper::applyNumberFormatOptions($defaultOptions, $options, $formatter);
 
@@ -55,7 +56,7 @@ class NumberFormatterFactoryHelperTest extends TestCase
     {
         $formatter      = new NumberFormatter('nl_NL', NumberFormatter::DECIMAL);
         $defaultOptions = new NumberFormatOptions();
-        $options        = (new NumberFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ANY)->setDecimals(5);
+        $options        = (new NumberFormatOptions())->setTrimDecimals(NumberFormatTrimDecimalsEnum::ANY)->setDecimals(5);
 
         NumberFormatterFactoryHelper::applyNumberFormatOptions($defaultOptions, $options, $formatter);
 

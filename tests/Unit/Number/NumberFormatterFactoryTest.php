@@ -5,6 +5,7 @@ namespace DR\Internationalization\Tests\Unit\Number;
 
 use DR\Internationalization\Number\NumberFormatOptions;
 use DR\Internationalization\Number\NumberFormatterFactory;
+use DR\Internationalization\Number\NumberFormatTrimDecimalsEnum;
 use InvalidArgumentException;
 use NumberFormatter;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -56,7 +57,7 @@ class NumberFormatterFactoryTest extends TestCase
         $options   = (new NumberFormatOptions())
             ->setDecimals(1)
             ->setRounding(NumberFormatter::ROUND_CEILING)
-            ->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_NONE)
+            ->setTrimDecimals(NumberFormatTrimDecimalsEnum::NONE)
             ->setLocale('en_GB');
         $formatter = (new NumberFormatterFactory($defaultOptions))->create($options);
         static::assertSame('2,005.0', $formatter->format(2005));
@@ -69,7 +70,7 @@ class NumberFormatterFactoryTest extends TestCase
         $options   = (new NumberFormatOptions())
             ->setDecimals(1)
             ->setRounding(NumberFormatter::ROUND_CEILING)
-            ->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_NONE)
+            ->setTrimDecimals(NumberFormatTrimDecimalsEnum::NONE)
             ->setLocale('sv_SE');
         $formatter = (new NumberFormatterFactory($defaultOptions))->create($options);
         static::assertSame(self::MINUS . '2' . self::NBSP . '005,0', $formatter->format(-2005.04));

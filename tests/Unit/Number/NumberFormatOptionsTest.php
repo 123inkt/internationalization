@@ -6,6 +6,7 @@ namespace DR\Internationalization\Tests\Unit\Number;
 use DigitalRevolution\AccessorPairConstraint\AccessorPairAsserter;
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use DR\Internationalization\Number\NumberFormatOptions;
+use DR\Internationalization\Number\NumberFormatTrimDecimalsEnum;
 use NumberFormatter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -27,8 +28,8 @@ class NumberFormatOptionsTest extends TestCase
     public function testTrimDecimals(): void
     {
         $options = new NumberFormatOptions();
-        $options->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ANY);
-        static::assertSame(NumberFormatOptions::TRIM_DECIMAL_ANY, $options->getTrimDecimals());
+        $options->setTrimDecimals(NumberFormatTrimDecimalsEnum::ANY);
+        static::assertSame(NumberFormatTrimDecimalsEnum::ANY, $options->getTrimDecimals());
     }
 
     public function testRounding(): void
@@ -44,9 +45,10 @@ class NumberFormatOptionsTest extends TestCase
         $options->setDecimals(2);
         $options->setGrouping(false);
         $options->setLocale("nl_NL");
-        $options->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ANY);
+        $options->setTrimDecimals(NumberFormatTrimDecimalsEnum::ANY);
 
-        $expected = 'number:a:5:{s:6:"locale";s:5:"nl_NL";s:8:"grouping";b:0;s:8:"decimals";i:2;s:4:"trim";i:3;s:8:"rounding";N;}';
+        $expected = 'number:a:5:{s:6:"locale";s:5:"nl_NL";s:8:"grouping";b:0;s:8:"decimals";i:2;s:4:"trim";' .
+            'E:63:"DR\Internationalization\Number\NumberFormatTrimDecimalsEnum:ANY";s:8:"rounding";N;}';
         $actual   = (string)$options;
         static::assertSame($expected, $actual);
     }

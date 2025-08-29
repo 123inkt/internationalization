@@ -53,13 +53,13 @@ $service->number(1500.5);
 $service->number(1500.5, (new NumberFormatOptions())->setGrouping(true));   
 // output: 1.500,50
 
-$service->number(1500.0, (new NumberFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING));  
+$service->number(1500.0, (new NumberFormatOptions())->setTrimDecimals(NumberFormatTrimDecimalsEnum::ALL_OR_NOTHING));  
 // output: 1500
 
-$service->number(1500.5, (new NumberFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ALL_OR_NOTHING));  
+$service->number(1500.5, (new NumberFormatOptions())->setTrimDecimals(NumberFormatTrimDecimalsEnum::ALL_OR_NOTHING));  
 // output: 1500.50
 
-$service->number(1500.5, (new NumberFormatOptions())->setTrimDecimals(NumberFormatOptions::TRIM_DECIMAL_ANY));  
+$service->number(1500.5, (new NumberFormatOptions())->setTrimDecimals(NumberFormatTrimDecimalsEnum::ANY));  
 // output: 1500.5
 ```
 

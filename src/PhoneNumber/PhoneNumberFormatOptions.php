@@ -5,8 +5,8 @@ namespace DR\Internationalization\PhoneNumber;
 
 class PhoneNumberFormatOptions
 {
-    private ?string $defaultCountryCode = null;
-    private ?PhoneNumberFormatEnum $format = null;
+    private ?string                $defaultCountryCode = null;
+    private ?PhoneNumberFormatEnum $format             = null;
 
     public function getDefaultCountryCode(): ?string
     {

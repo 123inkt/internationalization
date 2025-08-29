@@ -7,33 +7,11 @@ use NumberFormatter;
 
 class NumberFormatOptions
 {
-    /**
-     * Do not trim any trailing zero decimals.
-     */
-    public const TRIM_DECIMAL_NONE = 1;
-
-    /**
-     * Trim decimals only if all of them can be removed.
-     * 12.34 => 12.34
-     * 12.30 => 12.30
-     * 12.00 => 12
-     */
-    public const TRIM_DECIMAL_ALL_OR_NOTHING = 2;
-
-    /**
-     * Trim any trailing decimal zero's.
-     * 12.34 => 12.34
-     * 12.30 => 12.3
-     * 12.00 => 12
-     */
-    public const TRIM_DECIMAL_ANY = 3;
-
-    protected ?string $locale       = null;
-    protected ?int    $decimals     = null;
-    protected ?bool   $grouping     = null;
-    /** @phpstan-var self::TRIM_DECIMAL_*|null  */
-    protected ?int    $trimDecimals = null;
-    protected ?int    $rounding     = null;
+    protected ?string                       $locale       = null;
+    protected ?int                          $decimals     = null;
+    protected ?bool                         $grouping     = null;
+    protected ?NumberFormatTrimDecimalsEnum $trimDecimals = null;
+    protected ?int                          $rounding     = null;
 
     public function getLocale(): ?string
     {
@@ -83,21 +61,17 @@ class NumberFormatOptions
         return $this;
     }
 
-    /**
-     * @phpstan-return self::TRIM_DECIMAL_*|null
-     */
-    public function getTrimDecimals(): ?int
+    public function getTrimDecimals(): ?NumberFormatTrimDecimalsEnum
     {
         return $this->trimDecimals;
     }
 
     /**
      * Trim the trailing decimals. If no decimals are left, the decimal separator will also be trimmed.
-     * Defaults to `TRIM_DECIMAL_ANY` for number formatting, and `TRIM_DECIMAL_NONE` for currencies.
-     * @phpstan-param self::TRIM_DECIMAL_*|null $trimDecimals
+     * Defaults to `NumberFormatTrimDecimalsEnum::ANY` for number formatting, and `NumberFormatTrimDecimalsEnum::NONE` for currencies.
      * @return static
      */
-    public function setTrimDecimals(?int $trimDecimals): self
+    public function setTrimDecimals(?NumberFormatTrimDecimalsEnum $trimDecimals): self
     {
         $this->trimDecimals = $trimDecimals;
 
