@@ -36,7 +36,7 @@ class PhoneNumberFormatServiceTest extends TestCase
     }
 
     #[DataProvider('optionFormatProvider')]
-    public function testFormat(int $format, string $phoneNumber, string $expectedValue): void
+    public function testFormat(PhoneNumberFormatEnum $format, string $phoneNumber, string $expectedValue): void
     {
         $formatter = new PhoneNumberFormatService((new PhoneNumberFormatOptions())->setDefaultCountryCode("NL")->setFormat($format));
         static::assertSame($expectedValue, $formatter->format($phoneNumber));
