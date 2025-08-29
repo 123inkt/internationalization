@@ -72,6 +72,9 @@ class PhoneNumberParseServiceTest extends TestCase
         yield ['NL', '+31612345678', '00', '31', '612345678', PhoneNumberTypeEnum::MOBILE, 'NL'];
         yield ['NL', '0294-787123', '00', '31', '294787123', PhoneNumberTypeEnum::FIXED_LINE, 'NL'];
 
-        yield ['FR', '01 50 12 08 32', '00', '33', '150120832', PhoneNumberTypeEnum::FIXED_LINE, 'FR'];
+        yield ['SE', '+46 -75 123 45 67', '00', '46', '751234567', PhoneNumberTypeEnum::PERSONAL_NUMBER, 'SE'];
+        yield ['SE', '+46 -74 012 34 56', '00', '46', '740123456', PhoneNumberTypeEnum::PAGER, 'SE'];
+        yield ['SE', '+46 -10 234 56 78', '00', '46', '102345678', PhoneNumberTypeEnum::UAN, 'SE'];
+        yield ['SE', '+46 -25 412 34 56 789', '00', '46', '254123456789', PhoneNumberTypeEnum::VOICEMAIL, 'SE'];
     }
 }

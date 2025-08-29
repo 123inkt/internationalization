@@ -67,10 +67,7 @@ class PhoneNumberParseService
             PhoneNumberType::PERSONAL_NUMBER => PhoneNumberTypeEnum::PERSONAL_NUMBER,
             PhoneNumberType::PAGER => PhoneNumberTypeEnum::PAGER,
             PhoneNumberType::UAN => PhoneNumberTypeEnum::UAN,
-            PhoneNumberType::EMERGENCY => PhoneNumberTypeEnum::EMERGENCY,
             PhoneNumberType::VOICEMAIL => PhoneNumberTypeEnum::VOICEMAIL,
-            PhoneNumberType::SHORT_CODE => PhoneNumberTypeEnum::SHORT_CODE,
-            PhoneNumberType::STANDARD_RATE => PhoneNumberTypeEnum::STANDARD_RATE,
             default => PhoneNumberTypeEnum::UNKNOWN,
         };
     }
