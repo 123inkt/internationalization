@@ -25,7 +25,7 @@ class PhoneNumberParseService
         $countryCode ??= $this->defaultCountryCode;
 
         try {
-            $parsedNumber = $this->phoneNumberUtil->parse($phoneNumber, $countryCode, keepRawInput: true);
+            $parsedNumber = $this->phoneNumberUtil->parse($phoneNumber, $countryCode, null, true);
         } catch (NumberParseException $e) {
             throw new InvalidArgumentException("Unable to parse phoneNumber: " . $phoneNumber, 0, $e);
         }
@@ -48,16 +48,27 @@ class PhoneNumberParseService
             (string)$parsedNumber->getNationalNumber(),
             (string)$parsedNumber->getRawInput(),
             (string)$this->phoneNumberUtil->getRegionCodeForNumber($parsedNumber),
-            $this->getNumberType($this->phoneNumberUtil->getNumberType($parsedNumber)),
+            $this->convertNumberType($this->phoneNumberUtil->getNumberType($parsedNumber)),
             $parsedNumber,
             $parsedNumber->getExtension()
         );
     }
 
-    private function getNumberType(int $numberType): PhoneNumberTypeEnum
+    private function convertNumberType(PhoneNumberType $numberType): PhoneNumberTypeEnum
     {
-        $numberType = PhoneNumberType::values()[$numberType];
-
-        return PhoneNumberTypeEnum::tryFrom($numberType) ?? PhoneNumberTypeEnum::UNKNOWN;
+        return match ($numberType) {
+            PhoneNumberType::FIXED_LINE => PhoneNumberTypeEnum::FIXED_LINE,
+            PhoneNumberType::MOBILE => PhoneNumberTypeEnum::MOBILE,
+            PhoneNumberType::FIXED_LINE_OR_MOBILE => PhoneNumberTypeEnum::FIXED_LINE_OR_MOBILE,
+            PhoneNumberType::TOLL_FREE => PhoneNumberTypeEnum::TOLL_FREE,
+            PhoneNumberType::PREMIUM_RATE => PhoneNumberTypeEnum::PREMIUM_RATE,
+            PhoneNumberType::SHARED_COST => PhoneNumberTypeEnum::SHARED_COST,
+            PhoneNumberType::VOIP => PhoneNumberTypeEnum::VOIP,
+            PhoneNumberType::PERSONAL_NUMBER => PhoneNumberTypeEnum::PERSONAL_NUMBER,
+            PhoneNumberType::PAGER => PhoneNumberTypeEnum::PAGER,
+            PhoneNumberType::UAN => PhoneNumberTypeEnum::UAN,
+            PhoneNumberType::VOICEMAIL => PhoneNumberTypeEnum::VOICEMAIL,
+            default => PhoneNumberTypeEnum::UNKNOWN,
+        };
     }
 }

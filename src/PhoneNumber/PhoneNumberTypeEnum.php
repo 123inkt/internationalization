@@ -16,8 +16,20 @@ enum PhoneNumberTypeEnum: string
     case PAGER = 'PAGER';
     case UAN = 'UAN';
     case UNKNOWN = 'UNKNOWN';
+
+    /**
+     * @deprecated Unsupported, will be removed in version 2.0
+     */
     case EMERGENCY = 'EMERGENCY';
     case VOICEMAIL = 'VOICEMAIL';
+
+    /**
+     * @deprecated Unsupported, will be removed in version 2.0
+     */
     case SHORT_CODE = 'SHORT_CODE';
+
+    /**
+     * @deprecated Unsupported, will be removed in version 2.0
+     */
     case STANDARD_RATE = 'STANDARD_RATE';
 }
