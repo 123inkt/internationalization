@@ -23,7 +23,7 @@ class PhoneNumberParseService
         $countryCode ??= $this->defaultCountryCode;
 
         try {
-            $parsedNumber = $this->phoneNumberUtil->parse($phoneNumber, $countryCode, keepRawInput: true);
+            $parsedNumber = $this->phoneNumberUtil->parse($phoneNumber, $countryCode, null, true);
         } catch (NumberParseException $e) {
             throw new InvalidArgumentException("Unable to parse phoneNumber: " . $phoneNumber, 0, $e);
         }

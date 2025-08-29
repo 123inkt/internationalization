@@ -7,8 +7,8 @@ use DR\Internationalization\PhoneNumber\PhoneNumber;
 use DR\Internationalization\PhoneNumber\PhoneNumberFormatOptions;
 use InvalidArgumentException;
 use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
-
 
 class PhoneNumberFormatService
 {
@@ -44,12 +44,12 @@ class PhoneNumberFormatService
             $metaData = $this->phoneNumberUtil->getMetadataForRegion((string)$countryCode);
             $prefix   = $metaData?->getInternationalPrefix() ?? $metaData?->getPreferredInternationalPrefix();
             if (is_numeric($prefix)) {
-                return $prefix . ltrim($this->phoneNumberUtil->format($parsedNumber, PhoneNumberFormatOptions::FORMAT_E164), '+');
+                return $prefix . ltrim($this->phoneNumberUtil->format($parsedNumber, PhoneNumberFormat::E164), '+');
             }
 
-            return $this->phoneNumberUtil->format($parsedNumber, PhoneNumberFormatOptions::FORMAT_E164);
+            return $this->phoneNumberUtil->format($parsedNumber, PhoneNumberFormat::E164);
         }
 
-        return $this->phoneNumberUtil->format($parsedNumber, $format);
+        return $this->phoneNumberUtil->format($parsedNumber, PhoneNumberFormat::tryFrom($format));
     }
 }

@@ -13,22 +13,22 @@ class PhoneNumberFormatOptions
     /**
      * Formats the NL phoneNumber "101234567" as "+31101234567"
      */
-    public const FORMAT_E164 = PhoneNumberFormat::E164;
+    public const FORMAT_E164 = PhoneNumberFormat::E164->value;
 
     /**
      * Formats the NL phoneNumber "101234567" as "+31 10 123 4567"
      */
-    public const FORMAT_INTERNATIONAL = PhoneNumberFormat::INTERNATIONAL;
+    public const FORMAT_INTERNATIONAL = PhoneNumberFormat::INTERNATIONAL->value;
 
     /**
      * Formats the NL phoneNumber "101234567" as "010 123 4567"
      */
-    public const FORMAT_NATIONAL = PhoneNumberFormat::NATIONAL;
+    public const FORMAT_NATIONAL = PhoneNumberFormat::NATIONAL->value;
 
     /**
      * Formats the NL phoneNumber "101234567" as "tel:+31-10-123-4567"
      */
-    public const FORMAT_RFC3966 = PhoneNumberFormat::RFC3966;
+    public const FORMAT_RFC3966 = PhoneNumberFormat::RFC3966->value;
 
     /**
      * Formats the NL phoneNumber "101234567" as "0031101234567"

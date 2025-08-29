@@ -12,7 +12,7 @@
         "lock": false
     },
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "ext-intl": "*",
         "giggsey/libphonenumber-for-php-lite": "^9.0.12",
         "moneyphp/money": "^3.3 || ^4.0"
