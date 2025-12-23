@@ -9,9 +9,13 @@ use InvalidArgumentException;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class PhoneNumberFormatService
+class PhoneNumberFormatService implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     private PhoneNumberFormatOptions $defaultOptions;
     private ?PhoneNumberUtil $phoneNumberUtil = null;
 
@@ -35,8 +39,10 @@ class PhoneNumberFormatService
         } else {
             try {
                 $parsedNumber = $this->phoneNumberUtil->parse($phoneNumber, $countryCode);
-            } catch (NumberParseException $e) {
-                throw new InvalidArgumentException("Unable to parse phoneNumber: " . $phoneNumber, 0, $e);
+            } catch (NumberParseException $exception) {
+                $this->logger?->info($exception->getMessage(), ['exception' => $exception, 'phoneNumber' => $phoneNumber]);
+
+                return $phoneNumber;
             }
         }
 

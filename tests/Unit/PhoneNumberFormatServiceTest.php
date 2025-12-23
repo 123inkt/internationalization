@@ -29,9 +29,7 @@ class PhoneNumberFormatServiceTest extends TestCase
         $options   = (new PhoneNumberFormatOptions())->setDefaultCountryCode("__")->setFormat(PhoneNumberFormatOptions::FORMAT_NATIONAL);
         $formatter = new PhoneNumberFormatService($options);
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Unable to parse phoneNumber: xxx");
-        $formatter->format('xxx');
+        static::assertSame('xxx', $formatter->format('xxx'));
     }
 
     #[DataProvider('optionFormatProvider')]
