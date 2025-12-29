@@ -43,7 +43,6 @@ class DayOfTheWeekFormatterTest extends TestCase
     /**
      * @throws Exception
      */
-    #[DataProvider('formatDayOfTheWeekInvalidDataProvider')]
     public function testFormatInvalidCustomLocale(): void
     {
         $formatter = new DayOfTheWeekFormatter('en_GB');
