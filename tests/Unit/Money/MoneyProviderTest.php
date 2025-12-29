@@ -24,14 +24,11 @@ class MoneyProviderTest extends TestCase
         static::assertSame($expected, $money->getAmount());
     }
 
-    /**
-     * @param int|string $amount
-     */
     #[DataProvider('provideMoney')]
-    public function testGetMoney(string $expected, $amount, string $currencyCode): void
+    public function testGetMoney(string $expected, int|string $price, string $currencyCode): void
     {
         $provider = new MoneyProvider($currencyCode);
-        $money    = $provider->getMoney($amount, $currencyCode);
+        $money    = $provider->getMoney($price, $currencyCode);
         static::assertSame($expected, $money->getAmount());
     }
 
